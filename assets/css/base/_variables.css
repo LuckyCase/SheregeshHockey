@@ -14,7 +14,7 @@
   --color-red: #cc2936;
   --color-red-dark: #a01e28;
 
-  /* Neutrals (dark theme) — рекомендации 2025–2026: мягкий чёрный, elevation через тон, WCAG AA */
+  /* Neutrals (dark theme): 2025–2026 guidelines — soft black, elevation by tone, WCAG AA */
   --color-bg: #0f172a;
   --color-bg-elevated: #1e293b;
   --color-bg-surface: #273549;
@@ -76,4 +76,27 @@
   --z-modal: 300;
   --z-lightbox: 400;
   --z-toast: 500;
+}
+
+/* Light theme (when .theme-light is set on <html> via theme toggle) */
+.theme-light {
+  --color-bg: #f0f5fa;
+  --color-bg-elevated: #e3edf7;
+  --color-bg-surface: #d4dfeb;
+  --color-text: #1a2940;
+  --color-text-muted: #3d5266;
+  --color-text-accent: #b08a2e;
+  --color-border: #b8c9db;
+  --color-overlay: rgba(240, 245, 250, 0.92);
+}
+
+.theme-light .header--sticky {
+  background-color: rgba(243, 247, 252, 0.95);
+  box-shadow: 0 1px 0 var(--color-border);
+}
+
+.theme-light .hero__bg {
+  background:
+    radial-gradient(ellipse at 50% 30%, rgba(26, 58, 92, 0.15) 0%, transparent 60%),
+    linear-gradient(180deg, #e3edf7 0%, #d4dfeb 50%, #c5d2e0 100%);
 }
