@@ -1,14 +1,1 @@
-{
-  "name": "Хоккей Шерегеша",
-  "short_name": "Sheregesh Hockey",
-  "description": "История хоккея с шайбой в посёлке Шерегеш",
-  "start_url": "/",
-  "display": "standalone",
-  "background_color": "#0b1420",
-  "theme_color": "#1a3a5c",
-  "icons": [
-    { "src": "favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
-    { "src": "favicon.ico", "sizes": "32x32", "type": "image/x-icon", "purpose": "any" }
-  ],
-  "lang": "ru"
-}
+{"name":"Хоккей Шерегеша","short_name":"Sheregesh Hockey","description":"История хоккея с шайбой в посёлке Шерегеш","start_url":"./","display":"standalone","background_color":"#0b1420","theme_color":"#1a3a5c","icons":[{"src":"favicon.svg","sizes":"any","type":"image/svg+xml","purpose":"any"},{"src":"favicon.ico","sizes":"32x32","type":"image/x-icon","purpose":"any"}],"lang":"ru"}
