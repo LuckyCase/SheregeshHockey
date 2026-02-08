@@ -1,0 +1,79 @@
+:root {
+  /* === COLOR PALETTE === */
+  --color-primary: #1a3a5c;
+  --color-primary-light: #2a5a8c;
+  --color-primary-dark: #0d1f33;
+
+  --color-accent: #d4a843;
+  --color-accent-light: #e8c76a;
+  --color-accent-dark: #b08a2e;
+
+  --color-ice: #e3edf7;
+  --color-ice-light: #f0f5fa;
+
+  --color-red: #cc2936;
+  --color-red-dark: #a01e28;
+
+  /* Neutrals (dark theme) */
+  --color-bg: #0b1420;
+  --color-bg-elevated: #121e2e;
+  --color-bg-surface: #1a2940;
+  --color-text: #e3edf7;
+  --color-text-muted: #8ba3be;
+  --color-text-accent: #d4a843;
+  --color-border: #2a3f5c;
+  --color-overlay: rgba(11, 20, 32, 0.85);
+
+  /* === TYPOGRAPHY === */
+  --font-heading: 'Oswald', 'Arial Narrow', sans-serif;
+  --font-body: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Consolas', monospace;
+
+  /* Type scale (fluid) */
+  --text-xs: clamp(0.7rem, 0.65rem + 0.25vw, 0.8rem);
+  --text-sm: clamp(0.8rem, 0.75rem + 0.3vw, 0.9rem);
+  --text-base: clamp(0.95rem, 0.9rem + 0.3vw, 1.1rem);
+  --text-lg: clamp(1.1rem, 1rem + 0.5vw, 1.35rem);
+  --text-xl: clamp(1.3rem, 1.1rem + 1vw, 1.8rem);
+  --text-2xl: clamp(1.6rem, 1.3rem + 1.5vw, 2.4rem);
+  --text-3xl: clamp(2rem, 1.5rem + 2.5vw, 3.2rem);
+  --text-4xl: clamp(2.5rem, 1.8rem + 3.5vw, 4.5rem);
+
+  --line-height-tight: 1.15;
+  --line-height-normal: 1.6;
+  --line-height-relaxed: 1.8;
+
+  /* === SPACING === */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+  --space-3xl: 4.5rem;
+  --space-4xl: 6rem;
+  --space-section: clamp(4rem, 3rem + 5vw, 8rem);
+
+  /* === LAYOUT === */
+  --container-max: 1200px;
+  --container-narrow: 800px;
+  --container-wide: 1400px;
+  --gutter: clamp(1rem, 0.5rem + 2vw, 2rem);
+  --border-radius-sm: 4px;
+  --border-radius-md: 8px;
+  --border-radius-lg: 16px;
+
+  /* === ANIMATION === */
+  --transition-fast: 150ms ease;
+  --transition-base: 300ms ease;
+  --transition-slow: 500ms ease;
+  --transition-glacial: 800ms cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* === Z-INDEX SCALE === */
+  --z-base: 1;
+  --z-sticky: 100;
+  --z-overlay: 200;
+  --z-modal: 300;
+  --z-lightbox: 400;
+  --z-toast: 500;
+}

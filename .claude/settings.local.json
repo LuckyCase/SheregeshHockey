@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dir \"D:\\\\WebProject\\\\SheregeshHockey\" /s /b)",
+      "WebFetch(domain:fhr.ru)",
+      "WebFetch(domain:www.hhof.com)"
+    ]
+  }
+}

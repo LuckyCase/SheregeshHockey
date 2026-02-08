@@ -1,0 +1,37 @@
+/* Decade detail page (ru/decade-*.html, en/decade-*.html) */
+.page-decade {
+  padding-top: calc(var(--space-4xl) + 60px);
+}
+
+.page-decade__header {
+  text-align: center;
+  margin-bottom: var(--space-3xl);
+}
+
+.page-decade__title {
+  font-size: var(--text-3xl);
+  margin-bottom: var(--space-sm);
+}
+
+.page-decade__period {
+  font-family: var(--font-mono);
+  font-size: var(--text-xl);
+  color: var(--color-accent);
+  letter-spacing: 0.1em;
+}
+
+.page-decade__content {
+  max-width: var(--container-narrow);
+  margin: 0 auto;
+}
+
+.page-decade__intro {
+  font-size: var(--text-lg);
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-2xl);
+  line-height: var(--line-height-relaxed);
+}
+
+.page-decade .timeline {
+  margin-top: var(--space-2xl);
+}

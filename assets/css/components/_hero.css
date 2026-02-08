@@ -1,0 +1,179 @@
+/* Hero section */
+.hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  min-height: 100svh;
+  overflow: hidden;
+  text-align: center;
+  padding: var(--space-4xl) var(--gutter) var(--space-2xl);
+}
+
+/* Background layers */
+.hero__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse at 50% 30%, rgba(26, 58, 92, 0.4) 0%, transparent 60%),
+    linear-gradient(180deg, #0b1420 0%, #0d1f33 40%, #1a2940 100%);
+}
+
+.hero__bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23e3edf7' fill-opacity='0.015'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  opacity: 0.5;
+}
+
+/* Film grain effect */
+.hero__grain {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  opacity: 0.04;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-size: 256px 256px;
+}
+
+/* Content */
+.hero__content {
+  position: relative;
+  z-index: 2;
+  max-width: 700px;
+}
+
+.hero__icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto var(--space-xl);
+  fill: var(--color-accent);
+  animation: hero-icon-drop 800ms cubic-bezier(0.34, 1.56, 0.64, 1) 100ms both;
+}
+
+.hero__title {
+  font-size: var(--text-4xl);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  margin-bottom: var(--space-md);
+  animation: hero-fade-up 600ms cubic-bezier(0.16, 1, 0.3, 1) 300ms both;
+}
+
+.hero__title-accent {
+  color: var(--color-accent);
+}
+
+.hero__subtitle {
+  font-family: var(--font-body);
+  font-size: var(--text-lg);
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0.02em;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-sm);
+  animation: hero-fade-up 600ms cubic-bezier(0.16, 1, 0.3, 1) 500ms both;
+}
+
+.hero__period {
+  font-family: var(--font-mono);
+  font-size: var(--text-2xl);
+  font-weight: 500;
+  color: var(--color-accent);
+  letter-spacing: 0.15em;
+  animation: hero-fade-up 600ms cubic-bezier(0.16, 1, 0.3, 1) 650ms both;
+}
+
+.hero__location {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  margin-top: var(--space-md);
+  letter-spacing: 0.05em;
+  animation: hero-fade-up 600ms cubic-bezier(0.16, 1, 0.3, 1) 750ms both;
+}
+
+/* Scroll indicator */
+.hero__scroll {
+  position: absolute;
+  bottom: var(--space-xl);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+  color: var(--color-text-muted);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  text-decoration: none;
+  animation: hero-fade-in 400ms ease 1s both;
+}
+
+.hero__scroll-arrow {
+  width: 20px;
+  height: 20px;
+  stroke: var(--color-text-muted);
+  animation: scroll-bounce 2s ease-in-out infinite;
+}
+
+/* Animations */
+@keyframes hero-icon-drop {
+  from {
+    opacity: 0;
+    transform: translateY(-40px) rotate(-20deg);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) rotate(0);
+  }
+}
+
+@keyframes hero-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes hero-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scroll-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(8px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__icon,
+  .hero__title,
+  .hero__subtitle,
+  .hero__period,
+  .hero__location,
+  .hero__scroll {
+    animation: none;
+    opacity: 1;
+  }
+
+  .hero__scroll-arrow {
+    animation: none;
+  }
+}
+
+@media (min-width: 768px) {
+  .hero__icon {
+    width: 100px;
+    height: 100px;
+  }
+}

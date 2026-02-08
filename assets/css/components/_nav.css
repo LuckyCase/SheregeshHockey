@@ -1,0 +1,11 @@
+/* Navigation-specific styles beyond header layout */
+
+/* Active section indicator for nav links */
+.nav__link[aria-current="true"] {
+  color: var(--color-text);
+}
+
+.nav__link[aria-current="true"]::after {
+  width: 100%;
+  left: 0;
+}

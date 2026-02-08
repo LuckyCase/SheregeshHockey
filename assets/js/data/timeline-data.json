@@ -1,0 +1,120 @@
+{
+  "1970s": [
+    {
+      "year": "1971",
+      "ru": "Первые игры на естественном льду у рудника.",
+      "en": "First games on natural ice near the mine.",
+      "image": "assets/images/placeholders/ice.svg",
+      "titleRu": "Первый лёд",
+      "titleEn": "First ice"
+    },
+    {
+      "year": "1974",
+      "ru": "Строительство первого корта с бортами.",
+      "en": "Construction of the first rink with boards.",
+      "image": "assets/images/placeholders/ice.svg",
+      "titleRu": "Корт с бортами",
+      "titleEn": "Rink with boards"
+    },
+    {
+      "year": "1976",
+      "ru": "Создание команды рудника «Горняк».",
+      "en": "Creation of the mine team «Gornyak».",
+      "image": "assets/images/placeholders/ice.svg",
+      "titleRu": "Команда «Горняк»",
+      "titleEn": "Team Gornyak"
+    },
+    {
+      "year": "1978",
+      "ru": "Первый межпоселковый турнир.",
+      "en": "First inter-village tournament.",
+      "image": "assets/images/placeholders/ice.svg",
+      "titleRu": "Межпоселковый турнир",
+      "titleEn": "Inter-village tournament"
+    }
+  ],
+  "1980s": [
+    {
+      "year": "1981",
+      "ru": "Установка освещения на катке.",
+      "en": "Installation of lighting at the rink.",
+      "image": "assets/images/placeholders/ice.svg",
+      "titleRu": "Освещение катка",
+      "titleEn": "Rink lighting"
+    },
+    {
+      "year": "1983",
+      "ru": "Открытие хоккейной секции при спортклубе.",
+      "en": "Opening of the hockey section at the sports club.",
+      "image": "assets/images/placeholders/ice.svg",
+      "titleRu": "Хоккейная секция",
+      "titleEn": "Hockey section"
+    },
+    {
+      "year": "1985",
+      "ru": "Пик — несколько команд в районной лиге.",
+      "en": "Peak — several teams in the district league.",
+      "image": "assets/images/placeholders/ice.svg",
+      "titleRu": "Районная лига",
+      "titleEn": "District league"
+    },
+    {
+      "year": "1987",
+      "ru": "«Горняк» — чемпион Таштагольского района.",
+      "en": "Gornyak — champion of Tashtagol district.",
+      "image": "assets/images/placeholders/ice.svg",
+      "titleRu": "Чемпион района",
+      "titleEn": "District champion"
+    },
+    {
+      "year": "1989",
+      "ru": "Начало экономических трудностей.",
+      "en": "Beginning of economic difficulties.",
+      "image": "assets/images/placeholders/ice.svg",
+      "titleRu": "Экономические трудности",
+      "titleEn": "Economic difficulties"
+    }
+  ],
+  "1990s": [
+    {
+      "year": "1991",
+      "ru": "Реструктуризация рудника, сокращение финансирования.",
+      "en": "Mine restructuring, funding cuts.",
+      "image": "assets/images/placeholders/ice.svg",
+      "titleRu": "Реструктуризация",
+      "titleEn": "Restructuring"
+    },
+    {
+      "year": "1993",
+      "ru": "Энтузиасты поддерживают каток на волонтёрской основе.",
+      "en": "Enthusiasts maintain the rink on a volunteer basis.",
+      "image": "assets/images/placeholders/ice.svg",
+      "titleRu": "Волонтёрский каток",
+      "titleEn": "Volunteer rink"
+    },
+    {
+      "year": "1995",
+      "ru": "Расцвет дворового хоккея.",
+      "en": "Flourishing of backyard hockey.",
+      "image": "assets/images/placeholders/ice.svg",
+      "titleRu": "Дворовый хоккей",
+      "titleEn": "Backyard hockey"
+    },
+    {
+      "year": "1997",
+      "ru": "Кратковременное возрождение.",
+      "en": "Short-lived revival.",
+      "image": "assets/images/placeholders/ice.svg",
+      "titleRu": "Возрождение",
+      "titleEn": "Revival"
+    },
+    {
+      "year": "2000",
+      "ru": "Конец эпохи — начало лыжного туризма.",
+      "en": "End of an era — rise of ski tourism.",
+      "image": "assets/images/placeholders/ice.svg",
+      "titleRu": "Конец эпохи",
+      "titleEn": "End of an era"
+    }
+  ]
+}

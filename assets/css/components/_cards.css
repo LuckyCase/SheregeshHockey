@@ -1,0 +1,89 @@
+/* Cards - team cards and general info cards */
+.card {
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-md);
+  overflow: hidden;
+  transition: border-color var(--transition-fast), transform var(--transition-fast);
+}
+
+.card:hover {
+  border-color: var(--color-primary-light);
+  transform: translateY(-4px);
+}
+
+.card__image {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  background: var(--color-bg-surface);
+}
+
+.card__body {
+  padding: var(--space-lg);
+}
+
+.card__title {
+  font-family: var(--font-heading);
+  font-size: var(--text-lg);
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0;
+  margin-bottom: var(--space-sm);
+}
+
+.card__meta {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-accent);
+  margin-bottom: var(--space-sm);
+}
+
+.card__text {
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  line-height: var(--line-height-relaxed);
+}
+
+.card__footer {
+  padding: var(--space-md) var(--space-lg);
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Team card specific */
+.card--team .card__image {
+  aspect-ratio: 4 / 3;
+}
+
+/* Info card - no image, icon-based */
+.card--info {
+  text-align: center;
+  padding: var(--space-2xl) var(--space-lg);
+}
+
+.card--info .card__icon {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto var(--space-md);
+  fill: var(--color-accent);
+}
+
+/* Venue/rink card */
+.card--venue {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) {
+  .card--venue {
+    grid-template-columns: 1fr 1.5fr;
+  }
+
+  .card--venue .card__image {
+    aspect-ratio: auto;
+    height: 100%;
+  }
+}

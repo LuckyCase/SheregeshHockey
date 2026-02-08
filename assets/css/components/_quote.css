@@ -1,0 +1,94 @@
+/* Story / Memory quote cards */
+.quote-card {
+  position: relative;
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-md);
+  padding: var(--space-2xl) var(--space-lg) var(--space-lg);
+  transition: border-color var(--transition-fast);
+}
+
+.quote-card:hover {
+  border-color: var(--color-primary-light);
+}
+
+/* Decorative quotation mark */
+.quote-card::before {
+  content: '\201C';
+  position: absolute;
+  top: var(--space-md);
+  left: var(--space-lg);
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 4rem;
+  line-height: 1;
+  color: var(--color-accent);
+  opacity: 0.3;
+}
+
+.quote-card__text {
+  font-size: var(--text-base);
+  line-height: var(--line-height-relaxed);
+  color: var(--color-text);
+  font-style: italic;
+  margin-bottom: var(--space-lg);
+  position: relative;
+}
+
+.quote-card__author {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--color-border);
+}
+
+.quote-card__avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--color-bg-surface);
+  flex-shrink: 0;
+}
+
+.quote-card__name {
+  font-family: var(--font-heading);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.quote-card__period {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  margin-top: 2px;
+}
+
+.quote-card__link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  margin-top: var(--space-md);
+  font-size: var(--text-sm);
+  color: var(--color-accent);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color var(--transition-fast);
+}
+
+.quote-card__link:hover {
+  color: var(--color-accent-light);
+}
+
+.quote-card__link svg {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
+  transition: transform var(--transition-fast);
+}
+
+.quote-card__link:hover svg {
+  transform: translateX(4px);
+}

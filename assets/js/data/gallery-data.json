@@ -1,0 +1,56 @@
+[
+  {
+    "src": "assets/images/placeholders/ice.svg",
+    "decade": "1970s",
+    "caption": { "ru": "Каток у рудника", "en": "Rink near the mine" },
+    "alt": { "ru": "Каток у рудника, 1970-е", "en": "Rink near the mine, 1970s" }
+  },
+  {
+    "src": "assets/images/placeholders/ice.svg",
+    "decade": "1970s",
+    "caption": { "ru": "Первый корт с бортами", "en": "First rink with boards" },
+    "alt": { "ru": "Первый корт с бортами", "en": "First rink with boards" }
+  },
+  {
+    "src": "assets/images/placeholders/ice.svg",
+    "decade": "1980s",
+    "caption": { "ru": "Освещение катка", "en": "Rink lighting" },
+    "alt": { "ru": "Каток с освещением, 1980-е", "en": "Lighted rink, 1980s" }
+  },
+  {
+    "src": "assets/images/placeholders/ice.svg",
+    "decade": "1980s",
+    "caption": { "ru": "Команда «Горняк»", "en": "Team Gornyak" },
+    "alt": { "ru": "Команда Горняк", "en": "Team Gornyak" }
+  },
+  {
+    "src": "assets/images/placeholders/ice.svg",
+    "decade": "1980s",
+    "caption": { "ru": "Районный турнир", "en": "District tournament" },
+    "alt": { "ru": "Районный турнир", "en": "District tournament" }
+  },
+  {
+    "src": "assets/images/placeholders/ice.svg",
+    "decade": "1990s",
+    "caption": { "ru": "Дворовый хоккей", "en": "Backyard hockey" },
+    "alt": { "ru": "Дворовый хоккей, 1990-е", "en": "Backyard hockey, 1990s" }
+  },
+  {
+    "src": "assets/images/placeholders/ice.svg",
+    "decade": "1990s",
+    "caption": { "ru": "Ветераны на льду", "en": "Veterans on ice" },
+    "alt": { "ru": "Ветераны на льду", "en": "Veterans on ice" }
+  },
+  {
+    "src": "assets/images/placeholders/ice.svg",
+    "decade": "teams",
+    "caption": { "ru": "Состав команды", "en": "Team lineup" },
+    "alt": { "ru": "Состав команды", "en": "Team lineup" }
+  },
+  {
+    "src": "assets/images/placeholders/ice.svg",
+    "decade": "teams",
+    "caption": { "ru": "Горняк — чемпион", "en": "Gornyak champion" },
+    "alt": { "ru": "Горняк чемпион района", "en": "Gornyak district champion" }
+  }
+]

@@ -1,0 +1,33 @@
+/* Language switcher */
+.lang-switch {
+  display: flex;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.lang-switch__btn {
+  font-family: var(--font-heading);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: var(--space-xs) var(--space-sm);
+  color: var(--color-text-muted);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-decoration: none;
+  line-height: 1;
+}
+
+.lang-switch__btn--active {
+  background: var(--color-accent);
+  color: var(--color-bg);
+}
+
+.lang-switch__btn:not(.lang-switch__btn--active):hover {
+  color: var(--color-text);
+  background: rgba(255, 255, 255, 0.05);
+}
