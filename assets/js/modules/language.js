@@ -8,8 +8,9 @@
 
   function getLangFromPath() {
     var path = (window.location.pathname || '').replace(/\/$/, '');
-    if (path.indexOf('/en/') === 0 || path === '/en') return 'en';
-    return 'ru';
+    if (path.indexOf('/en/') !== -1 || path === '/en' || path.endsWith('/en')) return 'en';
+    if (path.indexOf('/ru/') !== -1 || path === '/ru' || path.endsWith('/ru')) return 'ru';
+    return null;
   }
 
   function getStoredLang() {
@@ -43,18 +44,30 @@
     window.__SheregeshLang = lang;
   }
 
+  /** Base path when site is in subpath (e.g. /SheregeshHockey on GitHub Pages) */
+  function getBasePath() {
+    var path = (window.location.pathname || '/').replace(/\/$/, '');
+    var segments = path.split('/').filter(Boolean);
+    if (segments[0] && segments[0] !== 'en' && segments[0] !== 'ru' && segments[0] !== 'index.html') {
+      return '/' + segments[0];
+    }
+    return '';
+  }
+
   function getAlternateUrl(lang) {
-    var path = (window.location.pathname || '/');
+    var path = (window.location.pathname || '/').replace(/\/$/, '') || '/';
     var origin = window.location.origin || '';
+    var base = getBasePath();
+    var pathRel = base ? path.slice(base.length) || '/' : path;
     if (lang === 'en') {
-      if (path === '/' || path === '' || path === '/index.html') return origin + '/en/index.html';
-      if (path.indexOf('/en/') === 0) return window.location.href;
-      if (path.indexOf('/ru/') === 0) return origin + '/en/' + path.slice(4);
-      return origin + '/en/index.html';
+      if (pathRel === '/' || pathRel === '' || pathRel === '/index.html') return origin + base + '/en/index.html';
+      if (pathRel.indexOf('/en/') === 0 || pathRel === '/en') return window.location.href;
+      if (pathRel.indexOf('/ru/') === 0) return origin + base + '/en/' + pathRel.slice(4);
+      return origin + base + '/en/index.html';
     } else {
-      if (path === '/en' || path === '/en/' || path === '/en/index.html') return origin + '/index.html';
-      if (path.indexOf('/en/') === 0) return origin + '/ru/' + path.slice(5);
-      return origin + '/index.html';
+      if (pathRel === '/en' || pathRel === '/en/' || pathRel === '/en/index.html') return origin + base + '/index.html';
+      if (pathRel.indexOf('/en/') === 0) return origin + base + '/ru/' + pathRel.slice(5);
+      return origin + base + '/index.html';
     }
   }
 

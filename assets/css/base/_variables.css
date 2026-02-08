@@ -14,12 +14,12 @@
   --color-red: #cc2936;
   --color-red-dark: #a01e28;
 
-  /* Neutrals (dark theme) */
+  /* Neutrals (dark theme) — контрастный текст на тёмном фоне */
   --color-bg: #0b1420;
   --color-bg-elevated: #121e2e;
   --color-bg-surface: #1a2940;
-  --color-text: #e3edf7;
-  --color-text-muted: #8ba3be;
+  --color-text: #e8eef6;
+  --color-text-muted: #9eb4cc;
   --color-text-accent: #d4a843;
   --color-border: #2a3f5c;
   --color-overlay: rgba(11, 20, 32, 0.85);
@@ -76,4 +76,27 @@
   --z-modal: 300;
   --z-lightbox: 400;
   --z-toast: 500;
+}
+
+/* Светлая тема: тёмный текст на светлом фоне для читаемости */
+@media (prefers-color-scheme: light) {
+  :root {
+    --color-bg: #f0f5fa;
+    --color-bg-elevated: #e3edf7;
+    --color-bg-surface: #d4dfeb;
+    --color-text: #1a2940;
+    --color-text-muted: #3d5266;
+    --color-text-accent: #b08a2e;
+    --color-border: #b8c9db;
+    --color-overlay: rgba(240, 245, 250, 0.92);
+  }
+
+  .header--sticky {
+    background-color: rgba(240, 245, 250, 0.95);
+    box-shadow: 0 1px 0 var(--color-border);
+  }
+
+  .hero__bg {
+    background: linear-gradient(180deg, #e3edf7 0%, #d4dfeb 50%, #c5d2e0 100%);
+  }
 }
