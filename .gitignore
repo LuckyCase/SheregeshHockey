@@ -11,6 +11,9 @@ desktop.ini
 *.swo
 *~
 
+# Local / agent rules (не коммитить)
+AGENTS.md
+
 # Optional
 node_modules/
 *.log
