@@ -8,8 +8,8 @@
   <meta property="og:description" content="History of ice hockey in Sheregesh village: decades, teams, memories.">
   <meta property="og:type" content="website">
   <title>Sheregesh Hockey</title>
-  <link rel="alternate" hreflang="ru" href="https://example.com/index.html">
-  <link rel="alternate" hreflang="en" href="https://example.com/en/index.html">
+  <link rel="alternate" hreflang="ru" href="https://luckycase.github.io/SheregeshHockey/index.html">
+  <link rel="alternate" hreflang="en" href="https://luckycase.github.io/SheregeshHockey/en/index.html">
   <link rel="stylesheet" href="../assets/css/main.css">
 </head>
 <body>
@@ -94,7 +94,7 @@
       <div class="container">
         <header class="section__header" data-animate>
           <h2 class="section__title">About</h2>
-          <p class="section__subtitle">Mission and call to share materials</p>
+          <p class="section__subtitle">A non-commercial project — we collect memories and photos</p>
         </header>
         <p data-animate>Sheregesh Hockey is a non-commercial project about the history of ice hockey in the village of Sheregesh. We collect memories, photos, and facts about teams, rinks, and tournaments from 1970–2000. If you have materials or stories — share them via «Share Your Story».</p>
       </div>
@@ -104,7 +104,7 @@
       <div class="container">
         <header class="section__header" data-animate>
           <h2 class="section__title">The Village</h2>
-          <p class="section__subtitle">Context: mine, population, geography, hockey's role</p>
+          <p class="section__subtitle">The mine, the people, and hockey's place in village life</p>
         </header>
         <p data-animate>Sheregesh is a village in Tashtagol district, Kemerovo region, built around a mine. Hockey on natural ice and on a boarded rink was a central part of local life for years and brought miners and families together. Both backyard hockey and the mine team «Gornyak» played here.</p>
       </div>
@@ -114,7 +114,7 @@
       <div class="container">
         <header class="section__header">
           <h2 class="section__title">Timeline</h2>
-          <p class="section__subtitle">Decades and event cards</p>
+          <p class="section__subtitle">Key events by decade</p>
         </header>
         <div class="timeline" data-timeline>
           <div class="timeline__nav" role="tablist" aria-label="Decades">
@@ -131,7 +131,7 @@
       <div class="container">
         <header class="section__header" data-animate>
           <h2 class="section__title">Teams</h2>
-          <p class="section__subtitle">Team cards, lineups, photos</p>
+          <p class="section__subtitle">Gornyak and other teams</p>
         </header>
         <p data-animate>The main team was «Gornyak» of the Sheregesh mine; other teams took part in district and inter-village tournaments in different years. Lineups and photos will be added as materials are received.</p>
       </div>
@@ -141,7 +141,7 @@
       <div class="container">
         <header class="section__header" data-animate>
           <h2 class="section__title">Memories</h2>
-          <p class="section__subtitle">Quotes and stories from participants</p>
+          <p class="section__subtitle">Stories from those who played and cheered</p>
         </header>
         <div class="grid grid--3">
           <article class="quote-card" data-animate>
@@ -176,7 +176,7 @@
       <div class="container">
         <header class="section__header">
           <h2 class="section__title">Photo Album</h2>
-          <p class="section__subtitle">Filterable gallery with lightbox</p>
+          <p class="section__subtitle">Photos by period</p>
         </header>
         <div class="gallery" data-gallery>
           <div class="gallery__filters" data-gallery-filters role="group" aria-label="Filter by period"></div>
@@ -189,7 +189,7 @@
       <div class="container">
         <header class="section__header" data-animate>
           <h2 class="section__title">Rinks &amp; Venues</h2>
-          <p class="section__subtitle">Where they played — outdoor rinks, schoolyards</p>
+          <p class="section__subtitle">Outdoor rinks and the boarded rink</p>
         </header>
         <p data-animate>They played on natural ice by the mine, then on the boarded rink with lights. Schoolyards were used for backyard hockey. Specific places and descriptions will be added over time.</p>
       </div>
@@ -199,9 +199,10 @@
       <div class="container">
         <header class="section__header" data-animate>
           <h2 class="section__title">Share Your Story</h2>
-          <p class="section__subtitle">Send photos and memories</p>
+          <p class="section__subtitle">Send us a photo or story — we'll add it to the site</p>
         </header>
-        <p data-animate>Do you have old photos, newspaper clippings, or memories of hockey in Sheregesh? Contact us — we'll be glad to add them. Email: <a href="mailto:contact@example.com" class="footer__cta-email">contact@example.com</a></p>
+        <p data-animate>Do you have old photos, newspaper clippings, or memories of hockey in Sheregesh? Contact us — we'll be glad to add them.</p>
+        <button type="button" class="btn btn--primary contact-form-open">Contact us</button>
       </div>
     </section>
   </main>
@@ -229,13 +230,29 @@
       <div class="footer__cta">
         <h3 class="footer__cta-title">Have photos or memories?</h3>
         <p class="footer__cta-text">Contact us — we'll add them to the site.</p>
-        <a href="mailto:contact@example.com" class="footer__cta-email">contact@example.com</a>
+        <button type="button" class="footer__cta-btn btn btn--primary contact-form-open" aria-haspopup="dialog" aria-expanded="false">Contact us</button>
       </div>
     </div>
     <div class="footer__bottom container">
       <p class="footer__copyright">© 2025 Sheregesh Hockey. Non-commercial project.</p>
     </div>
   </footer>
+
+  <div id="contact-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="contact-modal-title" aria-hidden="true" hidden>
+    <div class="modal__backdrop" data-contact-close aria-hidden="true"></div>
+    <div class="modal__content">
+      <button type="button" class="modal__close" data-contact-close aria-label="Close"></button>
+      <h2 id="contact-modal-title" class="contact-form__title">Contact us</h2>
+      <form id="contact-form" class="contact-form" action="https://formspree.io/f/xvzbgpao" method="POST" data-msg-success="Thanks for your submission!" data-msg-error-default="Oops! There was a problem submitting your form.">
+        <label class="contact-form__label" for="contact-email">Email:</label>
+        <input type="email" id="contact-email" name="email" class="contact-form__input" required autocomplete="email" />
+        <label class="contact-form__label" for="contact-message">Message:</label>
+        <textarea id="contact-message" name="message" class="contact-form__textarea" rows="4" required></textarea>
+        <button type="submit" class="btn btn--primary contact-form__submit">Submit</button>
+        <p id="contact-form-status" class="contact-form__status" aria-live="polite"></p>
+      </form>
+    </div>
+  </div>
 
   <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="View photo" hidden>
     <div class="lightbox__backdrop" aria-hidden="true"></div>
@@ -255,6 +272,7 @@
   <script src="../assets/js/modules/gallery.js"></script>
   <script src="../assets/js/modules/language.js"></script>
   <script src="../assets/js/modules/lazy-load.js"></script>
+  <script src="../assets/js/modules/contact-form.js"></script>
   <script src="../assets/js/app.js"></script>
 </body>
 </html>

@@ -59,16 +59,21 @@
     var origin = window.location.origin || '';
     var base = getBasePath();
     var pathRel = base ? path.slice(base.length) || '/' : path;
+    var search = (window.location.search || '').trim();
+    var isStory = pathRel.indexOf('story.html') !== -1;
+    var appendSearch = isStory && search ? search : '';
+    var url;
     if (lang === 'en') {
-      if (pathRel === '/' || pathRel === '' || pathRel === '/index.html') return origin + base + '/en/index.html';
-      if (pathRel.indexOf('/en/') === 0 || pathRel === '/en') return window.location.href;
-      if (pathRel.indexOf('/ru/') === 0) return origin + base + '/en/' + pathRel.slice(4);
-      return origin + base + '/en/index.html';
+      if (pathRel === '/' || pathRel === '' || pathRel === '/index.html') url = origin + base + '/en/index.html';
+      else if (pathRel.indexOf('/en/') === 0 || pathRel === '/en') url = window.location.href;
+      else if (pathRel.indexOf('/ru/') === 0) url = origin + base + '/en/' + pathRel.slice(4);
+      else url = origin + base + '/en/index.html';
     } else {
-      if (pathRel === '/en' || pathRel === '/en/' || pathRel === '/en/index.html') return origin + base + '/index.html';
-      if (pathRel.indexOf('/en/') === 0) return origin + base + '/ru/' + pathRel.slice(5);
-      return origin + base + '/index.html';
+      if (pathRel === '/en' || pathRel === '/en/' || pathRel === '/en/index.html') url = origin + base + '/index.html';
+      else if (pathRel.indexOf('/en/') === 0) url = origin + base + '/ru/' + pathRel.slice(5);
+      else url = origin + base + '/index.html';
     }
+    return url + appendSearch;
   }
 
   function switchTo(lang) {
