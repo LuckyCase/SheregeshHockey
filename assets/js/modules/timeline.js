@@ -4,34 +4,31 @@
 (function () {
   'use strict';
 
+  var U = window.SheregeshUtils || {};
+
   function getDataPath() {
     var script = document.querySelector('script[src*="timeline"]');
     var src = (script && script.getAttribute('src')) || '';
     var dir = src.replace(/\/[^/]*$/, '/');
     return (dir ? dir + '../' : 'assets/js/') + 'data/timeline-data.json';
   }
-  const DATA_URL = getDataPath();
-  const DECADES = ['1970s', '1980s', '1990s'];
+  var DATA_URL = getDataPath();
+  var DECADES = ['1970s', '1980s', '1990s'];
 
-  let timelineData = null;
-  let currentDecade = '1970s';
-  let currentIndex = 0;
+  var timelineData = null;
+  var currentDecade = '1970s';
+  var currentIndex = 0;
 
-  /** Префикс для путей к картинкам: на страницах en/ и ru/ нужен ../ */
   function getAssetPrefix() {
-    const path = window.location.pathname || '';
-    return (path.indexOf('/en/') !== -1 || path.indexOf('/ru/') !== -1) ? '../' : '';
+    return U.getAssetPrefix ? U.getAssetPrefix() : '';
   }
 
   function getLang() {
-    const path = window.location.pathname || '';
-    if (path.indexOf('/en/') !== -1) return 'en';
-    if (typeof window.__SheregeshLang !== 'undefined') return window.__SheregeshLang;
-    try {
-      const stored = localStorage.getItem('sheregesh-lang');
-      if (stored === 'en') return 'en';
-    } catch (e) {}
-    return 'ru';
+    return U.getLang ? U.getLang() : 'ru';
+  }
+
+  function escapeHtml(s) {
+    return U.escapeHtml ? U.escapeHtml(s) : (s || '');
   }
 
   function getContainer() {
@@ -43,15 +40,15 @@
   }
 
   function getButtons() {
-    const container = getContainer();
+    var container = getContainer();
     return container ? container.querySelectorAll('.timeline__decade-btn') : [];
   }
 
   function renderEvent(event, lang) {
-    const title = lang === 'en' ? (event.titleEn || event.titleRu) : (event.titleRu || event.titleEn);
-    const text = lang === 'en' ? event.en : event.ru;
-    const imgSrc = event.image ? getAssetPrefix() + event.image : '';
-    const imgAlt = title;
+    var title = lang === 'en' ? (event.titleEn || event.titleRu) : (event.titleRu || event.titleEn);
+    var text = lang === 'en' ? event.en : event.ru;
+    var imgSrc = event.image ? getAssetPrefix() + event.image : '';
+    var imgAlt = title;
     return (
       '<article class="timeline__event" data-animate>'
         + '<span class="timeline__event-year">' + escapeHtml(event.year) + '</span>'
@@ -64,16 +61,9 @@
     );
   }
 
-  function escapeHtml(s) {
-    if (!s) return '';
-    const div = document.createElement('div');
-    div.textContent = s;
-    return div.innerHTML;
-  }
-
   function renderDecadePanel(decade, lang) {
-    const events = timelineData && timelineData[decade] ? timelineData[decade] : [];
-    const html = events.map(function (ev) { return renderEvent(ev, lang); }).join('');
+    var events = timelineData && timelineData[decade] ? timelineData[decade] : [];
+    var html = events.map(function (ev) { return renderEvent(ev, lang); }).join('');
     return (
       '<div class="timeline__events' + (decade === currentDecade ? ' timeline__events--active' : '') + '" data-decade="' + escapeHtml(decade) + '" role="tabpanel" aria-labelledby="timeline-tab-' + decade + '">'
         + '<div class="timeline__event-list">' + html + '</div>'
@@ -82,12 +72,11 @@
   }
 
   function renderAllPanels() {
-    const container = getCardsContainer();
+    var container = getCardsContainer();
     if (!container || !timelineData) return;
-    const lang = getLang();
-    const panelsHtml = DECADES.map(function (d) { return renderDecadePanel(d, lang); }).join('');
+    var lang = getLang();
+    var panelsHtml = DECADES.map(function (d) { return renderDecadePanel(d, lang); }).join('');
     container.innerHTML = panelsHtml;
-    // Add id to tabs for aria-labelledby
     getButtons().forEach(function (btn, i) {
       btn.id = 'timeline-tab-' + DECADES[i];
     });
@@ -98,17 +87,17 @@
 
   function setActiveDecade(decade) {
     currentDecade = decade;
-    const container = getCardsContainer();
+    var container = getCardsContainer();
     if (!container) return;
-    const panels = container.querySelectorAll('.timeline__events');
-    const buttons = getButtons();
+    var panels = container.querySelectorAll('.timeline__events');
+    var buttons = getButtons();
     panels.forEach(function (panel) {
-      const isActive = panel.getAttribute('data-decade') === decade;
+      var isActive = panel.getAttribute('data-decade') === decade;
       panel.classList.toggle('timeline__events--active', isActive);
       panel.setAttribute('aria-hidden', !isActive);
     });
     buttons.forEach(function (btn, i) {
-      const isActive = DECADES[i] === decade;
+      var isActive = DECADES[i] === decade;
       btn.classList.toggle('timeline__decade-btn--active', isActive);
       btn.setAttribute('aria-selected', isActive);
     });
@@ -119,14 +108,14 @@
   }
 
   function handleDecadeClick(e) {
-    const btn = e.target.closest('.timeline__decade-btn');
+    var btn = e.target.closest('.timeline__decade-btn');
     if (!btn) return;
-    const decade = btn.getAttribute('data-decade');
+    var decade = btn.getAttribute('data-decade');
     if (decade) setActiveDecade(decade);
   }
 
   function handleKeydown(e) {
-    const container = getContainer();
+    var container = getContainer();
     if (!container || !container.contains(document.activeElement)) return;
     if (e.key === 'ArrowLeft') {
       e.preventDefault();
@@ -147,14 +136,18 @@
         renderAllPanels();
       })
       .catch(function () {
-        getCardsContainer().innerHTML = '<p class="section__subtitle">Не удалось загрузить хронологию.</p>';
+        var container = getCardsContainer();
+        if (container) {
+          var lang = getLang();
+          container.innerHTML = '<p class="section__subtitle">' + (lang === 'en' ? 'Failed to load timeline.' : 'Не удалось загрузить хронологию.') + '</p>';
+        }
       });
   }
 
   function init() {
-    const container = getContainer();
+    var container = getContainer();
     if (!container) return;
-    const nav = container.querySelector('.timeline__nav');
+    var nav = container.querySelector('.timeline__nav');
     if (nav) {
       nav.addEventListener('click', handleDecadeClick);
       nav.addEventListener('keydown', handleKeydown);

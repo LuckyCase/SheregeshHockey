@@ -1,5 +1,5 @@
 /**
- * lightbox.js — fullscreen photo view, prev/next, swipe, Escape, focus trap
+ * lightbox.js — fullscreen photo view, prev/next, swipe, Escape, focus trap, counter
  */
 (function () {
   'use strict';
@@ -11,6 +11,7 @@
   var prevBtn = null;
   var nextBtn = null;
   var backdropEl = null;
+  var counterEl = null;
 
   var items = [];
   var currentIndex = 0;
@@ -18,11 +19,17 @@
   var startX = 0;
 
   function getAssetPrefix() {
+    if (window.SheregeshUtils && window.SheregeshUtils.getAssetPrefix) {
+      return window.SheregeshUtils.getAssetPrefix();
+    }
     var path = window.location.pathname || '';
     return (path.indexOf('/en/') !== -1 || path.indexOf('/ru/') !== -1) ? '../' : '';
   }
 
   function getLang() {
+    if (window.SheregeshUtils && window.SheregeshUtils.getLang) {
+      return window.SheregeshUtils.getLang();
+    }
     var path = window.location.pathname || '';
     if (path.indexOf('/en/') !== -1) return 'en';
     if (typeof window.__SheregeshLang !== 'undefined') return window.__SheregeshLang;
@@ -72,6 +79,10 @@
     imageEl.src = getAssetPrefix() + (item.src || '');
     imageEl.alt = alt || '';
     captionEl.textContent = caption || '';
+    // Update counter
+    if (counterEl) {
+      counterEl.textContent = (idx + 1) + ' / ' + visible.length;
+    }
     if (prevBtn) prevBtn.style.visibility = visible.length <= 1 ? 'hidden' : 'visible';
     if (nextBtn) nextBtn.style.visibility = visible.length <= 1 ? 'hidden' : 'visible';
   }
@@ -138,8 +149,10 @@
   }
 
   function handleBackdropClick(e) {
-    if (e.target === backdropEl || e.target === lightboxEl) hide();
-    releaseFocus();
+    if (e.target === backdropEl || e.target === lightboxEl) {
+      hide();
+      releaseFocus();
+    }
   }
 
   function handleTouchStart(e) {
@@ -178,6 +191,7 @@
     prevBtn = lightboxEl.querySelector('.lightbox__nav--prev');
     nextBtn = lightboxEl.querySelector('.lightbox__nav--next');
     backdropEl = lightboxEl.querySelector('.lightbox__backdrop');
+    counterEl = lightboxEl.querySelector('.lightbox__counter');
 
     if (closeBtn) closeBtn.addEventListener('click', function () { hide(); releaseFocus(); });
     if (prevBtn) prevBtn.addEventListener('click', prev);
@@ -187,13 +201,6 @@
 
     lightboxEl.addEventListener('touchstart', handleTouchStart, { passive: true });
     lightboxEl.addEventListener('touchend', handleTouchEnd, { passive: true });
-
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && lightboxEl.classList.contains('lightbox--open')) {
-        hide();
-        releaseFocus();
-      }
-    });
   }
 
   if (document.readyState === 'loading') {

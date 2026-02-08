@@ -6,6 +6,24 @@
 
   var STORAGE_KEY = 'sheregesh-theme';
 
+  var LABELS = {
+    ru: { toDark: 'Переключить на тёмную тему', toLight: 'Переключить на светлую тему' },
+    en: { toDark: 'Switch to dark theme', toLight: 'Switch to light theme' }
+  };
+
+  function getLang() {
+    var path = window.location.pathname || '';
+    if (path.indexOf('/en/') !== -1) return 'en';
+    if (typeof window.__SheregeshLang !== 'undefined') return window.__SheregeshLang;
+    return 'ru';
+  }
+
+  function getLabel(isCurrentlyLight) {
+    var lang = getLang();
+    var l = LABELS[lang] || LABELS.ru;
+    return isCurrentlyLight ? l.toDark : l.toLight;
+  }
+
   function getStored() {
     try {
       return localStorage.getItem(STORAGE_KEY);
@@ -40,14 +58,14 @@
 
     document.querySelectorAll('.theme-toggle').forEach(function (btn) {
       btn.setAttribute('aria-pressed', isLight() ? 'true' : 'false');
-      btn.setAttribute('aria-label', isLight()
-        ? 'Switch to dark theme'
-        : 'Switch to light theme');
+      btn.setAttribute('aria-label', getLabel(isLight()));
+      btn.setAttribute('title', getLabel(isLight()));
       btn.addEventListener('click', function () {
         var next = !isLight();
         applyTheme(next);
         btn.setAttribute('aria-pressed', next ? 'true' : 'false');
-        btn.setAttribute('aria-label', next ? 'Switch to dark theme' : 'Switch to light theme');
+        btn.setAttribute('aria-label', getLabel(next));
+        btn.setAttribute('title', getLabel(next));
       });
     });
   }

@@ -8,10 +8,16 @@
   <meta property="og:description" content="History of ice hockey in Sheregesh village: decades, teams, memories.">
   <meta property="og:type" content="website">
   <title>Sheregesh Hockey</title>
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../favicon.ico" sizes="32x32" type="image/x-icon">
+  <link rel="manifest" href="../manifest.json">
   <link rel="alternate" hreflang="ru" href="https://luckycase.github.io/SheregeshHockey/index.html">
   <link rel="alternate" hreflang="en" href="https://luckycase.github.io/SheregeshHockey/en/index.html">
   <link rel="stylesheet" href="../assets/css/main.css">
   <script>try{if(localStorage.getItem('sheregesh-theme')==='light')document.documentElement.classList.add('theme-light');}catch(e){}</script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebSite","name":"Sheregesh Hockey","description":"History of ice hockey in Sheregesh village: decades, teams, memories.","url":"https://luckycase.github.io/SheregeshHockey/en/","inLanguage":["en","ru"]}
+  </script>
 </head>
 <body>
   <a href="#main" class="sr-only">Skip to main content</a>
@@ -261,15 +267,23 @@
 
   <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="View photo" hidden>
     <div class="lightbox__backdrop" aria-hidden="true"></div>
-    <button type="button" class="lightbox__close" aria-label="Close"></button>
-    <button type="button" class="lightbox__nav lightbox__nav--prev" aria-label="Previous photo"></button>
-    <button type="button" class="lightbox__nav lightbox__nav--next" aria-label="Next photo"></button>
+    <span class="lightbox__counter" aria-live="polite"></span>
+    <button type="button" class="lightbox__close" aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+    <button type="button" class="lightbox__nav lightbox__nav--prev" aria-label="Previous photo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <button type="button" class="lightbox__nav lightbox__nav--next" aria-label="Next photo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
+    </button>
     <div class="lightbox__content">
       <img class="lightbox__image" src="" alt="" />
       <p class="lightbox__caption"></p>
     </div>
   </div>
 
+  <script src="../assets/js/modules/utils.js"></script>
   <script src="../assets/js/modules/theme.js"></script>
   <script src="../assets/js/modules/navigation.js"></script>
   <script src="../assets/js/modules/animations.js"></script>

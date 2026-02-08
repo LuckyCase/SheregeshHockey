@@ -4,34 +4,32 @@
 (function () {
   'use strict';
 
+  var U = window.SheregeshUtils || {};
+
   function getDataPath() {
     var script = document.querySelector('script[src*="gallery"]');
     var src = (script && script.getAttribute('src')) || '';
     var dir = src.replace(/\/[^/]*$/, '/');
     return (dir ? dir + '../' : 'assets/js/') + 'data/gallery-data.json';
   }
-  const DATA_URL = getDataPath();
-  const FILTER_ALL = 'all';
-  const DECADE_LABELS_RU = { 'all': 'Все', '1970s': '1970-е', '1980s': '1980-е', '1990s': '1990-е', 'teams': 'Команды' };
-  const DECADE_LABELS_EN = { 'all': 'All', '1970s': '1970s', '1980s': '1980s', '1990s': '1990s', 'teams': 'Teams' };
+  var DATA_URL = getDataPath();
+  var FILTER_ALL = 'all';
+  var DECADE_LABELS_RU = { 'all': 'Все', '1970s': '1970-е', '1980s': '1980-е', '1990s': '1990-е', 'teams': 'Команды' };
+  var DECADE_LABELS_EN = { 'all': 'All', '1970s': '1970s', '1980s': '1980s', '1990s': '1990s', 'teams': 'Teams' };
 
-  let galleryData = [];
-  let currentFilter = FILTER_ALL;
+  var galleryData = [];
+  var currentFilter = FILTER_ALL;
 
-  /** Префикс для путей к картинкам: на страницах en/ и ru/ нужен ../ */
   function getAssetPrefix() {
-    var path = window.location.pathname || '';
-    return (path.indexOf('/en/') !== -1 || path.indexOf('/ru/') !== -1) ? '../' : '';
+    return U.getAssetPrefix ? U.getAssetPrefix() : '';
   }
 
   function getLang() {
-    var path = window.location.pathname || '';
-    if (path.indexOf('/en/') !== -1) return 'en';
-    if (typeof window.__SheregeshLang !== 'undefined') return window.__SheregeshLang;
-    try {
-      if (localStorage.getItem('sheregesh-lang') === 'en') return 'en';
-    } catch (e) {}
-    return 'ru';
+    return U.getLang ? U.getLang() : 'ru';
+  }
+
+  function escapeHtml(s) {
+    return U.escapeHtml ? U.escapeHtml(s) : (s || '');
   }
 
   function getContainer() {
@@ -44,13 +42,6 @@
 
   function getGridEl() {
     return document.querySelector('[data-gallery-grid]');
-  }
-
-  function escapeHtml(s) {
-    if (!s) return '';
-    var div = document.createElement('div');
-    div.textContent = s;
-    return div.innerHTML;
   }
 
   function renderFilters(lang) {
@@ -153,7 +144,8 @@
       })
       .catch(function () {
         var grid = getGridEl();
-        if (grid) grid.innerHTML = '<p class="section__subtitle">Не удалось загрузить галерею.</p>';
+        var lang = getLang();
+        if (grid) grid.innerHTML = '<p class="section__subtitle">' + (lang === 'en' ? 'Failed to load gallery.' : 'Не удалось загрузить галерею.') + '</p>';
       });
   }
 
