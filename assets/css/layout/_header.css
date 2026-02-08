@@ -189,6 +189,7 @@
   width: 100%;
   max-width: 320px;
   height: 100vh;
+  height: 100dvh;
   height: 100svh;
   background: var(--color-bg-elevated);
   z-index: var(--z-overlay);
