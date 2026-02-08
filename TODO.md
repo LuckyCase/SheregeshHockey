@@ -1,7 +1,5 @@
 # ToDo — Хоккей Шерегеша
 
-Сверка с планом: `план_сайта_хоккей_шерегеша_2003de11.plan.md`
-
 ---
 
 ## Мониторинг (актуально на 08.02.2025)
@@ -18,20 +16,22 @@
 | **6** | **language.js**, **en/index.html**, en/decade-*.html, en/story.html, **hreflang** в head | ✅ |
 | **7** | **lazy-load.js**; **404.html**, **favicon.svg**, **manifest.json**, **robots.txt**, **sitemap.xml**, **.nojekyll**; JSON-LD (WebSite) в index; **.gitignore** | ✅ |
 | **8** | .gitignore в корне | ✅ (репо и деплой — по необходимости) |
+| — | **Шрифты self-hosted WOFF2** в `assets/fonts/`, подключение в `_typography.css` | ✅ |
+| — | **favicon.ico** (скрипт `scripts/make-favicon.ico.ps1`) | ✅ |
+| — | **contact-form** (модуль, стили), форма «Поделиться» | ✅ |
 
-### ⏳ Осталось (по плану, опционально)
+### ⏳ Осталось (опционально)
 
 | Задача | Где | Статус |
 |--------|-----|--------|
-| Шрифты self-hosted WOFF2 | План Фаза 7: assets/fonts/, _typography.css | Не сделано — сейчас Google Fonts |
-| favicon.ico (fallback) | План Фаза 7 | Только favicon.svg |
-| Git init, push, GitHub Pages / Netlify | Фаза 8 | На усмотрение |
+| Заменить example.com на реальный URL (GitHub Pages) | hreflang, JSON-LD, sitemap.xml, robots.txt | Для продакшена |
+| Git push, GitHub Pages / Netlify | Деплой | На усмотрение |
 
 ---
 
 ## Итог
 
-По плану реализовано **фазы 1–7** и подготовка к **фазе 8**. Сайт можно открывать локально (index.html, ru/*, en/*), галерея и таймлайн работают от данных JSON. Для продакшена: при необходимости заменить example.com в hreflang и JSON-LD на реальный URL; при желании добавить WOFF2 и favicon.ico.
+Реализованы фазы 1–8, локальные шрифты WOFF2, favicon.ico, форма обратной связи через **Formspree**. Сайт можно открывать локально (index.html, ru/*, en/*); галерея и таймлайн работают от JSON. Для продакшена: заменить example.com на актуальный URL в hreflang, sitemap и JSON-LD.
 
 ---
 

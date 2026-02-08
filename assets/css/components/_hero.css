@@ -19,7 +19,7 @@
   z-index: 0;
   background:
     radial-gradient(ellipse at 50% 30%, rgba(26, 58, 92, 0.4) 0%, transparent 60%),
-    linear-gradient(180deg, #0b1420 0%, #0d1f33 40%, #1a2940 100%);
+    linear-gradient(180deg, #0b1420 0%, var(--color-primary-dark) 40%, var(--color-bg-surface) 100%);
 }
 
 .hero__bg::after {

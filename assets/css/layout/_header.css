@@ -73,6 +73,7 @@
 .nav__list {
   display: flex;
   align-items: center;
+  flex-wrap: nowrap;
   gap: var(--space-lg);
   list-style: none;
 }
@@ -87,6 +88,7 @@
   text-decoration: none;
   padding: var(--space-xs) 0;
   transition: color var(--transition-fast);
+  white-space: nowrap;
 }
 
 .nav__link:hover,

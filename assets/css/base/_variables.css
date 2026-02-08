@@ -2,7 +2,7 @@
   /* === COLOR PALETTE === */
   --color-primary: #1a3a5c;
   --color-primary-light: #2a5a8c;
-  --color-primary-dark: #0d1f33;
+  --color-primary-dark: #162d47;
 
   --color-accent: #d4a843;
   --color-accent-light: #e8c76a;
@@ -14,12 +14,12 @@
   --color-red: #cc2936;
   --color-red-dark: #a01e28;
 
-  /* Neutrals (dark theme) — контрастный текст на тёмном фоне */
+  /* Neutrals (dark theme) — контрастный текст на тёмном фоне; секции светлее для комфорта */
   --color-bg: #0b1420;
-  --color-bg-elevated: #121e2e;
-  --color-bg-surface: #1a2940;
+  --color-bg-elevated: #1a3148;
+  --color-bg-surface: #243b52;
   --color-text: #f2f6fc;
-  --color-text-muted: #a8bed8;
+  --color-text-muted: #b8cce0;
   --color-text-accent: #e8c76a;
   --color-border: #2a3f5c;
   --color-overlay: rgba(11, 20, 32, 0.85);
