@@ -17,6 +17,12 @@
   let currentDecade = '1970s';
   let currentIndex = 0;
 
+  /** Префикс для путей к картинкам: на страницах en/ и ru/ нужен ../ */
+  function getAssetPrefix() {
+    const path = window.location.pathname || '';
+    return (path.indexOf('/en/') !== -1 || path.indexOf('/ru/') !== -1) ? '../' : '';
+  }
+
   function getLang() {
     const path = window.location.pathname || '';
     if (path.indexOf('/en/') !== -1) return 'en';
@@ -44,7 +50,7 @@
   function renderEvent(event, lang) {
     const title = lang === 'en' ? (event.titleEn || event.titleRu) : (event.titleRu || event.titleEn);
     const text = lang === 'en' ? event.en : event.ru;
-    const imgSrc = event.image || '';
+    const imgSrc = event.image ? getAssetPrefix() + event.image : '';
     const imgAlt = title;
     return (
       '<article class="timeline__event" data-animate>'

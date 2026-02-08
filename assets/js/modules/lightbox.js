@@ -17,6 +17,11 @@
   var currentFilter = 'all';
   var startX = 0;
 
+  function getAssetPrefix() {
+    var path = window.location.pathname || '';
+    return (path.indexOf('/en/') !== -1 || path.indexOf('/ru/') !== -1) ? '../' : '';
+  }
+
   function getLang() {
     var path = window.location.pathname || '';
     if (path.indexOf('/en/') !== -1) return 'en';
@@ -64,7 +69,7 @@
     var lang = getLang();
     var caption = lang === 'en' ? (item.caption && item.caption.en) || item.caption.ru : (item.caption && item.caption.ru) || item.caption.en;
     var alt = lang === 'en' ? (item.alt && item.alt.en) || caption : (item.alt && item.alt.ru) || caption;
-    imageEl.src = item.src;
+    imageEl.src = getAssetPrefix() + (item.src || '');
     imageEl.alt = alt || '';
     captionEl.textContent = caption || '';
     if (prevBtn) prevBtn.style.visibility = visible.length <= 1 ? 'hidden' : 'visible';

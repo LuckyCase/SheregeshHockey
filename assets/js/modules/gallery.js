@@ -18,6 +18,12 @@
   let galleryData = [];
   let currentFilter = FILTER_ALL;
 
+  /** Префикс для путей к картинкам: на страницах en/ и ru/ нужен ../ */
+  function getAssetPrefix() {
+    var path = window.location.pathname || '';
+    return (path.indexOf('/en/') !== -1 || path.indexOf('/ru/') !== -1) ? '../' : '';
+  }
+
   function getLang() {
     var path = window.location.pathname || '';
     if (path.indexOf('/en/') !== -1) return 'en';
@@ -66,9 +72,10 @@
     var caption = lang === 'en' ? (item.caption.en || item.caption.ru) : (item.caption.ru || item.caption.en);
     var alt = lang === 'en' ? (item.alt && item.alt.en) || caption : (item.alt && item.alt.ru) || caption;
     var decade = item.decade || 'all';
+    var imgSrc = getAssetPrefix() + (item.src || '');
     return (
       '<div class="gallery__item" data-decade="' + escapeHtml(decade) + '" data-index="' + index + '" tabindex="0" role="button">'
-        + '<img src="' + escapeHtml(item.src) + '" alt="' + escapeHtml(alt) + '" loading="lazy">'
+        + '<img src="' + escapeHtml(imgSrc) + '" alt="' + escapeHtml(alt) + '" loading="lazy">'
         + '<div class="gallery__item-overlay">'
           + '<span class="gallery__item-caption">' + escapeHtml(caption) + '</span>'
           + '<span class="gallery__item-year">' + escapeHtml(decade) + '</span>'
