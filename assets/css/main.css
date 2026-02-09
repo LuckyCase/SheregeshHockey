@@ -25,6 +25,7 @@
 @import 'components/_quote.css';
 @import 'components/_modal.css';
 @import 'components/_contact-form.css';
+@import 'components/_stats.css';
 
 /* Pages (decade, story) */
 @import 'pages/_decade.css';

@@ -125,3 +125,16 @@
   outline: 2px solid var(--color-accent);
   outline-offset: 2px;
 }
+
+/* Light theme overrides */
+.theme-light .gallery__item-overlay {
+  background: linear-gradient(to top, rgba(26, 41, 64, 0.8) 0%, transparent 50%);
+}
+
+.theme-light .gallery__item-overlay .gallery__item-caption {
+  color: #f1f5f9;
+}
+
+.theme-light .gallery__filter-btn--active {
+  background: rgba(176, 138, 46, 0.12);
+}

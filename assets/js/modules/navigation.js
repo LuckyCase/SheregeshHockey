@@ -1,5 +1,5 @@
 /**
- * navigation.js — sticky header, mobile menu, smooth scroll
+ * navigation.js — sticky header, mobile menu, smooth scroll, back-to-top, scroll progress
  */
 (function () {
   'use strict';
@@ -110,10 +110,49 @@
     });
   }
 
+  function initBackToTop() {
+    var btn = document.getElementById('back-to-top');
+    if (!btn) return;
+    var threshold = 400;
+
+    window.addEventListener('scroll', function () {
+      var y = window.scrollY || window.pageYOffset;
+      btn.classList.toggle('back-to-top--visible', y > threshold);
+    }, { passive: true });
+
+    btn.addEventListener('click', function () {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+
+  function initScrollProgress() {
+    var bar = document.getElementById('scroll-progress');
+    if (!bar) return;
+    var ticking = false;
+
+    function update() {
+      var scrollTop = window.scrollY || window.pageYOffset;
+      var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      var progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+      bar.style.width = progress + '%';
+      ticking = false;
+    }
+
+    window.addEventListener('scroll', function () {
+      if (!ticking) {
+        requestAnimationFrame(update);
+        ticking = true;
+      }
+    }, { passive: true });
+    update();
+  }
+
   function init() {
     initStickyHeader();
     initMobileMenu();
     initSmoothScroll();
+    initBackToTop();
+    initScrollProgress();
   }
 
   if (document.readyState === 'loading') {

@@ -6,7 +6,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(0, 0, 0, 0.92);
+  background: var(--color-lightbox-bg, rgba(0, 0, 0, 0.92));
   opacity: 0;
   pointer-events: none;
   transition: opacity var(--transition-base);
@@ -141,4 +141,31 @@
   .lightbox__nav--next {
     right: var(--space-xl);
   }
+}
+
+/* Light theme overrides */
+.theme-light .lightbox__nav {
+  background: rgba(26, 41, 64, 0.15);
+  color: var(--color-text);
+}
+
+.theme-light .lightbox__nav:hover {
+  background: rgba(26, 41, 64, 0.25);
+}
+
+.theme-light .lightbox__close {
+  background: rgba(26, 41, 64, 0.15);
+  color: var(--color-text);
+}
+
+.theme-light .lightbox__close:hover {
+  background: rgba(26, 41, 64, 0.25);
+}
+
+.theme-light .lightbox__caption {
+  color: var(--color-text);
+}
+
+.theme-light .lightbox__counter {
+  color: var(--color-text-muted);
 }

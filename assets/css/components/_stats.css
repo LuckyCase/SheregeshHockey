@@ -1,0 +1,27 @@
+/* Stats section — key numbers */
+.stats {
+  padding-block: var(--space-2xl);
+}
+
+.stat-card {
+  text-align: center;
+  padding: var(--space-xl) var(--space-md);
+}
+
+.stat-card__number {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: var(--text-3xl);
+  font-weight: 700;
+  color: var(--color-accent);
+  line-height: 1;
+  margin-bottom: var(--space-xs);
+}
+
+.stat-card__label {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}

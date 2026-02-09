@@ -268,3 +268,12 @@
     display: none;
   }
 }
+
+/* Light theme overrides */
+.theme-light .mobile-menu__backdrop {
+  background: rgba(26, 41, 64, 0.3);
+}
+
+.theme-light .header--sticky {
+  background-color: rgba(240, 245, 250, 0.95);
+}
