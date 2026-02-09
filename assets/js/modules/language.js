@@ -9,8 +9,7 @@
   function getLangFromPath() {
     var path = (window.location.pathname || '').replace(/\/$/, '');
     if (path.indexOf('/en/') !== -1 || path === '/en' || path.endsWith('/en')) return 'en';
-    if (path.indexOf('/ru/') !== -1 || path === '/ru' || path.endsWith('/ru')) return 'ru';
-    return null;
+    return 'ru';
   }
 
   function getStoredLang() {
