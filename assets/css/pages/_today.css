@@ -236,6 +236,7 @@
 .today-gallery__filters {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: var(--space-sm);
   margin-bottom: var(--space-xl);
 }

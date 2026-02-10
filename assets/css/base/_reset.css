@@ -16,6 +16,8 @@ html {
   -webkit-text-size-adjust: none;
   text-size-adjust: none;
   scroll-behavior: smooth;
+  /* Резервируем место под скроллбар, чтобы контент не смещался влево при появлении полосы прокрутки */
+  scrollbar-gutter: stable;
 }
 
 body {
