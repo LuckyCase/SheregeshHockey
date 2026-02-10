@@ -463,6 +463,20 @@
   font-weight: 600;
 }
 
+/* ---- Logo as external image ---- */
+.mode-today .header__logo-icon {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  border-radius: 50%;
+}
+
+.mode-today .footer__brand-icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
 /* ---- Mode-today overrides for shared components ---- */
 .mode-today .hero__title-accent,
 .mode-today .hero__title {
