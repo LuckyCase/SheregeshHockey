@@ -1,0 +1,172 @@
+{
+  "lang": "en",
+  "prefix": "../",
+  "fontSubset": "latin",
+  "pagePrefix": "",
+  "meta": {
+    "description": "Sheregesh Hockey — history of ice hockey in the village of Sheregesh: decades, teams, memories, photo album.",
+    "ogTitle": "Sheregesh Hockey",
+    "ogDescription": "History of ice hockey in Sheregesh village: decades, teams, memories.",
+    "ogUrl": "https://luckycase.github.io/SheregeshHockey/en/",
+    "ogImageAlt": "Sheregesh Hockey — mine and backyard ice hockey history",
+    "ogLocale": "en_US",
+    "twitterTitle": "Sheregesh Hockey",
+    "twitterDescription": "History of ice hockey in Sheregesh village: decades, teams, memories.",
+    "title": "Sheregesh Hockey"
+  },
+  "jsonLd": "{\"@context\":\"https://schema.org\",\"@type\":\"WebSite\",\"name\":\"Sheregesh Hockey\",\"description\":\"History of ice hockey in Sheregesh village: decades, teams, memories.\",\"url\":\"https://luckycase.github.io/SheregeshHockey/en/\",\"inLanguage\":[\"en\",\"ru\"]}",
+  "noscript": "This website requires JavaScript. Please enable it in your browser settings.",
+  "skipLink": "Skip to main content",
+  "logo": {
+    "ariaLabel": "Home",
+    "text": "Sheregesh",
+    "textSub": "Hockey"
+  },
+  "nav": {
+    "ariaLabel": "Main menu",
+    "about": "About",
+    "village": "Village",
+    "timeline": "Timeline",
+    "teams": "Teams",
+    "stories": "Memories",
+    "gallery": "Photos",
+    "rinks": "Rinks",
+    "contribute": "Share"
+  },
+  "langSwitch": {
+    "ariaLabel": "Language",
+    "ruHref": "../index.html",
+    "enHref": "index.html",
+    "ruActiveClass": "",
+    "enActiveClass": " lang-switch__btn--active",
+    "ruAriaCurrent": "",
+    "enAriaCurrent": " aria-current=\"page\""
+  },
+  "burger": {
+    "ariaLabel": "Open menu"
+  },
+  "mobileMenu": {
+    "ariaLabel": "Mobile menu"
+  },
+  "hero": {
+    "title": "Sheregesh",
+    "titleAccent": "Hockey",
+    "subtitle": "Mine and backyard ice hockey history",
+    "location": "Sheregesh village, Tashtagol district",
+    "scrollAriaLabel": "Scroll down"
+  },
+  "stats": {
+    "s1Label": "years of history",
+    "s2Label": "teams",
+    "s3Label": "rinks",
+    "s4Label": "players"
+  },
+  "about": {
+    "title": "About",
+    "subtitle": "A non-commercial project — we collect memories and photos",
+    "text": "Sheregesh Hockey is a non-commercial project about the history of ice hockey in the village of Sheregesh. We collect memories, photos, and facts about teams, rinks, and tournaments from 1970–2000. If you have materials or stories — share them via «Share Your Story»."
+  },
+  "village": {
+    "title": "The Village",
+    "subtitle": "The mine, the people, and hockey's place in village life",
+    "text": "Sheregesh is a village in Tashtagol district, Kemerovo region, built around a mine. Hockey on natural ice and on a boarded rink was a central part of local life for years and brought miners and families together. Both backyard hockey and the mine team «Gornyak» played here.",
+    "locationTitle": "Location",
+    "locationText": "Tashtagol district, Kemerovo region, Mountain Shoria",
+    "mineTitle": "The Mine",
+    "mineText": "Sheregesh iron ore deposit, the economic backbone of the village",
+    "climateTitle": "Climate",
+    "climateText": "Winters down to −30°C, stable ice from November to March — perfect for hockey",
+    "populationTitle": "Population",
+    "populationText": "~2,500 people in the 1970s–1990s; miners and their families"
+  },
+  "timeline": {
+    "title": "Timeline",
+    "subtitle": "Key events by decade",
+    "decadesAriaLabel": "Decades"
+  },
+  "teams": {
+    "title": "Teams",
+    "subtitle": "Gornyak and other teams",
+    "text": "The main team was «Gornyak» of the Sheregesh mine; other teams took part in district and inter-village tournaments in different years. Lineups and photos will be added as materials are received.",
+    "gornyakAlt": "Gornyak",
+    "gornyakMeta": "1970s–1990s",
+    "gornyakTitle": "Gornyak",
+    "gornyakText": "The main team of the Sheregesh mine. Competed in district and inter-village tournaments in the Tashtagol area. The roster was drawn from mine workers.",
+    "backyardAlt": "Backyard teams",
+    "backyardMeta": "1970s–2000",
+    "backyardTitle": "Backyard Teams",
+    "backyardText": "Informal teams of schoolchildren and local youth. They played on natural ice in courtyards, schoolyards, and frozen ponds."
+  },
+  "stories": {
+    "title": "Memories",
+    "subtitle": "Stories from those who played and cheered",
+    "s1Text": "My first skates came from my older brother, a miner. I went out on the ice by the mine with them.",
+    "s1Name": "Participant",
+    "s1Period": "1973",
+    "s1LinkText": "Read full story",
+    "s2Text": "When they put up the lights, they played late. I brought them tea in a thermos — my husband and his mates.",
+    "s2Name": "Player's wife",
+    "s2Period": "1980s",
+    "s2LinkText": "Read full story",
+    "s3Text": "In 99 the veterans of the 70s and 80s got together for a symbolic game. For many it was the last time on ice.",
+    "s3Name": "Participant",
+    "s3Period": "1999",
+    "s3LinkText": "Read full story"
+  },
+  "gallery": {
+    "title": "Photo Album",
+    "subtitle": "Photos by period",
+    "filtersAriaLabel": "Filter by period"
+  },
+  "rinks": {
+    "title": "Rinks &amp; Venues",
+    "subtitle": "Outdoor rinks and the boarded rink",
+    "text": "They played on natural ice by the mine, then on the boarded rink with lights. Schoolyards were used for backyard hockey. Specific places and descriptions will be added over time.",
+    "mineRinkAlt": "Mine Rink",
+    "mineRinkMeta": "1970s–1990s",
+    "mineRinkTitle": "Mine Rink",
+    "mineRinkText": "The main venue with boards and lighting. Home to Gornyak games and district tournaments.",
+    "schoolyardAlt": "Schoolyard",
+    "schoolyardMeta": "1970s–2000",
+    "schoolyardTitle": "Schoolyard",
+    "schoolyardText": "Backyard hockey venue. The ice was flooded each winter by parents and teachers.",
+    "centralAlt": "Central Rink",
+    "centralMeta": "1980s–1990s",
+    "centralTitle": "Central Rink",
+    "centralText": "Open-air rink in the village center for public skating and youth practice."
+  },
+  "contribute": {
+    "title": "Share Your Story",
+    "subtitle": "Send us a photo or story — we'll add it to the site",
+    "text": "Do you have old photos, newspaper clippings, or memories of hockey in Sheregesh? Contact us — we'll be glad to add them.",
+    "button": "Contact us"
+  },
+  "footer": {
+    "brandName": "Sheregesh Hockey",
+    "description": "History of ice hockey in Sheregesh village. 1970–2000.",
+    "navAriaLabel": "Footer",
+    "navTitle": "Navigation",
+    "ctaTitle": "Have photos or memories?",
+    "ctaText": "Contact us — we'll add them to the site.",
+    "ctaButton": "Contact us",
+    "copyright": "© 2025 Sheregesh Hockey. Non-commercial project."
+  },
+  "contact": {
+    "closeAriaLabel": "Close",
+    "title": "Contact us",
+    "msgSuccess": "Thanks for your submission!",
+    "msgError": "Oops! There was a problem submitting your form.",
+    "emailLabel": "Email:",
+    "messageLabel": "Message:",
+    "submitButton": "Submit"
+  },
+  "lightbox": {
+    "ariaLabel": "View photo",
+    "closeAriaLabel": "Close",
+    "prevAriaLabel": "Previous photo",
+    "nextAriaLabel": "Next photo"
+  },
+  "backToTop": {
+    "ariaLabel": "Back to top"
+  }
+}

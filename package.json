@@ -1,0 +1,7 @@
+{
+  "name": "sheregesh-hockey",
+  "private": true,
+  "scripts": {
+    "build": "node scripts/build-html.js"
+  }
+}

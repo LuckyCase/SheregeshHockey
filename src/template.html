@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="{{lang}}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="{{meta.description}}">
+  <meta property="og:title" content="{{meta.ogTitle}}">
+  <meta property="og:description" content="{{meta.ogDescription}}">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="{{meta.ogUrl}}">
+  <meta property="og:image" content="https://luckycase.github.io/SheregeshHockey/assets/images/og-image.svg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="{{meta.ogImageAlt}}">
+  <meta property="og:locale" content="{{meta.ogLocale}}">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{meta.twitterTitle}}">
+  <meta name="twitter:description" content="{{meta.twitterDescription}}">
+  <meta name="twitter:image" content="https://luckycase.github.io/SheregeshHockey/assets/images/og-image.svg">
+  <title>{{meta.title}}</title>
+  <link rel="icon" href="{{prefix}}favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="{{prefix}}favicon.ico" sizes="32x32" type="image/x-icon">
+  <link rel="manifest" href="{{prefix}}manifest.json">
+  <link rel="alternate" hreflang="ru" href="https://luckycase.github.io/SheregeshHockey/index.html">
+  <link rel="alternate" hreflang="en" href="https://luckycase.github.io/SheregeshHockey/en/index.html">
+  <link rel="preload" href="{{prefix}}assets/fonts/inter-{{fontSubset}}-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="{{prefix}}assets/fonts/oswald-{{fontSubset}}-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="{{prefix}}assets/css/main.css">
+  <script>try{if(localStorage.getItem('sheregesh-theme')==='light')document.documentElement.classList.add('theme-light');}catch(e){}</script>
+  <script type="application/ld+json">
+  {{jsonLd}}
+  </script>
+</head>
+<body>
+  <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
+  <noscript><div style="text-align:center;padding:2rem;background:#1e293b;color:#f1f5f9;">{{noscript}}</div></noscript>
+  <a href="#main" class="sr-only">{{skipLink}}</a>
+
+  <header class="header" id="header">
+    <div class="header__inner container">
+      <a href="index.html" class="header__logo" aria-label="{{logo.ariaLabel}}">
+        <svg class="header__logo-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5" fill="none"/><circle cx="12" cy="12" r="5"/></svg>
+        <span class="header__logo-text">{{logo.text}} <span>{{logo.textSub}}</span></span>
+      </a>
+
+      <nav class="nav" aria-label="{{nav.ariaLabel}}">
+        <ul class="nav__list">
+          <li><a href="#about" class="nav__link">{{nav.about}}</a></li>
+          <li><a href="#village" class="nav__link">{{nav.village}}</a></li>
+          <li><a href="#timeline" class="nav__link">{{nav.timeline}}</a></li>
+          <li><a href="#teams" class="nav__link">{{nav.teams}}</a></li>
+          <li><a href="#stories" class="nav__link">{{nav.stories}}</a></li>
+          <li><a href="#gallery" class="nav__link">{{nav.gallery}}</a></li>
+          <li><a href="#rinks" class="nav__link">{{nav.rinks}}</a></li>
+          <li><a href="#contribute" class="nav__link">{{nav.contribute}}</a></li>
+        </ul>
+      </nav>
+
+      <div class="header__decades">
+        <a href="{{pagePrefix}}decade-1970s.html" class="decade-pill">1970</a>
+        <a href="{{pagePrefix}}decade-1980s.html" class="decade-pill">1980</a>
+        <a href="{{pagePrefix}}decade-1990s.html" class="decade-pill">1990</a>
+      </div>
+
+      <div class="header__actions">
+        <button type="button" class="theme-toggle" aria-label="Switch to light theme" aria-pressed="false" title="Switch to light theme">
+          <svg class="theme-toggle__icon theme-toggle__icon--sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+          <svg class="theme-toggle__icon theme-toggle__icon--moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+        <div class="lang-switch" role="group" aria-label="{{langSwitch.ariaLabel}}">
+          <a href="{{langSwitch.ruHref}}" class="lang-switch__btn{{langSwitch.ruActiveClass}}"{{langSwitch.ruAriaCurrent}} hreflang="ru" lang="ru">RU</a>
+          <a href="{{langSwitch.enHref}}" class="lang-switch__btn{{langSwitch.enActiveClass}}"{{langSwitch.enAriaCurrent}} hreflang="en" lang="en">EN</a>
+        </div>
+        <button type="button" class="burger" aria-label="{{burger.ariaLabel}}" aria-expanded="false" aria-controls="mobile-menu">
+          <span class="burger__line"></span>
+          <span class="burger__line"></span>
+          <span class="burger__line"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-menu__backdrop" id="mobile-menu-backdrop" aria-hidden="true"></div>
+  <div class="mobile-menu" id="mobile-menu" aria-label="{{mobileMenu.ariaLabel}}" aria-hidden="true">
+    <ul class="mobile-menu__list">
+      <li><a href="#about" class="mobile-menu__link">{{nav.about}}</a></li>
+      <li><a href="#village" class="mobile-menu__link">{{nav.village}}</a></li>
+      <li><a href="#timeline" class="mobile-menu__link">{{nav.timeline}}</a></li>
+      <li><a href="#teams" class="mobile-menu__link">{{nav.teams}}</a></li>
+      <li><a href="#stories" class="mobile-menu__link">{{nav.stories}}</a></li>
+      <li><a href="#gallery" class="mobile-menu__link">{{nav.gallery}}</a></li>
+      <li><a href="#rinks" class="mobile-menu__link">{{nav.rinks}}</a></li>
+      <li><a href="#contribute" class="mobile-menu__link">{{nav.contribute}}</a></li>
+    </ul>
+    <div class="mobile-menu__decades">
+      <a href="{{pagePrefix}}decade-1970s.html" class="decade-pill">1970</a>
+      <a href="{{pagePrefix}}decade-1980s.html" class="decade-pill">1980</a>
+      <a href="{{pagePrefix}}decade-1990s.html" class="decade-pill">1990</a>
+    </div>
+  </div>
+
+  <main id="main">
+    <section class="hero" id="hero">
+      <div class="hero__bg"></div>
+      <div class="hero__grain" aria-hidden="true"></div>
+      <div class="hero__snow" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+      <div class="hero__content">
+        <svg class="hero__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5" fill="none"/><circle cx="12" cy="12" r="5"/></svg>
+        <h1 class="hero__title">{{hero.title}} <span class="hero__title-accent">{{hero.titleAccent}}</span></h1>
+        <p class="hero__subtitle">{{hero.subtitle}}</p>
+        <p class="hero__period">1970 — 2000</p>
+        <p class="hero__location">{{hero.location}}</p>
+        <a href="#timeline" class="hero__scroll" aria-label="{{hero.scrollAriaLabel}}">
+          <svg class="hero__scroll-arrow" viewBox="0 0 24 34" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2v28M5 23l7 7 7-7"/></svg>
+        </a>
+      </div>
+    </section>
+
+    <section class="section stats" id="stats">
+      <div class="container">
+        <div class="grid grid--4">
+          <div class="stat-card" data-animate>
+            <span class="stat-card__number">30+</span>
+            <span class="stat-card__label">{{stats.s1Label}}</span>
+          </div>
+          <div class="stat-card" data-animate>
+            <span class="stat-card__number">5+</span>
+            <span class="stat-card__label">{{stats.s2Label}}</span>
+          </div>
+          <div class="stat-card" data-animate>
+            <span class="stat-card__number">3</span>
+            <span class="stat-card__label">{{stats.s3Label}}</span>
+          </div>
+          <div class="stat-card" data-animate>
+            <span class="stat-card__number">100+</span>
+            <span class="stat-card__label">{{stats.s4Label}}</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="about">
+      <div class="container">
+        <header class="section__header" data-animate>
+          <h2 class="section__title">{{about.title}}</h2>
+          <p class="section__subtitle">{{about.subtitle}}</p>
+        </header>
+        <p data-animate>{{about.text}}</p>
+      </div>
+    </section>
+
+    <section class="section section--alt" id="village">
+      <div class="container">
+        <header class="section__header" data-animate>
+          <h2 class="section__title">{{village.title}}</h2>
+          <p class="section__subtitle">{{village.subtitle}}</p>
+        </header>
+        <p data-animate>{{village.text}}</p>
+        <div class="grid grid--4 village-facts" data-animate>
+          <div class="card card--info">
+            <svg class="card__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
+            <h3 class="card__title">{{village.locationTitle}}</h3>
+            <p class="card__text">{{village.locationText}}</p>
+          </div>
+          <div class="card card--info">
+            <svg class="card__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5S10.5 3.17 10.5 4v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-6 6c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2z"/></svg>
+            <h3 class="card__title">{{village.mineTitle}}</h3>
+            <p class="card__text">{{village.mineText}}</p>
+          </div>
+          <div class="card card--info">
+            <svg class="card__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 11h-4.17l3.24-3.24-1.41-1.42L15 11h-2V9l4.66-4.66-1.42-1.41L13 6.17V2h-2v4.17L7.76 2.93 6.34 4.34 11 9v2H9L4.34 6.34 2.93 7.76 6.17 11H2v2h4.17l-3.24 3.24 1.41 1.42L9 13h2v2l-4.66 4.66 1.42 1.41L11 17.83V22h2v-4.17l3.24 3.24 1.42-1.41L13 15v-2h2l4.66 4.66 1.41-1.42L17.83 13H22z"/></svg>
+            <h3 class="card__title">{{village.climateTitle}}</h3>
+            <p class="card__text">{{village.climateText}}</p>
+          </div>
+          <div class="card card--info">
+            <svg class="card__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5s-3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+            <h3 class="card__title">{{village.populationTitle}}</h3>
+            <p class="card__text">{{village.populationText}}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--divider" id="timeline">
+      <div class="container">
+        <header class="section__header">
+          <h2 class="section__title">{{timeline.title}}</h2>
+          <p class="section__subtitle">{{timeline.subtitle}}</p>
+        </header>
+        <div class="timeline" data-timeline>
+          <div class="timeline__nav" role="tablist" aria-label="{{timeline.decadesAriaLabel}}">
+            <button type="button" class="timeline__decade-btn timeline__decade-btn--active" role="tab" aria-selected="true" data-decade="1970s">1970</button>
+            <button type="button" class="timeline__decade-btn" role="tab" aria-selected="false" data-decade="1980s">1980</button>
+            <button type="button" class="timeline__decade-btn" role="tab" aria-selected="false" data-decade="1990s">1990</button>
+          </div>
+          <div class="timeline__content" data-timeline-cards>
+            <!-- Panels and cards rendered by timeline.js -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="teams">
+      <div class="container">
+        <header class="section__header" data-animate>
+          <h2 class="section__title">{{teams.title}}</h2>
+          <p class="section__subtitle">{{teams.subtitle}}</p>
+        </header>
+        <p data-animate>{{teams.text}}</p>
+        <div class="grid grid--2" data-animate>
+          <article class="card card--team">
+            <img class="card__image" src="{{prefix}}assets/images/placeholders/ice.svg" alt="{{teams.gornyakAlt}}" loading="lazy">
+            <div class="card__body">
+              <span class="card__meta">{{teams.gornyakMeta}}</span>
+              <h3 class="card__title">{{teams.gornyakTitle}}</h3>
+              <p class="card__text">{{teams.gornyakText}}</p>
+            </div>
+          </article>
+          <article class="card card--team">
+            <img class="card__image" src="{{prefix}}assets/images/placeholders/ice.svg" alt="{{teams.backyardAlt}}" loading="lazy">
+            <div class="card__body">
+              <span class="card__meta">{{teams.backyardMeta}}</span>
+              <h3 class="card__title">{{teams.backyardTitle}}</h3>
+              <p class="card__text">{{teams.backyardText}}</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--alt" id="stories">
+      <div class="container">
+        <header class="section__header" data-animate>
+          <h2 class="section__title">{{stories.title}}</h2>
+          <p class="section__subtitle">{{stories.subtitle}}</p>
+        </header>
+        <div class="grid grid--3">
+          <article class="quote-card" data-animate>
+            <p class="quote-card__text">{{stories.s1Text}}</p>
+            <div class="quote-card__author">
+              <span class="quote-card__name">{{stories.s1Name}}</span>
+              <span class="quote-card__period">{{stories.s1Period}}</span>
+            </div>
+            <a href="{{pagePrefix}}story.html?id=first-skates" class="quote-card__link">{{stories.s1LinkText}}</a>
+          </article>
+          <article class="quote-card" data-animate>
+            <p class="quote-card__text">{{stories.s2Text}}</p>
+            <div class="quote-card__author">
+              <span class="quote-card__name">{{stories.s2Name}}</span>
+              <span class="quote-card__period">{{stories.s2Period}}</span>
+            </div>
+            <a href="{{pagePrefix}}story.html?id=night-hockey" class="quote-card__link">{{stories.s2LinkText}}</a>
+          </article>
+          <article class="quote-card" data-animate>
+            <p class="quote-card__text">{{stories.s3Text}}</p>
+            <div class="quote-card__author">
+              <span class="quote-card__name">{{stories.s3Name}}</span>
+              <span class="quote-card__period">{{stories.s3Period}}</span>
+            </div>
+            <a href="{{pagePrefix}}story.html?id=last-match" class="quote-card__link">{{stories.s3LinkText}}</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--divider" id="gallery">
+      <div class="container">
+        <header class="section__header">
+          <h2 class="section__title">{{gallery.title}}</h2>
+          <p class="section__subtitle">{{gallery.subtitle}}</p>
+        </header>
+        <div class="gallery" data-gallery>
+          <div class="gallery__filters" data-gallery-filters role="group" aria-label="{{gallery.filtersAriaLabel}}">
+            <!-- Filters rendered by gallery.js -->
+          </div>
+          <div class="gallery__grid" data-gallery-grid>
+            <!-- Items rendered by gallery.js -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="rinks">
+      <div class="container">
+        <header class="section__header" data-animate>
+          <h2 class="section__title">{{rinks.title}}</h2>
+          <p class="section__subtitle">{{rinks.subtitle}}</p>
+        </header>
+        <p data-animate>{{rinks.text}}</p>
+        <div class="grid grid--3" data-animate>
+          <article class="card card--venue">
+            <img class="card__image" src="{{prefix}}assets/images/placeholders/ice.svg" alt="{{rinks.mineRinkAlt}}" loading="lazy">
+            <div class="card__body">
+              <span class="card__meta">{{rinks.mineRinkMeta}}</span>
+              <h3 class="card__title">{{rinks.mineRinkTitle}}</h3>
+              <p class="card__text">{{rinks.mineRinkText}}</p>
+            </div>
+          </article>
+          <article class="card card--venue">
+            <img class="card__image" src="{{prefix}}assets/images/placeholders/ice.svg" alt="{{rinks.schoolyardAlt}}" loading="lazy">
+            <div class="card__body">
+              <span class="card__meta">{{rinks.schoolyardMeta}}</span>
+              <h3 class="card__title">{{rinks.schoolyardTitle}}</h3>
+              <p class="card__text">{{rinks.schoolyardText}}</p>
+            </div>
+          </article>
+          <article class="card card--venue">
+            <img class="card__image" src="{{prefix}}assets/images/placeholders/ice.svg" alt="{{rinks.centralAlt}}" loading="lazy">
+            <div class="card__body">
+              <span class="card__meta">{{rinks.centralMeta}}</span>
+              <h3 class="card__title">{{rinks.centralTitle}}</h3>
+              <p class="card__text">{{rinks.centralText}}</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--alt" id="contribute">
+      <div class="container">
+        <header class="section__header" data-animate>
+          <h2 class="section__title">{{contribute.title}}</h2>
+          <p class="section__subtitle">{{contribute.subtitle}}</p>
+        </header>
+        <p data-animate>{{contribute.text}}</p>
+        <button type="button" class="btn btn--primary contact-form-open">{{contribute.button}}</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer__inner container">
+      <div>
+        <div class="footer__brand">
+          <svg class="footer__brand-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5" fill="none"/><circle cx="12" cy="12" r="5"/></svg>
+          <span class="footer__brand-name">{{footer.brandName}}</span>
+        </div>
+        <p class="footer__description">{{footer.description}}</p>
+      </div>
+      <nav class="footer__nav" aria-label="{{footer.navAriaLabel}}">
+        <h3 class="footer__nav-title">{{footer.navTitle}}</h3>
+        <ul class="footer__nav-list">
+          <li><a href="#about" class="footer__nav-link">{{nav.about}}</a></li>
+          <li><a href="#village" class="footer__nav-link">{{nav.village}}</a></li>
+          <li><a href="#timeline" class="footer__nav-link">{{nav.timeline}}</a></li>
+          <li><a href="#teams" class="footer__nav-link">{{nav.teams}}</a></li>
+          <li><a href="#stories" class="footer__nav-link">{{nav.stories}}</a></li>
+          <li><a href="#gallery" class="footer__nav-link">{{nav.gallery}}</a></li>
+          <li><a href="#rinks" class="footer__nav-link">{{nav.rinks}}</a></li>
+          <li><a href="#contribute" class="footer__nav-link">{{nav.contribute}}</a></li>
+        </ul>
+      </nav>
+      <div class="footer__cta">
+        <h3 class="footer__cta-title">{{footer.ctaTitle}}</h3>
+        <p class="footer__cta-text">{{footer.ctaText}}</p>
+        <button type="button" class="footer__cta-btn btn btn--primary contact-form-open" aria-haspopup="dialog" aria-expanded="false">{{footer.ctaButton}}</button>
+      </div>
+    </div>
+    <div class="footer__bottom container">
+      <p class="footer__copyright">{{footer.copyright}}</p>
+    </div>
+  </footer>
+
+  <div id="contact-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="contact-modal-title" aria-hidden="true" hidden>
+    <div class="modal__backdrop" data-contact-close aria-hidden="true"></div>
+    <div class="modal__content">
+      <button type="button" class="modal__close" data-contact-close aria-label="{{contact.closeAriaLabel}}"></button>
+      <h2 id="contact-modal-title" class="contact-form__title">{{contact.title}}</h2>
+      <form id="contact-form" class="contact-form" action="https://formspree.io/f/xvzbgpao" method="POST" data-msg-success="{{contact.msgSuccess}}" data-msg-error-default="{{contact.msgError}}">
+        <label class="contact-form__label" for="contact-email">{{contact.emailLabel}}</label>
+        <input type="email" id="contact-email" name="email" class="contact-form__input" required autocomplete="email" />
+        <label class="contact-form__label" for="contact-message">{{contact.messageLabel}}</label>
+        <textarea id="contact-message" name="message" class="contact-form__textarea" rows="4" required></textarea>
+        <button type="submit" class="btn btn--primary contact-form__submit">{{contact.submitButton}}</button>
+        <p id="contact-form-status" class="contact-form__status" aria-live="polite"></p>
+      </form>
+    </div>
+  </div>
+
+  <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="{{lightbox.ariaLabel}}" hidden>
+    <div class="lightbox__backdrop" aria-hidden="true"></div>
+    <span class="lightbox__counter" aria-live="polite"></span>
+    <button type="button" class="lightbox__close" aria-label="{{lightbox.closeAriaLabel}}">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+    <button type="button" class="lightbox__nav lightbox__nav--prev" aria-label="{{lightbox.prevAriaLabel}}">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <button type="button" class="lightbox__nav lightbox__nav--next" aria-label="{{lightbox.nextAriaLabel}}">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
+    </button>
+    <div class="lightbox__content">
+      <img class="lightbox__image" src="" alt="" />
+      <p class="lightbox__caption"></p>
+    </div>
+  </div>
+
+  <button type="button" id="back-to-top" class="back-to-top" aria-label="{{backToTop.ariaLabel}}">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+  </button>
+
+  <script src="{{prefix}}assets/js/modules/utils.js"></script>
+  <script src="{{prefix}}assets/js/modules/theme.js"></script>
+  <script src="{{prefix}}assets/js/modules/navigation.js"></script>
+  <script src="{{prefix}}assets/js/modules/animations.js"></script>
+  <script src="{{prefix}}assets/js/modules/timeline.js"></script>
+  <script src="{{prefix}}assets/js/modules/lightbox.js"></script>
+  <script src="{{prefix}}assets/js/modules/gallery.js"></script>
+  <script src="{{prefix}}assets/js/modules/language.js"></script>
+  <script src="{{prefix}}assets/js/modules/lazy-load.js"></script>
+  <script src="{{prefix}}assets/js/modules/contact-form.js"></script>
+  <script src="{{prefix}}assets/js/app.js"></script>
+</body>
+</html>
