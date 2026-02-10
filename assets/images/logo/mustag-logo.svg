@@ -1,51 +1,49 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
   <!-- Background circle -->
   <circle cx="60" cy="60" r="58" stroke="#00875A" stroke-width="2.5" fill="#0D1117"/>
 
   <!-- Mountains at bottom -->
-  <path d="M20 85 L38 58 L48 72 L60 48 L72 72 L82 58 L100 85 Z" fill="#1C2733" stroke="#00875A" stroke-width="1"/>
-  <path d="M55 52 L60 44 L65 52" fill="none" stroke="#fff" stroke-width="1" opacity="0.6"/>
+  <path d="M20 88 L38 62 L48 74 L60 50 L72 74 L82 62 L100 88 Z" fill="#1C2733" stroke="#00875A" stroke-width="1"/>
+  <path d="M55 54 L60 46 L65 54" fill="none" stroke="#fff" stroke-width="1" opacity="0.5"/>
 
-  <!-- Lynx face - geometric/stylized -->
-  <!-- Head outline -->
-  <path d="M60 28 C45 28 34 40 34 54 C34 64 40 72 48 76 L60 82 L72 76 C80 72 86 64 86 54 C86 40 75 28 60 28Z" fill="#fff"/>
+  <!-- Lynx head shape -->
+  <path d="M60 30 C46 30 36 41 36 54 C36 64 41 71 48 75 L60 80 L72 75 C79 71 84 64 84 54 C84 41 74 30 60 30Z" fill="#fff"/>
 
-  <!-- Ears (pointed, lynx-style with tufts) -->
-  <path d="M42 42 L34 22 L48 36 Z" fill="#fff"/>
-  <path d="M78 42 L86 22 L72 36 Z" fill="#fff"/>
-  <!-- Ear inner -->
-  <path d="M42 40 L37 26 L47 37 Z" fill="#00875A"/>
-  <path d="M78 40 L83 26 L73 37 Z" fill="#00875A"/>
-  <!-- Ear tufts -->
-  <line x1="34" y1="22" x2="30" y2="16" stroke="#1C2733" stroke-width="2.5" stroke-linecap="round"/>
-  <line x1="34" y1="22" x2="33" y2="15" stroke="#1C2733" stroke-width="2" stroke-linecap="round"/>
-  <line x1="86" y1="22" x2="90" y2="16" stroke="#1C2733" stroke-width="2.5" stroke-linecap="round"/>
-  <line x1="86" y1="22" x2="87" y2="15" stroke="#1C2733" stroke-width="2" stroke-linecap="round"/>
+  <!-- Left ear pointed -->
+  <path d="M44 42 L35 20 L50 37Z" fill="#fff"/>
+  <path d="M44 40 L38 25 L49 37Z" fill="#00875A"/>
+  <!-- Left ear tufts -->
+  <line x1="35" y1="20" x2="31" y2="13" stroke="#333" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="35" y1="20" x2="34" y2="12" stroke="#333" stroke-width="1.8" stroke-linecap="round"/>
 
-  <!-- Eyes -->
-  <ellipse cx="49" cy="50" rx="5.5" ry="5" fill="#FF6D00"/>
-  <ellipse cx="71" cy="50" rx="5.5" ry="5" fill="#FF6D00"/>
+  <!-- Right ear pointed -->
+  <path d="M76 42 L85 20 L70 37Z" fill="#fff"/>
+  <path d="M76 40 L82 25 L71 37Z" fill="#00875A"/>
+  <!-- Right ear tufts -->
+  <line x1="85" y1="20" x2="89" y2="13" stroke="#333" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="85" y1="20" x2="86" y2="12" stroke="#333" stroke-width="1.8" stroke-linecap="round"/>
+
+  <!-- Eyes - amber/orange -->
+  <ellipse cx="49" cy="50" rx="6" ry="5.5" fill="#FF6D00"/>
+  <ellipse cx="71" cy="50" rx="6" ry="5.5" fill="#FF6D00"/>
   <!-- Pupils -->
-  <ellipse cx="50" cy="50" rx="2.5" ry="3.5" fill="#0D1117"/>
-  <ellipse cx="72" cy="50" rx="2.5" ry="3.5" fill="#0D1117"/>
-  <!-- Eye glint -->
-  <circle cx="47.5" cy="48" r="1.2" fill="#fff"/>
-  <circle cx="69.5" cy="48" r="1.2" fill="#fff"/>
+  <ellipse cx="50" cy="50" rx="2.8" ry="4" fill="#0D1117"/>
+  <ellipse cx="72" cy="50" rx="2.8" ry="4" fill="#0D1117"/>
+  <!-- Eye highlights -->
+  <circle cx="47" cy="48" r="1.5" fill="#fff"/>
+  <circle cx="69" cy="48" r="1.5" fill="#fff"/>
 
   <!-- Nose -->
-  <path d="M57 60 L60 64 L63 60 Z" fill="#FF6D00"/>
+  <path d="M56 60 L60 65 L64 60Z" fill="#333"/>
 
-  <!-- Mouth/muzzle lines -->
-  <path d="M60 64 L60 68" stroke="#1C2733" stroke-width="1.2"/>
-  <path d="M54 69 Q60 74 66 69" stroke="#1C2733" stroke-width="1.2" fill="none"/>
+  <!-- Mouth -->
+  <line x1="60" y1="65" x2="60" y2="68" stroke="#555" stroke-width="1"/>
+  <path d="M54 69 Q60 74 66 69" stroke="#555" stroke-width="1.2" fill="none"/>
 
-  <!-- Cheek fur markings (lynx sideburns) -->
-  <path d="M36 56 Q34 64 38 72 Q42 76 48 76" stroke="#ccc" stroke-width="1.5" fill="none" opacity="0.5"/>
-  <path d="M84 56 Q86 64 82 72 Q78 76 72 76" stroke="#ccc" stroke-width="1.5" fill="none" opacity="0.5"/>
+  <!-- Cheek fur / sideburns -->
+  <path d="M38 55 Q36 63 39 71 Q42 75 48 75" stroke="#ddd" stroke-width="1.5" fill="none" opacity="0.4"/>
+  <path d="M82 55 Q84 63 81 71 Q78 75 72 75" stroke="#ddd" stroke-width="1.5" fill="none" opacity="0.4"/>
 
-  <!-- Forehead marking -->
-  <path d="M54 38 L60 34 L66 38" stroke="#00875A" stroke-width="1.5" fill="none"/>
-
-  <!-- Text #!" -->
-  <text x="60" y="104" text-anchor="middle" font-family="'Arial Black', 'Impact', sans-serif" font-size="13" font-weight="900" fill="#fff" letter-spacing="3">#!"</text>
+  <!-- Forehead V marking -->
+  <path d="M53 38 L60 33 L67 38" stroke="#00875A" stroke-width="2" fill="none" stroke-linecap="round"/>
 </svg>
