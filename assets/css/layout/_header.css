@@ -68,11 +68,14 @@
 /* Desktop navigation */
 .nav {
   display: none;
+  flex: 1;
+  min-width: 0;
 }
 
 .nav__list {
   display: flex;
   align-items: center;
+  justify-content: center;
   flex-wrap: nowrap;
   gap: var(--space-lg);
   list-style: none;
@@ -118,6 +121,7 @@
   display: none;
   align-items: center;
   gap: var(--space-sm);
+  flex-shrink: 0;
 }
 
 .decade-pill {
@@ -145,6 +149,7 @@
   display: flex;
   align-items: center;
   gap: var(--space-md);
+  flex-shrink: 0;
 }
 
 /* Hamburger button */
