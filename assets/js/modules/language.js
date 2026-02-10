@@ -69,7 +69,7 @@
       else url = origin + base + '/en/index.html';
     } else {
       if (pathRel === '/en' || pathRel === '/en/' || pathRel === '/en/index.html') url = origin + base + '/index.html';
-      else if (pathRel.indexOf('/en/') === 0) url = origin + base + '/ru/' + pathRel.slice(5);
+      else if (pathRel.indexOf('/en/') === 0) url = origin + base + '/ru/' + pathRel.slice(4);
       else url = origin + base + '/index.html';
     }
     return url + appendSearch;
