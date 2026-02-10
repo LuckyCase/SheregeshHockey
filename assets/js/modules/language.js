@@ -75,11 +75,26 @@
     return url + appendSearch;
   }
 
+  /** Определить ближайшую видимую секцию и вернуть её #id */
+  function getCurrentSectionHash() {
+    var sections = document.querySelectorAll('main section[id]');
+    var scrollY = window.scrollY || window.pageYOffset;
+    var hash = '';
+    for (var i = 0; i < sections.length; i++) {
+      if (sections[i].offsetTop <= scrollY + 120) {
+        hash = '#' + sections[i].id;
+      }
+    }
+    return hash;
+  }
+
   function switchTo(lang) {
     setStoredLang(lang);
     setGlobalLang(lang);
     var url = getAlternateUrl(lang);
-    if (url && url !== window.location.href) window.location.href = url;
+    // Сохраняем текущую секцию, чтобы страница не прыгала в начало
+    var hash = window.location.hash || getCurrentSectionHash();
+    if (url && url !== window.location.href) window.location.href = url + hash;
   }
 
   function initSwitcher() {

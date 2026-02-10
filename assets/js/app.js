@@ -9,10 +9,13 @@
   if ('scrollRestoration' in history) {
     history.scrollRestoration = 'manual';
   }
-  window.scrollTo(0, 0);
+  // Прокрутить в начало только если нет хэша (при переключении языка хэш сохраняется)
+  if (!window.location.hash) {
+    window.scrollTo(0, 0);
+  }
 
-  // On bfcache restore, scroll to top
+  // On bfcache restore, scroll to top (only without hash)
   window.addEventListener('pageshow', function (event) {
-    if (event.persisted) window.scrollTo(0, 0);
+    if (event.persisted && !window.location.hash) window.scrollTo(0, 0);
   });
 })();
