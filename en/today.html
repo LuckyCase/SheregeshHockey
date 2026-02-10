@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Mustag — Sheregesh hockey team today: news, announcements, photo album, schedule and roster.">
+  <meta property="og:title" content="Mustag — Today | Sheregesh Hockey">
+  <meta property="og:description" content="Sheregesh hockey today: Mustag team news, game schedule, photos.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://luckycase.github.io/SheregeshHockey/en/today.html">
+  <meta property="og:image" content="https://luckycase.github.io/SheregeshHockey/assets/images/og-image.svg">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Mustag — Today | Sheregesh Hockey">
+  <meta name="twitter:description" content="Sheregesh hockey today: news, schedule, photos.">
+  <title>Mustag — Today | Sheregesh Hockey</title>
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../favicon.ico" sizes="32x32" type="image/x-icon">
+  <link rel="manifest" href="../manifest.json">
+  <link rel="alternate" hreflang="ru" href="https://luckycase.github.io/SheregeshHockey/ru/today.html">
+  <link rel="alternate" hreflang="en" href="https://luckycase.github.io/SheregeshHockey/en/today.html">
+  <link rel="preload" href="../assets/fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../assets/fonts/oswald-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../assets/css/main.css">
+  <script>try{if(localStorage.getItem('sheregesh-theme')==='light')document.documentElement.classList.add('theme-light');}catch(e){}</script>
+</head>
+<body class="mode-today">
+  <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
+  <noscript><div style="text-align:center;padding:2rem;background:#161B22;color:#E6EDF3;">This website requires JavaScript. Please enable it in your browser settings.</div></noscript>
+  <a href="#main" class="sr-only">Skip to main content</a>
+
+  <header class="header" id="header">
+    <div class="header__inner container">
+      <a href="today.html" class="header__logo" aria-label="Home">
+        <svg class="header__logo-icon" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+          <circle cx="32" cy="32" r="30" stroke="var(--color-mustag-green, #00875A)" stroke-width="2" fill="none"/>
+          <path d="M32 14 C26 14 20 20 20 28 C20 34 24 38 28 40 L24 50 L32 46 L40 50 L36 40 C40 38 44 34 44 28 C44 20 38 14 32 14Z" fill="var(--color-mustag-green, #00875A)"/>
+          <circle cx="27" cy="26" r="2" fill="var(--color-mustag-orange, #FF6D00)"/>
+          <circle cx="37" cy="26" r="2" fill="var(--color-mustag-orange, #FF6D00)"/>
+          <path d="M28 32 Q32 36 36 32" stroke="#fff" stroke-width="1.5" fill="none"/>
+        </svg>
+        <span class="header__logo-text">Mustag</span>
+      </a>
+
+      <nav class="nav" aria-label="Main menu">
+        <ul class="nav__list">
+          <li><a href="#news" class="nav__link">News</a></li>
+          <li><a href="#announcements" class="nav__link">Announcements</a></li>
+          <li><a href="#today-gallery" class="nav__link">Photos</a></li>
+          <li><a href="#schedule" class="nav__link">Schedule</a></li>
+          <li><a href="#roster" class="nav__link">Roster</a></li>
+        </ul>
+      </nav>
+
+      <div class="mode-switch mode-switch--today" role="radiogroup" aria-label="Site mode">
+        <a href="index.html" class="mode-switch__btn" role="radio" aria-checked="false">History</a>
+        <a href="today.html" class="mode-switch__btn mode-switch__btn--active" role="radio" aria-checked="true">Today</a>
+        <span class="mode-switch__slider"></span>
+      </div>
+
+      <div class="header__actions">
+        <button type="button" class="theme-toggle" aria-label="Switch theme" aria-pressed="false" title="Switch theme">
+          <svg class="theme-toggle__icon theme-toggle__icon--sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+          <svg class="theme-toggle__icon theme-toggle__icon--moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+        <div class="lang-switch" role="group" aria-label="Language">
+          <a href="../ru/today.html" class="lang-switch__btn" hreflang="ru" lang="ru">RU</a>
+          <a href="today.html" class="lang-switch__btn lang-switch__btn--active" aria-current="page" hreflang="en" lang="en">EN</a>
+        </div>
+        <button type="button" class="burger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+          <span class="burger__line"></span>
+          <span class="burger__line"></span>
+          <span class="burger__line"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-menu__backdrop" id="mobile-menu-backdrop" aria-hidden="true"></div>
+  <div class="mobile-menu" id="mobile-menu" aria-label="Mobile menu" aria-hidden="true">
+    <div class="mobile-menu__mode-switch">
+      <div class="mode-switch mode-switch--today" role="radiogroup" aria-label="Site mode">
+        <a href="index.html" class="mode-switch__btn" role="radio" aria-checked="false">History</a>
+        <a href="today.html" class="mode-switch__btn mode-switch__btn--active" role="radio" aria-checked="true">Today</a>
+        <span class="mode-switch__slider"></span>
+      </div>
+    </div>
+    <ul class="mobile-menu__list">
+      <li><a href="#news" class="mobile-menu__link">News</a></li>
+      <li><a href="#announcements" class="mobile-menu__link">Announcements</a></li>
+      <li><a href="#today-gallery" class="mobile-menu__link">Photos</a></li>
+      <li><a href="#schedule" class="mobile-menu__link">Schedule</a></li>
+      <li><a href="#roster" class="mobile-menu__link">Roster</a></li>
+    </ul>
+  </div>
+
+  <main id="main">
+    <!-- HERO -->
+    <section class="hero today-hero" id="hero">
+      <div class="hero__bg"></div>
+      <div class="today-hero__pattern" aria-hidden="true"></div>
+      <div class="hero__content">
+        <svg class="today-hero__logo" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+          <circle cx="32" cy="32" r="30" stroke="#00875A" stroke-width="2" fill="none"/>
+          <path d="M32 14 C26 14 20 20 20 28 C20 34 24 38 28 40 L24 50 L32 46 L40 50 L36 40 C40 38 44 34 44 28 C44 20 38 14 32 14Z" fill="#00875A"/>
+          <circle cx="27" cy="26" r="2" fill="#FF6D00"/>
+          <circle cx="37" cy="26" r="2" fill="#FF6D00"/>
+          <path d="M28 32 Q32 36 36 32" stroke="#fff" stroke-width="1.5" fill="none"/>
+        </svg>
+        <h1 class="hero__title">Mustag</h1>
+        <p class="hero__subtitle">Sheregesh Hockey — Today</p>
+        <p class="hero__period">Season 2025 / 26</p>
+        <a href="#news" class="hero__scroll" aria-label="Scroll down">
+          <svg class="hero__scroll-arrow" viewBox="0 0 24 34" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2v28M5 23l7 7 7-7"/></svg>
+        </a>
+      </div>
+    </section>
+
+    <!-- NEWS -->
+    <section class="section" id="news">
+      <div class="container">
+        <header class="section__header" data-animate>
+          <h2 class="section__title">News</h2>
+          <p class="section__subtitle">Latest team updates</p>
+        </header>
+        <div class="today-news" data-today-news>
+          <!-- Rendered by today.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ANNOUNCEMENTS -->
+    <section class="section section--alt" id="announcements">
+      <div class="container">
+        <header class="section__header" data-animate>
+          <h2 class="section__title">Announcements</h2>
+          <p class="section__subtitle">Upcoming events</p>
+        </header>
+        <div class="today-announcements" data-today-announcements>
+          <!-- Rendered by today.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- GALLERY -->
+    <section class="section section--divider" id="today-gallery">
+      <div class="container">
+        <header class="section__header" data-animate>
+          <h2 class="section__title">Photo Album</h2>
+          <p class="section__subtitle">Team photos</p>
+        </header>
+        <div class="today-gallery" data-today-gallery>
+          <div class="today-gallery__filters" data-today-gallery-filters role="group" aria-label="Filter by category">
+            <!-- Rendered by today.js -->
+          </div>
+          <div class="today-gallery__grid" data-today-gallery-grid>
+            <!-- Rendered by today.js -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCHEDULE -->
+    <section class="section" id="schedule">
+      <div class="container">
+        <header class="section__header" data-animate>
+          <h2 class="section__title">Schedule</h2>
+          <p class="section__subtitle">Season games</p>
+        </header>
+        <div class="today-schedule" data-today-schedule>
+          <!-- Rendered by today.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ROSTER -->
+    <section class="section section--alt" id="roster">
+      <div class="container">
+        <header class="section__header" data-animate>
+          <h2 class="section__title">Roster</h2>
+          <p class="section__subtitle">Mustag team players</p>
+        </header>
+        <div class="today-roster" data-today-roster>
+          <!-- Rendered by today.js -->
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer__inner container">
+      <div>
+        <div class="footer__brand">
+          <svg class="footer__brand-icon" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+            <circle cx="32" cy="32" r="30" stroke="currentColor" stroke-width="2" fill="none"/>
+            <path d="M32 14 C26 14 20 20 20 28 C20 34 24 38 28 40 L24 50 L32 46 L40 50 L36 40 C40 38 44 34 44 28 C44 20 38 14 32 14Z" fill="currentColor"/>
+            <circle cx="27" cy="26" r="2" fill="var(--color-mustag-orange, #FF6D00)"/>
+            <circle cx="37" cy="26" r="2" fill="var(--color-mustag-orange, #FF6D00)"/>
+          </svg>
+          <span class="footer__brand-name">Mustag — Sheregesh Hockey</span>
+        </div>
+        <p class="footer__description">Sheregesh hockey team today.</p>
+      </div>
+      <nav class="footer__nav" aria-label="Footer">
+        <h3 class="footer__nav-title">Navigation</h3>
+        <ul class="footer__nav-list">
+          <li><a href="#news" class="footer__nav-link">News</a></li>
+          <li><a href="#announcements" class="footer__nav-link">Announcements</a></li>
+          <li><a href="#today-gallery" class="footer__nav-link">Photos</a></li>
+          <li><a href="#schedule" class="footer__nav-link">Schedule</a></li>
+          <li><a href="#roster" class="footer__nav-link">Roster</a></li>
+        </ul>
+      </nav>
+      <div class="footer__cta">
+        <h3 class="footer__cta-title">Sheregesh Hockey History</h3>
+        <p class="footer__cta-text">Discover how it all began — switch to History mode.</p>
+        <a href="index.html" class="btn btn--primary">Go to History</a>
+      </div>
+    </div>
+    <div class="footer__bottom container">
+      <p class="footer__copyright">&copy; 2025 Mustag — Sheregesh Hockey. Non-commercial project.</p>
+    </div>
+  </footer>
+
+  <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="View photo" hidden>
+    <div class="lightbox__backdrop" aria-hidden="true"></div>
+    <span class="lightbox__counter" aria-live="polite"></span>
+    <button type="button" class="lightbox__close" aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+    <button type="button" class="lightbox__nav lightbox__nav--prev" aria-label="Previous photo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <button type="button" class="lightbox__nav lightbox__nav--next" aria-label="Next photo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
+    </button>
+    <div class="lightbox__content">
+      <img class="lightbox__image" src="" alt="" />
+      <p class="lightbox__caption"></p>
+    </div>
+  </div>
+
+  <button type="button" id="back-to-top" class="back-to-top" aria-label="Back to top">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+  </button>
+
+  <script src="../assets/js/modules/utils.js"></script>
+  <script src="../assets/js/modules/theme.js"></script>
+  <script src="../assets/js/modules/mode-switch.js"></script>
+  <script src="../assets/js/modules/navigation.js"></script>
+  <script src="../assets/js/modules/animations.js"></script>
+  <script src="../assets/js/modules/lightbox.js"></script>
+  <script src="../assets/js/modules/language.js"></script>
+  <script src="../assets/js/modules/lazy-load.js"></script>
+  <script src="../assets/js/modules/today.js"></script>
+</body>
+</html>

@@ -26,7 +26,9 @@
 @import 'components/_modal.css';
 @import 'components/_contact-form.css';
 @import 'components/_stats.css';
+@import 'components/_mode-switch.css';
 
-/* Pages (decade, story) */
+/* Pages (decade, story, today) */
 @import 'pages/_decade.css';
 @import 'pages/_story.css';
+@import 'pages/_today.css';

@@ -1,0 +1,165 @@
+{
+  "news": [
+    {
+      "id": "news-001",
+      "date": "2026-02-08",
+      "titleRu": "Мустаг победил в товарищеском матче",
+      "titleEn": "Mustag wins friendly match",
+      "contentRu": "Команда «Мустаг» одержала уверенную победу со счётом 5:2 в товарищеском матче с командой из Таштагола. Два гола забил нападающий под номером 7.",
+      "contentEn": "Mustag won a convincing 5:2 victory in a friendly match against a team from Tashtagol. The forward wearing number 7 scored twice.",
+      "images": ["assets/images/placeholders/ice.svg"],
+      "pinned": true
+    },
+    {
+      "id": "news-002",
+      "date": "2026-01-25",
+      "titleRu": "Новая форма сезона 2025/26",
+      "titleEn": "New jerseys for the 2025/26 season",
+      "contentRu": "Представлены два комплекта формы — зелёная (домашняя) и чёрная (гостевая). На груди — фирменный логотип с рысью и горами.",
+      "contentEn": "Two jersey sets unveiled — green (home) and black (away). Both feature the signature lynx and mountain logo on the chest.",
+      "images": ["assets/images/placeholders/ice.svg"],
+      "pinned": false
+    },
+    {
+      "id": "news-003",
+      "date": "2026-01-10",
+      "titleRu": "Начало зимнего сезона",
+      "titleEn": "Winter season kicks off",
+      "contentRu": "Ледовая площадка готова, тренировки начались. В этом сезоне команду пополнили три новых игрока.",
+      "contentEn": "The ice rink is ready, training has started. Three new players joined the team this season.",
+      "images": [],
+      "pinned": false
+    }
+  ],
+  "announcements": [
+    {
+      "id": "ann-001",
+      "eventDate": "2026-03-01T18:00",
+      "titleRu": "Матч: Мустаг — Таштагол",
+      "titleEn": "Game: Mustag vs Tashtagol",
+      "contentRu": "Домашний матч в рамках районного турнира. Приходите поддержать команду!",
+      "contentEn": "Home game as part of the district tournament. Come support the team!",
+      "location": {"ru": "Ледовый дворец, Шерегеш", "en": "Ice Palace, Sheregesh"}
+    },
+    {
+      "id": "ann-002",
+      "eventDate": "2026-03-15T14:00",
+      "titleRu": "Детский хоккейный турнир",
+      "titleEn": "Youth hockey tournament",
+      "contentRu": "Открытый турнир для юных хоккеистов до 14 лет. Регистрация открыта.",
+      "contentEn": "Open tournament for young hockey players under 14. Registration is open.",
+      "location": {"ru": "Школьный каток", "en": "School rink"}
+    }
+  ],
+  "gallery": [
+    {
+      "src": "assets/images/placeholders/ice.svg",
+      "caption": {"ru": "Мустаг на льду — сезон 2025/26", "en": "Mustag on ice — 2025/26 season"},
+      "alt": {"ru": "Игроки Мустага на льду", "en": "Mustag players on ice"},
+      "date": "2026-02-01",
+      "category": "game"
+    },
+    {
+      "src": "assets/images/placeholders/ice.svg",
+      "caption": {"ru": "Новая зелёная форма", "en": "New green jersey"},
+      "alt": {"ru": "Зелёная форма Мустага", "en": "Mustag green jersey"},
+      "date": "2026-01-20",
+      "category": "team"
+    },
+    {
+      "src": "assets/images/placeholders/ice.svg",
+      "caption": {"ru": "Тренировка перед матчем", "en": "Training before the game"},
+      "alt": {"ru": "Тренировка команды", "en": "Team training"},
+      "date": "2026-01-15",
+      "category": "training"
+    },
+    {
+      "src": "assets/images/placeholders/ice.svg",
+      "caption": {"ru": "Болельщики на трибунах", "en": "Fans in the stands"},
+      "alt": {"ru": "Болельщики Мустага", "en": "Mustag fans"},
+      "date": "2026-02-08",
+      "category": "fans"
+    }
+  ],
+  "schedule": [
+    {
+      "date": "2026-01-15",
+      "time": "18:00",
+      "opponent": {"ru": "Междуреченск", "en": "Mezhdurechensk"},
+      "location": {"ru": "Дома", "en": "Home"},
+      "result": {"score": "4:1", "win": true}
+    },
+    {
+      "date": "2026-02-01",
+      "time": "16:00",
+      "opponent": {"ru": "Новокузнецк-2", "en": "Novokuznetsk-2"},
+      "location": {"ru": "Гости", "en": "Away"},
+      "result": {"score": "2:3", "win": false}
+    },
+    {
+      "date": "2026-02-08",
+      "time": "18:00",
+      "opponent": {"ru": "Таштагол", "en": "Tashtagol"},
+      "location": {"ru": "Дома", "en": "Home"},
+      "result": {"score": "5:2", "win": true}
+    },
+    {
+      "date": "2026-03-01",
+      "time": "18:00",
+      "opponent": {"ru": "Таштагол", "en": "Tashtagol"},
+      "location": {"ru": "Дома", "en": "Home"},
+      "result": null
+    },
+    {
+      "date": "2026-03-15",
+      "time": "16:00",
+      "opponent": {"ru": "Междуреченск", "en": "Mezhdurechensk"},
+      "location": {"ru": "Гости", "en": "Away"},
+      "result": null
+    }
+  ],
+  "roster": [
+    {
+      "number": 1,
+      "nameRu": "Сидоров Алексей",
+      "nameEn": "Alexey Sidorov",
+      "position": "goalie",
+      "photo": "assets/images/placeholders/ice.svg"
+    },
+    {
+      "number": 4,
+      "nameRu": "Кузнецов Дмитрий",
+      "nameEn": "Dmitry Kuznetsov",
+      "position": "defense",
+      "photo": "assets/images/placeholders/ice.svg"
+    },
+    {
+      "number": 7,
+      "nameRu": "Иванов Иван",
+      "nameEn": "Ivan Ivanov",
+      "position": "forward",
+      "photo": "assets/images/placeholders/ice.svg"
+    },
+    {
+      "number": 9,
+      "nameRu": "Петров Сергей",
+      "nameEn": "Sergey Petrov",
+      "position": "forward",
+      "photo": "assets/images/placeholders/ice.svg"
+    },
+    {
+      "number": 11,
+      "nameRu": "Морозов Андрей",
+      "nameEn": "Andrey Morozov",
+      "position": "forward",
+      "photo": "assets/images/placeholders/ice.svg"
+    },
+    {
+      "number": 15,
+      "nameRu": "Волков Николай",
+      "nameEn": "Nikolay Volkov",
+      "position": "defense",
+      "photo": "assets/images/placeholders/ice.svg"
+    }
+  ]
+}

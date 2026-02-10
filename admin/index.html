@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Админка — Хоккей Шерегеша</title>
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <style>
+    /* ---- ADMIN STYLES ---- */
+    :root {
+      --admin-bg: #0D1117;
+      --admin-surface: #161B22;
+      --admin-border: #30363D;
+      --admin-text: #E6EDF3;
+      --admin-muted: #8B949E;
+      --admin-green: #00875A;
+      --admin-green-light: #00A86B;
+      --admin-lime: #76FF03;
+      --admin-red: #F85149;
+      --admin-blue: #58A6FF;
+      --admin-radius: 8px;
+      --admin-font: 'Inter', 'Segoe UI', system-ui, sans-serif;
+      --admin-font-mono: 'Consolas', 'JetBrains Mono', monospace;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: var(--admin-font);
+      background: var(--admin-bg);
+      color: var(--admin-text);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ---- Layout ---- */
+    .admin-header {
+      background: var(--admin-surface);
+      border-bottom: 1px solid var(--admin-border);
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .admin-header__title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .admin-header__title svg { width: 24px; height: 24px; }
+
+    .admin-header__actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .admin-main {
+      max-width: 1100px;
+      margin: 2rem auto;
+      padding: 0 1.5rem;
+    }
+
+    /* ---- Auth section ---- */
+    .admin-auth {
+      background: var(--admin-surface);
+      border: 1px solid var(--admin-border);
+      border-radius: var(--admin-radius);
+      padding: 2rem;
+      max-width: 500px;
+      margin: 4rem auto;
+    }
+
+    .admin-auth h2 {
+      font-size: 1.3rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .admin-auth p {
+      color: var(--admin-muted);
+      font-size: 0.85rem;
+      margin-bottom: 1.5rem;
+    }
+
+    /* ---- Form elements ---- */
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 0.35rem;
+      color: var(--admin-text);
+    }
+
+    .form-label--muted {
+      color: var(--admin-muted);
+      font-weight: 400;
+    }
+
+    .form-input, .form-textarea, .form-select {
+      width: 100%;
+      padding: 0.6rem 0.8rem;
+      background: var(--admin-bg);
+      border: 1px solid var(--admin-border);
+      border-radius: var(--admin-radius);
+      color: var(--admin-text);
+      font-family: var(--admin-font);
+      font-size: 0.9rem;
+      transition: border-color 0.2s;
+    }
+
+    .form-input:focus, .form-textarea:focus, .form-select:focus {
+      outline: none;
+      border-color: var(--admin-green);
+      box-shadow: 0 0 0 3px rgba(0, 135, 90, 0.15);
+    }
+
+    .form-textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    /* ---- Buttons ---- */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.55rem 1.2rem;
+      border: 1px solid var(--admin-border);
+      border-radius: var(--admin-radius);
+      background: var(--admin-surface);
+      color: var(--admin-text);
+      font-family: var(--admin-font);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn:hover {
+      border-color: var(--admin-green);
+      color: var(--admin-green-light);
+    }
+
+    .btn--primary {
+      background: var(--admin-green);
+      border-color: var(--admin-green);
+      color: #fff;
+    }
+
+    .btn--primary:hover {
+      background: var(--admin-green-light);
+      border-color: var(--admin-green-light);
+      color: #fff;
+    }
+
+    .btn--danger {
+      border-color: var(--admin-red);
+      color: var(--admin-red);
+    }
+
+    .btn--danger:hover {
+      background: var(--admin-red);
+      color: #fff;
+    }
+
+    .btn--sm { padding: 0.35rem 0.8rem; font-size: 0.8rem; }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* ---- Tabs ---- */
+    .admin-tabs {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid var(--admin-border);
+      margin-bottom: 1.5rem;
+      overflow-x: auto;
+    }
+
+    .admin-tab {
+      padding: 0.75rem 1.5rem;
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      color: var(--admin-muted);
+      font-family: var(--admin-font);
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+
+    .admin-tab:hover {
+      color: var(--admin-text);
+    }
+
+    .admin-tab--active {
+      color: var(--admin-green);
+      border-bottom-color: var(--admin-green);
+    }
+
+    .admin-panel {
+      display: none;
+    }
+
+    .admin-panel--active {
+      display: block;
+    }
+
+    /* ---- Photo upload ---- */
+    .photo-drop {
+      border: 2px dashed var(--admin-border);
+      border-radius: var(--admin-radius);
+      padding: 2rem;
+      text-align: center;
+      color: var(--admin-muted);
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+    }
+
+    .photo-drop:hover, .photo-drop.dragover {
+      border-color: var(--admin-green);
+      color: var(--admin-green-light);
+      background: rgba(0, 135, 90, 0.05);
+    }
+
+    .photo-drop input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .photo-drop__icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .photo-previews {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 1rem;
+    }
+
+    .photo-preview {
+      position: relative;
+      width: 120px;
+      height: 90px;
+      border-radius: var(--admin-radius);
+      overflow: hidden;
+      border: 1px solid var(--admin-border);
+    }
+
+    .photo-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .photo-preview__remove {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: rgba(248, 81, 73, 0.9);
+      border: none;
+      color: #fff;
+      font-size: 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ---- Preview card ---- */
+    .admin-preview {
+      background: var(--admin-surface);
+      border: 1px solid var(--admin-border);
+      border-radius: var(--admin-radius);
+      padding: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .admin-preview__title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--admin-muted);
+      margin-bottom: 1rem;
+    }
+
+    /* ---- Existing items list ---- */
+    .admin-list {
+      margin-top: 2rem;
+      border-top: 1px solid var(--admin-border);
+      padding-top: 1.5rem;
+    }
+
+    .admin-list__title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: var(--admin-muted);
+    }
+
+    .admin-list__item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 1rem;
+      background: var(--admin-bg);
+      border: 1px solid var(--admin-border);
+      border-radius: var(--admin-radius);
+      margin-bottom: 0.5rem;
+    }
+
+    .admin-list__item-info {
+      flex: 1;
+    }
+
+    .admin-list__item-title {
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .admin-list__item-meta {
+      font-size: 0.8rem;
+      color: var(--admin-muted);
+    }
+
+    .admin-list__item-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    /* ---- Status messages ---- */
+    .admin-status {
+      padding: 0.75rem 1rem;
+      border-radius: var(--admin-radius);
+      font-size: 0.85rem;
+      margin-top: 1rem;
+      display: none;
+    }
+
+    .admin-status--success {
+      display: block;
+      background: rgba(0, 135, 90, 0.1);
+      border: 1px solid var(--admin-green);
+      color: var(--admin-green-light);
+    }
+
+    .admin-status--error {
+      display: block;
+      background: rgba(248, 81, 73, 0.1);
+      border: 1px solid var(--admin-red);
+      color: var(--admin-red);
+    }
+
+    .admin-status--loading {
+      display: block;
+      background: rgba(88, 166, 255, 0.1);
+      border: 1px solid var(--admin-blue);
+      color: var(--admin-blue);
+    }
+
+    /* ---- Repo config ---- */
+    .admin-repo-config {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .admin-repo-config .form-input {
+      width: auto;
+      min-width: 200px;
+    }
+
+    /* ---- Responsive ---- */
+    @media (max-width: 640px) {
+      .form-row { grid-template-columns: 1fr; }
+      .admin-header { padding: 0.75rem 1rem; }
+      .admin-main { padding: 0 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="admin-header">
+    <div class="admin-header__title">
+      <svg viewBox="0 0 64 64" fill="none" aria-hidden="true">
+        <circle cx="32" cy="32" r="30" stroke="#00875A" stroke-width="2" fill="none"/>
+        <path d="M32 14 C26 14 20 20 20 28 C20 34 24 38 28 40 L24 50 L32 46 L40 50 L36 40 C40 38 44 34 44 28 C44 20 38 14 32 14Z" fill="#00875A"/>
+        <circle cx="27" cy="26" r="2" fill="#FF6D00"/>
+        <circle cx="37" cy="26" r="2" fill="#FF6D00"/>
+      </svg>
+      Админка — Хоккей Шерегеша
+    </div>
+    <div class="admin-header__actions">
+      <span id="auth-status" style="font-size:0.8rem;color:var(--admin-muted)"></span>
+      <button type="button" class="btn btn--sm" id="btn-logout" style="display:none">Выйти</button>
+    </div>
+  </header>
+
+  <!-- Auth -->
+  <div id="admin-auth" class="admin-auth">
+    <h2>Авторизация</h2>
+    <p>Введите GitHub Personal Access Token с правами <code>repo</code> (Contents: Read and write). Токен сохраняется только в localStorage вашего браузера.</p>
+    <div class="form-group">
+      <label class="form-label" for="gh-token">GitHub Token</label>
+      <input type="password" id="gh-token" class="form-input" placeholder="ghp_xxxxxxxxxxxx" autocomplete="off">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label" for="gh-owner">Owner (user/org)</label>
+        <input type="text" id="gh-owner" class="form-input" placeholder="luckycase" value="luckycase">
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="gh-repo">Repository</label>
+        <input type="text" id="gh-repo" class="form-input" placeholder="SheregeshHockey" value="SheregeshHockey">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label" for="gh-branch">Branch</label>
+      <input type="text" id="gh-branch" class="form-input" placeholder="master" value="master">
+    </div>
+    <button type="button" class="btn btn--primary" id="btn-auth">Подключиться</button>
+    <div id="auth-msg" class="admin-status"></div>
+  </div>
+
+  <!-- Main content (hidden until auth) -->
+  <div id="admin-content" class="admin-main" style="display:none">
+
+    <!-- Tabs -->
+    <div class="admin-tabs" role="tablist">
+      <button type="button" class="admin-tab admin-tab--active" data-tab="news" role="tab">Новости</button>
+      <button type="button" class="admin-tab" data-tab="announcements" role="tab">Анонсы</button>
+      <button type="button" class="admin-tab" data-tab="gallery" role="tab">Фото</button>
+      <button type="button" class="admin-tab" data-tab="schedule" role="tab">Расписание</button>
+      <button type="button" class="admin-tab" data-tab="roster" role="tab">Составы</button>
+    </div>
+
+    <!-- ======== NEWS PANEL ======== -->
+    <div class="admin-panel admin-panel--active" id="panel-news">
+      <h3 style="margin-bottom:1rem">Добавить новость</h3>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="news-title-ru">Заголовок (RU)</label>
+          <input type="text" id="news-title-ru" class="form-input" placeholder="Победа Мустага!">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="news-title-en">Title (EN)</label>
+          <input type="text" id="news-title-en" class="form-input" placeholder="Mustag wins!">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="news-content-ru">Текст (RU)</label>
+        <textarea id="news-content-ru" class="form-textarea" placeholder="Подробности новости на русском..."></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="news-content-en">Text (EN)</label>
+        <textarea id="news-content-en" class="form-textarea" placeholder="News details in English..."></textarea>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="news-date">Дата</label>
+          <input type="date" id="news-date" class="form-input">
+        </div>
+        <div class="form-group" style="display:flex;align-items:end;gap:0.5rem;padding-bottom:0.1rem">
+          <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.85rem;cursor:pointer">
+            <input type="checkbox" id="news-pinned"> Закрепить
+          </label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Фото</label>
+        <div class="photo-drop" id="news-photo-drop">
+          <div class="photo-drop__icon">+</div>
+          <div>Перетащите файлы сюда или нажмите для выбора</div>
+          <input type="file" accept="image/*" multiple id="news-photo-input">
+        </div>
+        <div class="photo-previews" id="news-photo-previews"></div>
+      </div>
+      <div style="display:flex;gap:0.75rem;flex-wrap:wrap">
+        <button type="button" class="btn" id="btn-news-preview">Предпросмотр</button>
+        <button type="button" class="btn btn--primary" id="btn-news-publish">Опубликовать</button>
+      </div>
+      <div id="news-preview" class="admin-preview" style="display:none">
+        <div class="admin-preview__title">Предпросмотр</div>
+        <div id="news-preview-content"></div>
+      </div>
+      <div id="news-status" class="admin-status"></div>
+      <div class="admin-list" id="news-list">
+        <div class="admin-list__title">Существующие новости</div>
+        <div id="news-list-items"></div>
+      </div>
+    </div>
+
+    <!-- ======== ANNOUNCEMENTS PANEL ======== -->
+    <div class="admin-panel" id="panel-announcements">
+      <h3 style="margin-bottom:1rem">Добавить анонс</h3>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="ann-title-ru">Заголовок (RU)</label>
+          <input type="text" id="ann-title-ru" class="form-input" placeholder="Матч: Мустаг — Таштагол">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="ann-title-en">Title (EN)</label>
+          <input type="text" id="ann-title-en" class="form-input" placeholder="Game: Mustag vs Tashtagol">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="ann-content-ru">Описание (RU)</label>
+        <textarea id="ann-content-ru" class="form-textarea"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="ann-content-en">Description (EN)</label>
+        <textarea id="ann-content-en" class="form-textarea"></textarea>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="ann-date">Дата и время события</label>
+          <input type="datetime-local" id="ann-date" class="form-input">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="ann-location-ru">Место (RU)</label>
+          <input type="text" id="ann-location-ru" class="form-input" placeholder="Ледовый дворец">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="ann-location-en">Location (EN)</label>
+        <input type="text" id="ann-location-en" class="form-input" placeholder="Ice Palace">
+      </div>
+      <div style="display:flex;gap:0.75rem;flex-wrap:wrap">
+        <button type="button" class="btn" id="btn-ann-preview">Предпросмотр</button>
+        <button type="button" class="btn btn--primary" id="btn-ann-publish">Опубликовать</button>
+      </div>
+      <div id="ann-preview" class="admin-preview" style="display:none">
+        <div class="admin-preview__title">Предпросмотр</div>
+        <div id="ann-preview-content"></div>
+      </div>
+      <div id="ann-status" class="admin-status"></div>
+      <div class="admin-list" id="ann-list">
+        <div class="admin-list__title">Существующие анонсы</div>
+        <div id="ann-list-items"></div>
+      </div>
+    </div>
+
+    <!-- ======== GALLERY PANEL ======== -->
+    <div class="admin-panel" id="panel-gallery">
+      <h3 style="margin-bottom:1rem">Добавить фото</h3>
+      <div class="form-group">
+        <label class="form-label">Фото (можно несколько)</label>
+        <div class="photo-drop" id="gallery-photo-drop">
+          <div class="photo-drop__icon">+</div>
+          <div>Перетащите файлы сюда или нажмите для выбора</div>
+          <input type="file" accept="image/*" multiple id="gallery-photo-input">
+        </div>
+        <div class="photo-previews" id="gallery-photo-previews"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="gallery-caption-ru">Подпись (RU)</label>
+          <input type="text" id="gallery-caption-ru" class="form-input">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="gallery-caption-en">Caption (EN)</label>
+          <input type="text" id="gallery-caption-en" class="form-input">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="gallery-category">Категория</label>
+          <select id="gallery-category" class="form-select">
+            <option value="game">Матчи</option>
+            <option value="team">Команда</option>
+            <option value="training">Тренировки</option>
+            <option value="fans">Болельщики</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="gallery-date">Дата</label>
+          <input type="date" id="gallery-date" class="form-input">
+        </div>
+      </div>
+      <div style="display:flex;gap:0.75rem;flex-wrap:wrap">
+        <button type="button" class="btn" id="btn-gallery-preview">Предпросмотр</button>
+        <button type="button" class="btn btn--primary" id="btn-gallery-publish">Опубликовать</button>
+      </div>
+      <div id="gallery-preview" class="admin-preview" style="display:none">
+        <div class="admin-preview__title">Предпросмотр</div>
+        <div id="gallery-preview-content"></div>
+      </div>
+      <div id="gallery-status" class="admin-status"></div>
+      <div class="admin-list" id="gallery-list">
+        <div class="admin-list__title">Существующие фото</div>
+        <div id="gallery-list-items"></div>
+      </div>
+    </div>
+
+    <!-- ======== SCHEDULE PANEL ======== -->
+    <div class="admin-panel" id="panel-schedule">
+      <h3 style="margin-bottom:1rem">Добавить матч</h3>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="sched-date">Дата</label>
+          <input type="date" id="sched-date" class="form-input">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="sched-time">Время</label>
+          <input type="time" id="sched-time" class="form-input" value="18:00">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="sched-opponent-ru">Соперник (RU)</label>
+          <input type="text" id="sched-opponent-ru" class="form-input" placeholder="Таштагол">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="sched-opponent-en">Opponent (EN)</label>
+          <input type="text" id="sched-opponent-en" class="form-input" placeholder="Tashtagol">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="sched-location-ru">Место (RU)</label>
+          <select id="sched-location-ru" class="form-select">
+            <option value="Дома">Дома</option>
+            <option value="Гости">Гости</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="sched-location-en">Venue (EN)</label>
+          <select id="sched-location-en" class="form-select">
+            <option value="Home">Home</option>
+            <option value="Away">Away</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="sched-score">Счёт (если матч сыгран)</label>
+          <input type="text" id="sched-score" class="form-input" placeholder="5:2 (или оставить пустым)">
+        </div>
+        <div class="form-group" style="display:flex;align-items:end;gap:0.5rem;padding-bottom:0.1rem">
+          <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.85rem;cursor:pointer">
+            <input type="checkbox" id="sched-win"> Победа
+          </label>
+        </div>
+      </div>
+      <div style="display:flex;gap:0.75rem;flex-wrap:wrap">
+        <button type="button" class="btn btn--primary" id="btn-sched-publish">Опубликовать</button>
+      </div>
+      <div id="sched-status" class="admin-status"></div>
+      <div class="admin-list" id="sched-list">
+        <div class="admin-list__title">Расписание</div>
+        <div id="sched-list-items"></div>
+      </div>
+    </div>
+
+    <!-- ======== ROSTER PANEL ======== -->
+    <div class="admin-panel" id="panel-roster">
+      <h3 style="margin-bottom:1rem">Добавить игрока</h3>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="roster-number">Номер</label>
+          <input type="number" id="roster-number" class="form-input" min="1" max="99" placeholder="7">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="roster-position">Позиция</label>
+          <select id="roster-position" class="form-select">
+            <option value="goalie">Вратарь</option>
+            <option value="defense">Защитник</option>
+            <option value="forward">Нападающий</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="roster-name-ru">Имя (RU)</label>
+          <input type="text" id="roster-name-ru" class="form-input" placeholder="Иванов Иван">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="roster-name-en">Name (EN)</label>
+          <input type="text" id="roster-name-en" class="form-input" placeholder="Ivan Ivanov">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Фото игрока</label>
+        <div class="photo-drop" id="roster-photo-drop">
+          <div class="photo-drop__icon">+</div>
+          <div>Перетащите файл или нажмите для выбора</div>
+          <input type="file" accept="image/*" id="roster-photo-input">
+        </div>
+        <div class="photo-previews" id="roster-photo-previews"></div>
+      </div>
+      <div style="display:flex;gap:0.75rem;flex-wrap:wrap">
+        <button type="button" class="btn btn--primary" id="btn-roster-publish">Опубликовать</button>
+      </div>
+      <div id="roster-status" class="admin-status"></div>
+      <div class="admin-list" id="roster-list">
+        <div class="admin-list__title">Состав</div>
+        <div id="roster-list-items"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  (function () {
+    'use strict';
+
+    /* ---- Config & State ---- */
+    var config = {
+      token: '',
+      owner: 'luckycase',
+      repo: 'SheregeshHockey',
+      branch: 'master',
+      dataPath: 'assets/js/data/today-data.json'
+    };
+
+    var todayData = null;
+    var dataSha = null; // SHA of current today-data.json for updates
+    var photoFiles = { news: [], gallery: [], roster: [] };
+
+    /* ---- GitHub API helpers ---- */
+    function ghApi(path, opts) {
+      opts = opts || {};
+      var url = 'https://api.github.com/repos/' + config.owner + '/' + config.repo + '/' + path;
+      var headers = {
+        'Authorization': 'Bearer ' + config.token,
+        'Accept': 'application/vnd.github.v3+json'
+      };
+      if (opts.body) headers['Content-Type'] = 'application/json';
+      return fetch(url, {
+        method: opts.method || 'GET',
+        headers: headers,
+        body: opts.body ? JSON.stringify(opts.body) : undefined
+      }).then(function (r) {
+        if (!r.ok) return r.json().then(function (e) { throw new Error(e.message || r.statusText); });
+        return r.json();
+      });
+    }
+
+    function readFile(path) {
+      return ghApi('contents/' + path + '?ref=' + config.branch);
+    }
+
+    function writeFile(path, content, message, sha) {
+      var body = {
+        message: message,
+        content: btoa(unescape(encodeURIComponent(content))),
+        branch: config.branch
+      };
+      if (sha) body.sha = sha;
+      return ghApi('contents/' + path, { method: 'PUT', body: body });
+    }
+
+    function writeFileBinary(path, base64Content, message, sha) {
+      var body = {
+        message: message,
+        content: base64Content,
+        branch: config.branch
+      };
+      if (sha) body.sha = sha;
+      return ghApi('contents/' + path, { method: 'PUT', body: body });
+    }
+
+    /* ---- Load data ---- */
+    function loadData() {
+      return readFile(config.dataPath).then(function (res) {
+        dataSha = res.sha;
+        var content = decodeURIComponent(escape(atob(res.content.replace(/\n/g, ''))));
+        todayData = JSON.parse(content);
+        refreshAllLists();
+      });
+    }
+
+    function saveData(message) {
+      var content = JSON.stringify(todayData, null, 2);
+      return writeFile(config.dataPath, content, message || 'Update today-data.json', dataSha).then(function (res) {
+        dataSha = res.content.sha;
+      });
+    }
+
+    /* ---- Image helpers ---- */
+    function resizeImage(file, maxSize) {
+      return new Promise(function (resolve) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+          var img = new Image();
+          img.onload = function () {
+            var w = img.width, h = img.height;
+            if (w > maxSize || h > maxSize) {
+              var ratio = Math.min(maxSize / w, maxSize / h);
+              w = Math.round(w * ratio);
+              h = Math.round(h * ratio);
+            }
+            var canvas = document.createElement('canvas');
+            canvas.width = w; canvas.height = h;
+            canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+            var dataUrl = canvas.toDataURL('image/jpeg', 0.85);
+            resolve(dataUrl.split(',')[1]); // base64 without prefix
+          };
+          img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function uploadImage(file, folder) {
+      return resizeImage(file, 1200).then(function (base64) {
+        var ts = Date.now();
+        var ext = file.name.split('.').pop() || 'jpg';
+        var path = 'assets/images/today/' + folder + '/' + ts + '.' + ext;
+        return writeFileBinary(path, base64, 'Add image: ' + file.name).then(function () {
+          return path;
+        });
+      });
+    }
+
+    /* ---- UI Helpers ---- */
+    function $(id) { return document.getElementById(id); }
+
+    function setStatus(elId, type, msg) {
+      var el = $(elId);
+      el.className = 'admin-status admin-status--' + type;
+      el.textContent = msg;
+    }
+
+    function clearStatus(elId) {
+      var el = $(elId);
+      el.className = 'admin-status';
+      el.style.display = 'none';
+      el.textContent = '';
+    }
+
+    function genId(prefix) {
+      return prefix + '-' + Date.now().toString(36);
+    }
+
+    /* ---- Photo drop zones ---- */
+    function initPhotoDrop(dropId, inputId, previewsId, storeKey) {
+      var drop = $(dropId);
+      var input = $(inputId);
+      var previews = $(previewsId);
+
+      if (!drop || !input) return;
+
+      drop.addEventListener('dragover', function (e) { e.preventDefault(); drop.classList.add('dragover'); });
+      drop.addEventListener('dragleave', function () { drop.classList.remove('dragover'); });
+      drop.addEventListener('drop', function (e) {
+        e.preventDefault();
+        drop.classList.remove('dragover');
+        addFiles(e.dataTransfer.files);
+      });
+      input.addEventListener('change', function () { addFiles(input.files); input.value = ''; });
+
+      function addFiles(files) {
+        Array.from(files).forEach(function (f) {
+          if (!f.type.startsWith('image/')) return;
+          photoFiles[storeKey].push(f);
+          var reader = new FileReader();
+          reader.onload = function (e) {
+            var div = document.createElement('div');
+            div.className = 'photo-preview';
+            div.innerHTML = '<img src="' + e.target.result + '"><button type="button" class="photo-preview__remove" title="Удалить">&times;</button>';
+            div.querySelector('.photo-preview__remove').addEventListener('click', function () {
+              var idx = Array.from(previews.children).indexOf(div);
+              photoFiles[storeKey].splice(idx, 1);
+              div.remove();
+            });
+            previews.appendChild(div);
+          };
+          reader.readAsDataURL(f);
+        });
+      }
+    }
+
+    /* ---- Render list items ---- */
+    function renderListItem(title, meta, onDelete) {
+      var div = document.createElement('div');
+      div.className = 'admin-list__item';
+      div.innerHTML = '<div class="admin-list__item-info"><div class="admin-list__item-title">' + esc(title) + '</div><div class="admin-list__item-meta">' + esc(meta) + '</div></div><div class="admin-list__item-actions"></div>';
+      var btn = document.createElement('button');
+      btn.className = 'btn btn--danger btn--sm';
+      btn.textContent = 'Удалить';
+      btn.addEventListener('click', onDelete);
+      div.querySelector('.admin-list__item-actions').appendChild(btn);
+      return div;
+    }
+
+    function esc(s) { return (s || '').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+
+    function refreshAllLists() {
+      if (!todayData) return;
+      refreshNewsList();
+      refreshAnnList();
+      refreshGalleryList();
+      refreshSchedList();
+      refreshRosterList();
+    }
+
+    function refreshNewsList() {
+      var el = $('news-list-items');
+      el.innerHTML = '';
+      (todayData.news || []).forEach(function (item, idx) {
+        el.appendChild(renderListItem(item.titleRu, item.date, function () {
+          todayData.news.splice(idx, 1);
+          saveData('Delete news: ' + item.titleRu).then(function () { refreshNewsList(); });
+        }));
+      });
+    }
+
+    function refreshAnnList() {
+      var el = $('ann-list-items');
+      el.innerHTML = '';
+      (todayData.announcements || []).forEach(function (item, idx) {
+        el.appendChild(renderListItem(item.titleRu, item.eventDate, function () {
+          todayData.announcements.splice(idx, 1);
+          saveData('Delete announcement: ' + item.titleRu).then(function () { refreshAnnList(); });
+        }));
+      });
+    }
+
+    function refreshGalleryList() {
+      var el = $('gallery-list-items');
+      el.innerHTML = '';
+      (todayData.gallery || []).forEach(function (item, idx) {
+        el.appendChild(renderListItem(item.caption ? item.caption.ru : item.src, item.date || '', function () {
+          todayData.gallery.splice(idx, 1);
+          saveData('Delete gallery photo').then(function () { refreshGalleryList(); });
+        }));
+      });
+    }
+
+    function refreshSchedList() {
+      var el = $('sched-list-items');
+      el.innerHTML = '';
+      (todayData.schedule || []).forEach(function (item, idx) {
+        var meta = item.date + ' ' + (item.time || '') + ' — ' + (item.result ? item.result.score : 'TBD');
+        el.appendChild(renderListItem(item.opponent.ru, meta, function () {
+          todayData.schedule.splice(idx, 1);
+          saveData('Delete schedule entry').then(function () { refreshSchedList(); });
+        }));
+      });
+    }
+
+    function refreshRosterList() {
+      var el = $('roster-list-items');
+      el.innerHTML = '';
+      (todayData.roster || []).forEach(function (item, idx) {
+        el.appendChild(renderListItem('#' + item.number + ' ' + item.nameRu, item.position, function () {
+          todayData.roster.splice(idx, 1);
+          saveData('Delete roster: ' + item.nameRu).then(function () { refreshRosterList(); });
+        }));
+      });
+    }
+
+    /* ---- AUTH ---- */
+    function tryAuth() {
+      config.token = $('gh-token').value.trim();
+      config.owner = $('gh-owner').value.trim();
+      config.repo = $('gh-repo').value.trim();
+      config.branch = $('gh-branch').value.trim() || 'master';
+
+      if (!config.token) { setStatus('auth-msg', 'error', 'Введите токен'); return; }
+
+      setStatus('auth-msg', 'loading', 'Подключение...');
+
+      // Validate token by reading user
+      fetch('https://api.github.com/user', { headers: { 'Authorization': 'Bearer ' + config.token } })
+        .then(function (r) { if (!r.ok) throw new Error('Invalid token'); return r.json(); })
+        .then(function (user) {
+          try { localStorage.setItem('sh-admin-token', config.token); localStorage.setItem('sh-admin-owner', config.owner); localStorage.setItem('sh-admin-repo', config.repo); localStorage.setItem('sh-admin-branch', config.branch); } catch (e) {}
+          $('auth-status').textContent = user.login;
+          $('btn-logout').style.display = '';
+          $('admin-auth').style.display = 'none';
+          $('admin-content').style.display = '';
+          return loadData();
+        })
+        .then(function () {
+          clearStatus('auth-msg');
+        })
+        .catch(function (err) {
+          setStatus('auth-msg', 'error', 'Ошибка: ' + err.message);
+        });
+    }
+
+    /* ---- INIT ---- */
+    function init() {
+      // Restore saved config
+      try {
+        var t = localStorage.getItem('sh-admin-token');
+        if (t) {
+          $('gh-token').value = t;
+          $('gh-owner').value = localStorage.getItem('sh-admin-owner') || 'luckycase';
+          $('gh-repo').value = localStorage.getItem('sh-admin-repo') || 'SheregeshHockey';
+          $('gh-branch').value = localStorage.getItem('sh-admin-branch') || 'master';
+        }
+      } catch (e) {}
+
+      // Set today date in date inputs
+      var today = new Date().toISOString().split('T')[0];
+      if ($('news-date')) $('news-date').value = today;
+      if ($('gallery-date')) $('gallery-date').value = today;
+      if ($('sched-date')) $('sched-date').value = today;
+
+      // Auth button
+      $('btn-auth').addEventListener('click', tryAuth);
+      $('btn-logout').addEventListener('click', function () {
+        try { localStorage.removeItem('sh-admin-token'); } catch (e) {}
+        location.reload();
+      });
+
+      // Tabs
+      document.querySelectorAll('.admin-tab').forEach(function (tab) {
+        tab.addEventListener('click', function () {
+          document.querySelectorAll('.admin-tab').forEach(function (t) { t.classList.remove('admin-tab--active'); });
+          document.querySelectorAll('.admin-panel').forEach(function (p) { p.classList.remove('admin-panel--active'); });
+          tab.classList.add('admin-tab--active');
+          $('panel-' + tab.getAttribute('data-tab')).classList.add('admin-panel--active');
+        });
+      });
+
+      // Photo drops
+      initPhotoDrop('news-photo-drop', 'news-photo-input', 'news-photo-previews', 'news');
+      initPhotoDrop('gallery-photo-drop', 'gallery-photo-input', 'gallery-photo-previews', 'gallery');
+      initPhotoDrop('roster-photo-drop', 'roster-photo-input', 'roster-photo-previews', 'roster');
+
+      // ---- NEWS ----
+      $('btn-news-preview').addEventListener('click', function () {
+        var preview = $('news-preview');
+        var content = $('news-preview-content');
+        preview.style.display = '';
+        content.innerHTML =
+          '<div style="background:var(--admin-bg);border:1px solid var(--admin-border);border-radius:8px;overflow:hidden;max-width:360px">' +
+          '<div style="padding:1rem"><span style="font-size:0.75rem;color:var(--admin-muted)">' + esc($('news-date').value) + '</span>' +
+          '<h3 style="font-size:1.1rem;margin:0.25rem 0">' + esc($('news-title-ru').value) + '</h3>' +
+          '<p style="font-size:0.85rem;color:var(--admin-muted)">' + esc($('news-content-ru').value) + '</p></div></div>';
+      });
+
+      $('btn-news-publish').addEventListener('click', function () {
+        if (!todayData) return;
+        var titleRu = $('news-title-ru').value.trim();
+        if (!titleRu) { setStatus('news-status', 'error', 'Введите заголовок'); return; }
+
+        setStatus('news-status', 'loading', 'Публикация...');
+
+        var uploadPromises = photoFiles.news.map(function (f) { return uploadImage(f, 'news'); });
+
+        Promise.all(uploadPromises).then(function (paths) {
+          var entry = {
+            id: genId('news'),
+            date: $('news-date').value,
+            titleRu: titleRu,
+            titleEn: $('news-title-en').value.trim() || titleRu,
+            contentRu: $('news-content-ru').value.trim(),
+            contentEn: $('news-content-en').value.trim(),
+            images: paths,
+            pinned: $('news-pinned').checked
+          };
+          todayData.news.push(entry);
+          return saveData('Add news: ' + titleRu);
+        }).then(function () {
+          setStatus('news-status', 'success', 'Новость опубликована!');
+          photoFiles.news = [];
+          $('news-photo-previews').innerHTML = '';
+          $('news-title-ru').value = '';
+          $('news-title-en').value = '';
+          $('news-content-ru').value = '';
+          $('news-content-en').value = '';
+          $('news-pinned').checked = false;
+          refreshNewsList();
+        }).catch(function (err) {
+          setStatus('news-status', 'error', 'Ошибка: ' + err.message);
+        });
+      });
+
+      // ---- ANNOUNCEMENTS ----
+      $('btn-ann-preview').addEventListener('click', function () {
+        var preview = $('ann-preview');
+        var content = $('ann-preview-content');
+        preview.style.display = '';
+        content.innerHTML =
+          '<div style="background:var(--admin-bg);border:1px solid var(--admin-border);border-radius:8px;padding:1rem;max-width:400px;border-left:4px solid var(--admin-green)">' +
+          '<span style="font-size:0.85rem;color:var(--admin-green);font-weight:600">' + esc($('ann-date').value) + '</span>' +
+          '<h3 style="font-size:1.1rem;margin:0.25rem 0">' + esc($('ann-title-ru').value) + '</h3>' +
+          '<p style="font-size:0.85rem;color:var(--admin-muted)">' + esc($('ann-content-ru').value) + '</p>' +
+          '<p style="font-size:0.8rem;color:var(--admin-muted);margin-top:0.5rem">📍 ' + esc($('ann-location-ru').value) + '</p></div>';
+      });
+
+      $('btn-ann-publish').addEventListener('click', function () {
+        if (!todayData) return;
+        var titleRu = $('ann-title-ru').value.trim();
+        if (!titleRu) { setStatus('ann-status', 'error', 'Введите заголовок'); return; }
+
+        setStatus('ann-status', 'loading', 'Публикация...');
+
+        var entry = {
+          id: genId('ann'),
+          eventDate: $('ann-date').value ? new Date($('ann-date').value).toISOString() : new Date().toISOString(),
+          titleRu: titleRu,
+          titleEn: $('ann-title-en').value.trim() || titleRu,
+          contentRu: $('ann-content-ru').value.trim(),
+          contentEn: $('ann-content-en').value.trim(),
+          location: {
+            ru: $('ann-location-ru').value.trim(),
+            en: $('ann-location-en').value.trim()
+          }
+        };
+        todayData.announcements.push(entry);
+        saveData('Add announcement: ' + titleRu).then(function () {
+          setStatus('ann-status', 'success', 'Анонс опубликован!');
+          $('ann-title-ru').value = '';
+          $('ann-title-en').value = '';
+          $('ann-content-ru').value = '';
+          $('ann-content-en').value = '';
+          $('ann-location-ru').value = '';
+          $('ann-location-en').value = '';
+          refreshAnnList();
+        }).catch(function (err) {
+          setStatus('ann-status', 'error', 'Ошибка: ' + err.message);
+        });
+      });
+
+      // ---- GALLERY ----
+      $('btn-gallery-preview').addEventListener('click', function () {
+        var preview = $('gallery-preview');
+        var content = $('gallery-preview-content');
+        preview.style.display = '';
+        var html = '<div style="display:flex;flex-wrap:wrap;gap:0.5rem">';
+        photoFiles.gallery.forEach(function (f) {
+          html += '<div style="width:120px;height:90px;border-radius:6px;overflow:hidden;border:1px solid var(--admin-border)">';
+          // We can't easily get the preview URL here without reading again, show placeholder
+          html += '<div style="width:100%;height:100%;background:var(--admin-surface);display:flex;align-items:center;justify-content:center;font-size:0.8rem;color:var(--admin-muted)">' + esc(f.name) + '</div>';
+          html += '</div>';
+        });
+        html += '</div>';
+        html += '<p style="font-size:0.85rem;margin-top:0.5rem;color:var(--admin-muted)">' + esc($('gallery-caption-ru').value) + '</p>';
+        content.innerHTML = html;
+      });
+
+      $('btn-gallery-publish').addEventListener('click', function () {
+        if (!todayData) return;
+        if (!photoFiles.gallery.length) { setStatus('gallery-status', 'error', 'Добавьте хотя бы одно фото'); return; }
+
+        setStatus('gallery-status', 'loading', 'Загрузка фото...');
+
+        var uploadPromises = photoFiles.gallery.map(function (f) { return uploadImage(f, 'gallery'); });
+
+        Promise.all(uploadPromises).then(function (paths) {
+          paths.forEach(function (path) {
+            todayData.gallery.push({
+              src: path,
+              caption: {
+                ru: $('gallery-caption-ru').value.trim(),
+                en: $('gallery-caption-en').value.trim()
+              },
+              alt: {
+                ru: $('gallery-caption-ru').value.trim(),
+                en: $('gallery-caption-en').value.trim()
+              },
+              date: $('gallery-date').value,
+              category: $('gallery-category').value
+            });
+          });
+          return saveData('Add gallery photos');
+        }).then(function () {
+          setStatus('gallery-status', 'success', 'Фото опубликованы!');
+          photoFiles.gallery = [];
+          $('gallery-photo-previews').innerHTML = '';
+          $('gallery-caption-ru').value = '';
+          $('gallery-caption-en').value = '';
+          refreshGalleryList();
+        }).catch(function (err) {
+          setStatus('gallery-status', 'error', 'Ошибка: ' + err.message);
+        });
+      });
+
+      // ---- SCHEDULE ----
+      $('btn-sched-publish').addEventListener('click', function () {
+        if (!todayData) return;
+        var date = $('sched-date').value;
+        var opponentRu = $('sched-opponent-ru').value.trim();
+        if (!date || !opponentRu) { setStatus('sched-status', 'error', 'Заполните дату и соперника'); return; }
+
+        setStatus('sched-status', 'loading', 'Публикация...');
+
+        var score = $('sched-score').value.trim();
+        var entry = {
+          date: date,
+          time: $('sched-time').value,
+          opponent: { ru: opponentRu, en: $('sched-opponent-en').value.trim() || opponentRu },
+          location: { ru: $('sched-location-ru').value, en: $('sched-location-en').value },
+          result: score ? { score: score, win: $('sched-win').checked } : null
+        };
+        todayData.schedule.push(entry);
+        saveData('Add schedule: ' + opponentRu + ' ' + date).then(function () {
+          setStatus('sched-status', 'success', 'Матч добавлен!');
+          $('sched-opponent-ru').value = '';
+          $('sched-opponent-en').value = '';
+          $('sched-score').value = '';
+          $('sched-win').checked = false;
+          refreshSchedList();
+        }).catch(function (err) {
+          setStatus('sched-status', 'error', 'Ошибка: ' + err.message);
+        });
+      });
+
+      // ---- ROSTER ----
+      $('btn-roster-publish').addEventListener('click', function () {
+        if (!todayData) return;
+        var nameRu = $('roster-name-ru').value.trim();
+        var number = parseInt($('roster-number').value, 10);
+        if (!nameRu || isNaN(number)) { setStatus('roster-status', 'error', 'Заполните номер и имя'); return; }
+
+        setStatus('roster-status', 'loading', 'Публикация...');
+
+        var photoPromise = photoFiles.roster.length
+          ? uploadImage(photoFiles.roster[0], 'roster')
+          : Promise.resolve('assets/images/placeholders/ice.svg');
+
+        photoPromise.then(function (photoPath) {
+          var entry = {
+            number: number,
+            nameRu: nameRu,
+            nameEn: $('roster-name-en').value.trim() || nameRu,
+            position: $('roster-position').value,
+            photo: photoPath
+          };
+          todayData.roster.push(entry);
+          return saveData('Add roster: #' + number + ' ' + nameRu);
+        }).then(function () {
+          setStatus('roster-status', 'success', 'Игрок добавлен!');
+          photoFiles.roster = [];
+          $('roster-photo-previews').innerHTML = '';
+          $('roster-number').value = '';
+          $('roster-name-ru').value = '';
+          $('roster-name-en').value = '';
+          refreshRosterList();
+        }).catch(function (err) {
+          setStatus('roster-status', 'error', 'Ошибка: ' + err.message);
+        });
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+  })();
+  </script>
+</body>
+</html>

@@ -110,3 +110,79 @@
 .theme-light .btn--primary:hover {
   color: #1a2940;
 }
+
+/* === "TODAY / MUSTAG" MODE === */
+/* Activated when body has .mode-today — green+black palette from Mustag jerseys */
+.mode-today {
+  --color-primary: #00875A;
+  --color-primary-light: #00A86B;
+  --color-primary-dark: #006644;
+
+  --color-accent: #76FF03;
+  --color-accent-light: #9EFF5E;
+  --color-accent-dark: #64DD17;
+
+  --color-ice: #1a2e1a;
+  --color-ice-light: #0D1117;
+
+  --color-red: #FF6D00;
+  --color-red-dark: #E65100;
+
+  --color-bg: #0D1117;
+  --color-bg-elevated: #161B22;
+  --color-bg-surface: #1C2733;
+  --color-text: #E6EDF3;
+  --color-text-muted: #8B949E;
+  --color-text-accent: #76FF03;
+  --color-border: #30363D;
+  --color-overlay: rgba(13, 17, 23, 0.90);
+
+  /* Mustag-specific tokens */
+  --color-mustag-green: #00875A;
+  --color-mustag-lime: #76FF03;
+  --color-mustag-black: #0D1117;
+  --color-mustag-blue: #1565C0;
+  --color-mustag-orange: #FF6D00;
+}
+
+.mode-today.theme-light {
+  --color-bg: #F6FFF6;
+  --color-bg-elevated: #E8F5E9;
+  --color-bg-surface: #C8E6C9;
+  --color-text: #1B2E1B;
+  --color-text-muted: #3E5A3E;
+  --color-text-accent: #006644;
+  --color-border: #A5D6A7;
+  --color-overlay: rgba(246, 255, 246, 0.92);
+}
+
+.mode-today .hero__bg {
+  background:
+    radial-gradient(ellipse at 50% 30%, rgba(0, 135, 90, 0.35) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 70%, rgba(118, 255, 3, 0.08) 0%, transparent 50%),
+    linear-gradient(180deg, #0D1117 0%, #101820 50%, #0D1117 100%);
+}
+
+.mode-today.theme-light .hero__bg {
+  background:
+    radial-gradient(ellipse at 50% 30%, rgba(0, 135, 90, 0.15) 0%, transparent 60%),
+    linear-gradient(180deg, #E8F5E9 0%, #C8E6C9 50%, #A5D6A7 100%);
+}
+
+.mode-today .header--sticky {
+  background-color: rgba(13, 17, 23, 0.95);
+  box-shadow: 0 1px 0 var(--color-border);
+}
+
+.mode-today.theme-light .header--sticky {
+  background-color: rgba(246, 255, 246, 0.95);
+  box-shadow: 0 1px 0 var(--color-border);
+}
+
+.mode-today.theme-light .btn--primary {
+  color: #1B2E1B;
+}
+
+.mode-today.theme-light .btn--primary:hover {
+  color: #1B2E1B;
+}

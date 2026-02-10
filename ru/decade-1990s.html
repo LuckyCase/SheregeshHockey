@@ -36,6 +36,12 @@
         <a href="decade-1980s.html" class="decade-pill">1980</a>
         <a href="decade-1990s.html" class="decade-pill decade-pill--active">1990</a>
       </div>
+      <div class="mode-switch" role="radiogroup" aria-label="Режим сайта">
+        <a href="../index.html" class="mode-switch__btn mode-switch__btn--active" role="radio" aria-checked="true">История</a>
+        <a href="today.html" class="mode-switch__btn" role="radio" aria-checked="false">Наши дни</a>
+        <span class="mode-switch__slider"></span>
+      </div>
+
       <div class="header__actions">
         <button type="button" class="theme-toggle" aria-label="Switch to light theme" aria-pressed="false" title="Светлая/тёмная тема">
           <svg class="theme-toggle__icon theme-toggle__icon--sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
@@ -56,6 +62,13 @@
 
   <div class="mobile-menu__backdrop" id="mobile-menu-backdrop" aria-hidden="true"></div>
   <div class="mobile-menu" id="mobile-menu" aria-label="Мобильное меню" aria-hidden="true">
+    <div class="mobile-menu__mode-switch">
+      <div class="mode-switch" role="radiogroup" aria-label="Режим сайта">
+        <a href="../index.html" class="mode-switch__btn mode-switch__btn--active" role="radio" aria-checked="true">История</a>
+        <a href="today.html" class="mode-switch__btn" role="radio" aria-checked="false">Наши дни</a>
+        <span class="mode-switch__slider"></span>
+      </div>
+    </div>
     <ul class="mobile-menu__list">
       <li><a href="../index.html#about" class="mobile-menu__link">О проекте</a></li>
       <li><a href="../index.html#village" class="mobile-menu__link">Посёлок</a></li>
@@ -113,6 +126,7 @@
   </footer>
 
   <script src="../assets/js/modules/theme.js"></script>
+  <script src="../assets/js/modules/mode-switch.js"></script>
   <script src="../assets/js/modules/navigation.js"></script>
   <script src="../assets/js/app.js"></script>
 </body>
