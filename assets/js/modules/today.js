@@ -329,7 +329,14 @@
 
   /* ==== INIT ==== */
   function init() {
-    var dataUrl = prefix + 'assets/js/data/today-data.json';
+    var dataUrl;
+    try {
+      dataUrl = new URL(prefix + 'assets/js/data/today-data.json', window.location.href).href;
+    } catch (e) {
+      var basePath = path.replace(/\/ru\/[^]*$|\/en\/[^]*$/, '') || '';
+      if (basePath && !basePath.endsWith('/')) basePath += '/';
+      dataUrl = window.location.origin + basePath + 'assets/js/data/today-data.json';
+    }
     // cache: 'no-cache' — всегда проверять актуальность на сервере (избегаем кэша после публикации из админки)
     fetch(dataUrl, { cache: 'no-cache' })
       .then(function (r) {
@@ -351,9 +358,10 @@
         }
       })
       .catch(function (err) {
-        showLoadError(lang === 'ru' 
-          ? 'Не удалось загрузить данные. Проверьте сетевое подключение и обновите страницу.'
-          : 'Failed to load data. Check your connection and refresh the page.');
+        var msg = (err && err.message) ? err.message : String(err);
+        showLoadError((lang === 'ru' 
+          ? 'Не удалось загрузить данные: '
+          : 'Failed to load data: ') + msg);
       });
   }
 
