@@ -93,6 +93,18 @@
         "ru": "",
         "en": ""
       }
+    },
+    {
+      "id": "ann-mlik00n8",
+      "eventDate": "2026-02-11T21:40:23.492Z",
+      "titleRu": "test",
+      "titleEn": "test",
+      "contentRu": "test",
+      "contentEn": "test",
+      "location": {
+        "ru": "",
+        "en": ""
+      }
     }
   ],
   "gallery": [
