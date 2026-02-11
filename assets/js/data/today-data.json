@@ -69,6 +69,18 @@
         "ru": "Школьный каток",
         "en": "School rink"
       }
+    },
+    {
+      "id": "ann-mlijzgtr",
+      "eventDate": "2026-02-11T21:39:57.807Z",
+      "titleRu": "test",
+      "titleEn": "test",
+      "contentRu": "test",
+      "contentEn": "test",
+      "location": {
+        "ru": "test",
+        "en": "test"
+      }
     }
   ],
   "gallery": [
