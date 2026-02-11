@@ -14,18 +14,6 @@
       }
     },
     {
-      "id": "ann-002",
-      "eventDate": "2026-03-15T14:00",
-      "titleRu": "Детский хоккейный турнир",
-      "titleEn": "Youth hockey tournament",
-      "contentRu": "Открытый турнир для юных хоккеистов до 14 лет. Регистрация открыта.",
-      "contentEn": "Open tournament for young hockey players under 14. Registration is open.",
-      "location": {
-        "ru": "Школьный каток",
-        "en": "School rink"
-      }
-    },
-    {
       "id": "ann-mlifti30",
       "eventDate": "2026-02-11T19:43:21.036Z",
       "titleRu": "🏒Хоккейный февраль в Шерегеше продолжается 🏒",
