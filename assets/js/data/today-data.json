@@ -113,6 +113,18 @@
         "ru": "🏒Хоккейный февраль в Шерегеше продолжается 🏒",
         "en": "🏒Хоккейный февраль в Шерегеше продолжается 🏒"
       }
+    },
+    {
+      "id": "ann-mlijq1v6",
+      "eventDate": "2026-02-11T21:32:38.514Z",
+      "titleRu": "test",
+      "titleEn": "test",
+      "contentRu": "test",
+      "contentEn": "test",
+      "location": {
+        "ru": "test",
+        "en": "test"
+      }
     }
   ],
   "gallery": [
