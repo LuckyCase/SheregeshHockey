@@ -475,6 +475,7 @@
       <button type="button" class="admin-tab admin-tab--active" data-tab="news" role="tab">Новости</button>
       <button type="button" class="admin-tab" data-tab="announcements" role="tab">Анонсы</button>
       <button type="button" class="admin-tab" data-tab="timeline" role="tab">Хронология</button>
+      <button type="button" class="admin-tab" data-tab="gallery-archive" role="tab">Архив фото</button>
       <button type="button" class="admin-tab" data-tab="gallery" role="tab">Фото</button>
       <button type="button" class="admin-tab" data-tab="schedule" role="tab">Расписание</button>
       <button type="button" class="admin-tab" data-tab="roster" role="tab">Составы</button>
@@ -652,6 +653,72 @@
           </select>
         </div>
         <div id="timeline-list-items"></div>
+      </div>
+    </div>
+
+    <!-- ======== GALLERY ARCHIVE PANEL ======== -->
+    <div class="admin-panel" id="panel-gallery-archive">
+      <h3 style="margin-bottom:1rem">Добавить фото в исторический архив</h3>
+      <div class="form-group">
+        <label class="form-label">Фото</label>
+        <div class="photo-drop" id="gallery-archive-photo-drop">
+          <div class="photo-drop__icon">+</div>
+          <div>Перетащите файл или нажмите для выбора</div>
+          <input type="file" accept="image/*" id="gallery-archive-photo-input">
+        </div>
+        <div class="photo-previews" id="gallery-archive-photo-previews"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="gallery-archive-caption-ru">Подпись (RU)</label>
+          <input type="text" id="gallery-archive-caption-ru" class="form-input" placeholder="Каток у рудника">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="gallery-archive-caption-en">Caption (EN)</label>
+          <input type="text" id="gallery-archive-caption-en" class="form-input" placeholder="Rink near the mine">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="gallery-archive-alt-ru">Alt текст (RU)</label>
+          <input type="text" id="gallery-archive-alt-ru" class="form-input" placeholder="Каток у рудника, 1970-е">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="gallery-archive-alt-en">Alt text (EN)</label>
+          <input type="text" id="gallery-archive-alt-en" class="form-input" placeholder="Rink near the mine, 1970s">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="gallery-archive-decade">Декада</label>
+        <select id="gallery-archive-decade" class="form-select">
+          <option value="1970s">1970-е</option>
+          <option value="1980s">1980-е</option>
+          <option value="1990s">1990-е</option>
+          <option value="teams">Команды</option>
+        </select>
+      </div>
+      <div style="display:flex;gap:0.75rem;flex-wrap:wrap">
+        <button type="button" class="btn" id="btn-gallery-archive-preview">Предпросмотр</button>
+        <button type="button" class="btn btn--primary" id="btn-gallery-archive-publish">Опубликовать</button>
+      </div>
+      <div id="gallery-archive-preview" class="admin-preview" style="display:none">
+        <div class="admin-preview__title">Предпросмотр</div>
+        <div id="gallery-archive-preview-content"></div>
+      </div>
+      <div id="gallery-archive-status" class="admin-status"></div>
+      <div class="admin-list" id="gallery-archive-list">
+        <div class="admin-list__title">Фотографии архива</div>
+        <div style="margin-bottom:1rem">
+          <label class="form-label">Фильтр по декаде:</label>
+          <select id="gallery-archive-filter-decade" class="form-select" style="max-width:200px">
+            <option value="all">Все</option>
+            <option value="1970s">1970-е</option>
+            <option value="1980s">1980-е</option>
+            <option value="1990s">1990-е</option>
+            <option value="teams">Команды</option>
+          </select>
+        </div>
+        <div id="gallery-archive-list-items"></div>
       </div>
     </div>
 
@@ -848,14 +915,17 @@
       repo: 'SheregeshHockey',
       branch: 'master',
       dataPath: 'assets/js/data/today-data.json',
-      timelinePath: 'assets/js/data/timeline-data.json'
+      timelinePath: 'assets/js/data/timeline-data.json',
+      galleryArchivePath: 'assets/js/data/gallery-data.json'
     };
 
     var todayData = null;
     var dataSha = null; // SHA of current today-data.json for updates
     var timelineData = null;
     var timelineSha = null; // SHA of current timeline-data.json for updates
-    var photoFiles = { news: [], gallery: [], roster: [], timeline: [] };
+    var galleryArchiveData = null;
+    var galleryArchiveSha = null; // SHA of current gallery-data.json for updates
+    var photoFiles = { news: [], gallery: [], roster: [], timeline: [], galleryArchive: [] };
 
     /* ---- GitHub API helpers ---- */
     function ghApi(path, opts) {
@@ -930,6 +1000,22 @@
       var content = JSON.stringify(timelineData, null, 2);
       return writeFile(config.timelinePath, content, message || 'Update timeline-data.json', timelineSha).then(function (res) {
         timelineSha = res.content.sha;
+      });
+    }
+
+    function loadGalleryArchiveData() {
+      return readFile(config.galleryArchivePath).then(function (res) {
+        galleryArchiveSha = res.sha;
+        var content = decodeURIComponent(escape(atob(res.content.replace(/\n/g, ''))));
+        galleryArchiveData = JSON.parse(content);
+        refreshGalleryArchiveList();
+      });
+    }
+
+    function saveGalleryArchiveData(message) {
+      var content = JSON.stringify(galleryArchiveData, null, 2);
+      return writeFile(config.galleryArchivePath, content, message || 'Update gallery-data.json', galleryArchiveSha).then(function (res) {
+        galleryArchiveSha = res.content.sha;
       });
     }
 
@@ -1138,6 +1224,38 @@
       }
     }
 
+    function refreshGalleryArchiveList() {
+      if (!galleryArchiveData) return;
+      var el = $('gallery-archive-list-items');
+      var filterDecade = $('gallery-archive-filter-decade').value;
+      el.innerHTML = '';
+
+      var filtered = galleryArchiveData.filter(function (photo) {
+        return filterDecade === 'all' || photo.decade === filterDecade;
+      });
+
+      filtered.forEach(function (photo, idx) {
+        var globalIdx = galleryArchiveData.indexOf(photo);
+        var title = photo.caption.ru || 'Без подписи';
+        var meta = photo.decade + ' • ' + (photo.alt.ru || '');
+        el.appendChild(renderListItem(title, meta, function () {
+          if (confirm('Удалить фото «' + title + '» из архива?')) {
+            galleryArchiveData.splice(globalIdx, 1);
+            saveGalleryArchiveData('Delete gallery archive photo: ' + title).then(function () {
+              setStatus('gallery-archive-status', 'success', 'Фото удалено');
+              refreshGalleryArchiveList();
+            }).catch(function (err) {
+              setStatus('gallery-archive-status', 'error', 'Ошибка: ' + err.message);
+            });
+          }
+        }));
+      });
+
+      if (el.children.length === 0) {
+        el.innerHTML = '<div style="padding:1rem;text-align:center;color:var(--admin-muted)">Фотографий нет</div>';
+      }
+    }
+
     /* ---- AUTH ---- */
     function tryAuth() {
       config.token = $('gh-token').value.trim();
@@ -1158,7 +1276,7 @@
           $('btn-logout').style.display = '';
           $('admin-auth').style.display = 'none';
           $('admin-content').style.display = '';
-          return Promise.all([loadData(), loadTimelineData()]);
+          return Promise.all([loadData(), loadTimelineData(), loadGalleryArchiveData()]);
         })
         .then(function () {
           clearStatus('auth-msg');
@@ -1248,6 +1366,7 @@
       initPhotoDrop('news-photo-drop', 'news-photo-input', 'news-photo-previews', 'news');
       initPhotoDrop('gallery-photo-drop', 'gallery-photo-input', 'gallery-photo-previews', 'gallery');
       initPhotoDrop('timeline-photo-drop', 'timeline-photo-input', 'timeline-photo-previews', 'timeline');
+      initPhotoDrop('gallery-archive-photo-drop', 'gallery-archive-photo-input', 'gallery-archive-photo-previews', 'galleryArchive');
       initPhotoDrop('roster-photo-drop', 'roster-photo-input', 'roster-photo-previews', 'roster');
 
       // ---- NEWS ----
@@ -1415,6 +1534,73 @@
 
       // Timeline filter change
       $('timeline-filter-decade').addEventListener('change', refreshTimelineList);
+
+      // ---- GALLERY ARCHIVE ----
+      $('btn-gallery-archive-preview').addEventListener('click', function () {
+        var preview = $('gallery-archive-preview');
+        var content = $('gallery-archive-preview-content');
+        preview.style.display = '';
+        content.innerHTML =
+          '<div style="background:var(--admin-bg);border:1px solid var(--admin-border);border-radius:8px;overflow:hidden;max-width:300px">' +
+          '<div style="aspect-ratio:4/3;background:var(--admin-surface);display:flex;align-items:center;justify-content:center;color:var(--admin-muted)">[Фото]</div>' +
+          '<div style="padding:0.75rem">' +
+          '<div style="font-size:0.85rem;font-weight:600">' + esc($('gallery-archive-caption-ru').value) + '</div>' +
+          '<div style="font-size:0.75rem;color:var(--admin-muted);margin-top:0.25rem">' + $('gallery-archive-decade').value + '</div>' +
+          '</div></div>';
+      });
+
+      $('btn-gallery-archive-publish').addEventListener('click', function () {
+        if (!galleryArchiveData) return;
+        if (!photoFiles.galleryArchive.length) {
+          setStatus('gallery-archive-status', 'error', 'Добавьте фото');
+          return;
+        }
+
+        var captionRu = $('gallery-archive-caption-ru').value.trim();
+        var captionEn = $('gallery-archive-caption-en').value.trim();
+        var altRu = $('gallery-archive-alt-ru').value.trim();
+        var altEn = $('gallery-archive-alt-en').value.trim();
+        var decade = $('gallery-archive-decade').value;
+
+        if (!captionRu) {
+          setStatus('gallery-archive-status', 'error', 'Введите подпись (RU)');
+          return;
+        }
+
+        setStatus('gallery-archive-status', 'loading', 'Загрузка фото...');
+
+        uploadImage(photoFiles.galleryArchive[0], 'gallery-archive').then(function (photoPath) {
+          var entry = {
+            src: photoPath,
+            decade: decade,
+            caption: {
+              ru: captionRu,
+              en: captionEn || captionRu
+            },
+            alt: {
+              ru: altRu || captionRu,
+              en: altEn || captionEn || captionRu
+            }
+          };
+
+          galleryArchiveData.push(entry);
+          return saveGalleryArchiveData('Add gallery archive photo: ' + captionRu);
+        }).then(function () {
+          setStatus('gallery-archive-status', 'success', 'Фото добавлено в архив!');
+          photoFiles.galleryArchive = [];
+          $('gallery-archive-photo-previews').innerHTML = '';
+          $('gallery-archive-caption-ru').value = '';
+          $('gallery-archive-caption-en').value = '';
+          $('gallery-archive-alt-ru').value = '';
+          $('gallery-archive-alt-en').value = '';
+          refreshGalleryArchiveList();
+        }).catch(function (err) {
+          setStatus('gallery-archive-status', 'error', 'Ошибка: ' + err.message);
+        });
+      });
+
+      // Gallery archive filter change
+      $('gallery-archive-filter-decade').addEventListener('change', refreshGalleryArchiveList);
 
       // ---- GALLERY ----
       $('btn-gallery-preview').addEventListener('click', function () {
