@@ -11,18 +11,6 @@
         "assets/images/placeholders/ice.svg"
       ],
       "pinned": true
-    },
-    {
-      "id": "news-002",
-      "date": "2026-01-25",
-      "titleRu": "Новая форма сезона 2025/26",
-      "titleEn": "New jerseys for the 2025/26 season",
-      "contentRu": "Представлены два комплекта формы — зелёная (домашняя) и чёрная (гостевая). На груди — фирменный логотип с рысью и горами.",
-      "contentEn": "Two jersey sets unveiled — green (home) and black (away). Both feature the signature lynx and mountain logo on the chest.",
-      "images": [
-        "assets/images/placeholders/ice.svg"
-      ],
-      "pinned": false
     }
   ],
   "announcements": [
