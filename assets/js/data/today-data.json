@@ -83,6 +83,18 @@
       "contentEn": "",
       "images": [],
       "pinned": true
+    },
+    {
+      "id": "news-mlik7bro",
+      "date": "2026-02-18",
+      "titleRu": "Победа",
+      "titleEn": "Победа",
+      "contentRu": "Победа",
+      "contentEn": "",
+      "images": [
+        "assets/images/today/news/1770846363513.png"
+      ],
+      "pinned": false
     }
   ],
   "announcements": [
