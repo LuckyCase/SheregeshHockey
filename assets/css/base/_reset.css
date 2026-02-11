@@ -18,6 +18,8 @@ html {
   scroll-behavior: smooth;
   /* Резервируем место под скроллбар, чтобы контент не смещался влево при появлении полосы прокрутки */
   scrollbar-gutter: stable;
+  /* Устраняет «просачивание» предыдущей страницы при overscroll (резинка, pull-to-refresh) */
+  overscroll-behavior: none;
 }
 
 body {
