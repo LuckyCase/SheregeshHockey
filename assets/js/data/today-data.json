@@ -43,6 +43,16 @@
       "contentEn": "test",
       "images": [],
       "pinned": false
+    },
+    {
+      "id": "news-mlik2q42",
+      "date": "2026-02-11",
+      "titleRu": "Большая тестовая новость",
+      "titleEn": "Большая тестовая новость",
+      "contentRu": "Большая тестовая новость",
+      "contentEn": "",
+      "images": [],
+      "pinned": false
     }
   ],
   "announcements": [
