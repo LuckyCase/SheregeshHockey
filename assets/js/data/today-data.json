@@ -53,6 +53,16 @@
       "contentEn": "test",
       "images": [],
       "pinned": false
+    },
+    {
+      "id": "news-mlijpsth",
+      "date": "2026-02-11",
+      "titleRu": "test",
+      "titleEn": "test",
+      "contentRu": "test",
+      "contentEn": "test",
+      "images": [],
+      "pinned": false
     }
   ],
   "announcements": [
