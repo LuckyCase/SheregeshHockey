@@ -5,6 +5,9 @@
   'use strict';
 
   var U = window.SheregeshUtils || {};
+  var getAssetPrefix = U.getAssetPrefix;
+  var getLang = U.getLang;
+  var escapeHtml = U.escapeHtml;
 
   function getDataPath() {
     var script = document.querySelector('script[src*="timeline"]');
@@ -18,18 +21,6 @@
   var timelineData = null;
   var currentDecade = '1970s';
   var currentIndex = 0;
-
-  function getAssetPrefix() {
-    return U.getAssetPrefix ? U.getAssetPrefix() : '';
-  }
-
-  function getLang() {
-    return U.getLang ? U.getLang() : 'ru';
-  }
-
-  function escapeHtml(s) {
-    return U.escapeHtml ? U.escapeHtml(s) : (s || '');
-  }
 
   function getContainer() {
     return document.querySelector('[data-timeline]');

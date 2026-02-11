@@ -35,19 +35,8 @@
 }
 
 .btn--outline:hover {
-  background: rgba(212, 168, 67, 0.1);
+  background: var(--overlay-accent-light);
   transform: translateY(-2px);
-}
-
-.btn--ghost {
-  background: transparent;
-  color: var(--color-text-muted);
-  border-color: var(--color-border);
-}
-
-.btn--ghost:hover {
-  color: var(--color-text);
-  border-color: var(--color-text-muted);
 }
 
 .btn:focus-visible {
@@ -76,7 +65,7 @@
 .pill--active {
   border-color: var(--color-accent);
   color: var(--color-accent);
-  background: rgba(212, 168, 67, 0.1);
+  background: var(--overlay-accent-light);
 }
 
 .pill:focus-visible {

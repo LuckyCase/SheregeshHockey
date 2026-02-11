@@ -5,6 +5,9 @@
   'use strict';
 
   var U = window.SheregeshUtils || {};
+  var getAssetPrefix = U.getAssetPrefix;
+  var getLang = U.getLang;
+  var escapeHtml = U.escapeHtml;
 
   function getDataPath() {
     var script = document.querySelector('script[src*="gallery"]');
@@ -19,18 +22,6 @@
 
   var galleryData = [];
   var currentFilter = FILTER_ALL;
-
-  function getAssetPrefix() {
-    return U.getAssetPrefix ? U.getAssetPrefix() : '';
-  }
-
-  function getLang() {
-    return U.getLang ? U.getLang() : 'ru';
-  }
-
-  function escapeHtml(s) {
-    return U.escapeHtml ? U.escapeHtml(s) : (s || '');
-  }
 
   function getContainer() {
     return document.querySelector('[data-gallery]');

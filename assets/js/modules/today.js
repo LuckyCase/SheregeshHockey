@@ -213,63 +213,27 @@
       var filtered = filter === 'all' ? items : items.filter(function (i) { return i.category === filter; });
       var gHtml = '';
       filtered.forEach(function (item, idx) {
-        gHtml += '<figure class="today-gallery__item" data-animate>';
-        gHtml += '<img class="today-gallery__image" src="' + prefix + esc(item.src) + '" alt="' + esc(loc(item.alt)) + '" loading="lazy" data-lightbox-src="' + prefix + esc(item.src) + '" data-lightbox-caption="' + esc(loc(item.caption)) + '" data-lightbox-index="' + idx + '">';
+        gHtml += '<figure class="today-gallery__item" data-animate data-index="' + idx + '" tabindex="0" role="button">';
+        gHtml += '<img class="today-gallery__image" src="' + prefix + esc(item.src) + '" alt="' + esc(loc(item.alt)) + '" loading="lazy">';
         gHtml += '<figcaption class="today-gallery__caption">' + esc(loc(item.caption)) + '</figcaption>';
         gHtml += '</figure>';
       });
       gridEl.innerHTML = gHtml;
 
-      // Hook into lightbox if available
-      var imgs = gridEl.querySelectorAll('[data-lightbox-src]');
-      if (imgs.length && window.SheregeshLightbox) {
-        window.SheregeshLightbox.attach(imgs);
-      } else if (imgs.length) {
-        // Manual lightbox binding
-        var lightbox = document.getElementById('lightbox');
-        if (lightbox) {
-          var lbImage = lightbox.querySelector('.lightbox__image');
-          var lbCaption = lightbox.querySelector('.lightbox__caption');
-          var lbCounter = lightbox.querySelector('.lightbox__counter');
-          var lbClose = lightbox.querySelector('.lightbox__close');
-          var lbPrev = lightbox.querySelector('.lightbox__nav--prev');
-          var lbNext = lightbox.querySelector('.lightbox__nav--next');
-          var lbBackdrop = lightbox.querySelector('.lightbox__backdrop');
-          var currentIdx = 0;
-          var allImgs = Array.from(imgs);
-
-          function showLb(idx) {
-            currentIdx = idx;
-            var img = allImgs[idx];
-            lbImage.src = img.getAttribute('data-lightbox-src');
-            lbImage.alt = img.alt;
-            if (lbCaption) lbCaption.textContent = img.getAttribute('data-lightbox-caption') || '';
-            if (lbCounter) lbCounter.textContent = (idx + 1) + ' / ' + allImgs.length;
-            lightbox.hidden = false;
-            lightbox.setAttribute('aria-hidden', 'false');
-            document.body.style.overflow = 'hidden';
-          }
-          function closeLb() {
-            lightbox.hidden = true;
-            lightbox.setAttribute('aria-hidden', 'true');
-            document.body.style.overflow = '';
-          }
-
-          allImgs.forEach(function (img, i) {
-            img.style.cursor = 'pointer';
-            img.addEventListener('click', function () { showLb(i); });
+      // Bind lightbox using window.LightboxOpen
+      if (typeof window.LightboxOpen === 'function') {
+        gridEl.querySelectorAll('.today-gallery__item').forEach(function (item) {
+          item.addEventListener('click', function () {
+            var idx = parseInt(item.getAttribute('data-index'), 10);
+            if (!isNaN(idx)) window.LightboxOpen(idx, filtered, 'all');
           });
-          if (lbClose) lbClose.addEventListener('click', closeLb);
-          if (lbBackdrop) lbBackdrop.addEventListener('click', closeLb);
-          if (lbPrev) lbPrev.addEventListener('click', function () { showLb((currentIdx - 1 + allImgs.length) % allImgs.length); });
-          if (lbNext) lbNext.addEventListener('click', function () { showLb((currentIdx + 1) % allImgs.length); });
-          document.addEventListener('keydown', function (e) {
-            if (lightbox.hidden) return;
-            if (e.key === 'Escape') closeLb();
-            if (e.key === 'ArrowLeft' && lbPrev) lbPrev.click();
-            if (e.key === 'ArrowRight' && lbNext) lbNext.click();
+          item.addEventListener('keydown', function (e) {
+            if (e.key !== 'Enter' && e.key !== ' ') return;
+            e.preventDefault();
+            var idx = parseInt(item.getAttribute('data-index'), 10);
+            if (!isNaN(idx)) window.LightboxOpen(idx, filtered, 'all');
           });
-        }
+        });
       }
     }
 

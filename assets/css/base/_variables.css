@@ -24,6 +24,14 @@
   --color-border: #334155;
   --color-overlay: rgba(15, 23, 42, 0.88);
 
+  /* Overlay variants */
+  --overlay-dark: rgba(11, 20, 32, 0.85);
+  --overlay-sticky: rgba(11, 20, 32, 0.95);
+  --overlay-backdrop: rgba(26, 41, 64, 0.3);
+  --overlay-accent-light: rgba(212, 168, 67, 0.1);
+  --overlay-accent-subtle: rgba(212, 168, 67, 0.08);
+  --overlay-accent-medium: rgba(212, 168, 67, 0.4);
+
   /* === TYPOGRAPHY === */
   --font-heading: 'Oswald', 'Arial Narrow', sans-serif;
   --font-body: 'Inter', 'Segoe UI', system-ui, sans-serif;
@@ -89,6 +97,13 @@
   --color-border: #b8c9db;
   --color-overlay: rgba(240, 245, 250, 0.92);
   --color-lightbox-bg: rgba(240, 245, 250, 0.96);
+
+  /* Light theme overlay variants */
+  --overlay-dark: rgba(26, 41, 64, 0.8);
+  --overlay-sticky: rgba(243, 247, 252, 0.95);
+  --overlay-backdrop: rgba(26, 41, 64, 0.3);
+  --overlay-accent-nav: rgba(26, 41, 64, 0.15);
+  --overlay-accent-nav-hover: rgba(26, 41, 64, 0.25);
 }
 
 .theme-light .header--sticky {

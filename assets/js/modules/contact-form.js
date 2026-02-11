@@ -10,6 +10,10 @@
 
   var lastOpener = null;
 
+  function handleEscape(e) {
+    if (e.key === 'Escape') closeModal();
+  }
+
   function openModal(opener) {
     lastOpener = opener || openButtons[0];
     modal.hidden = false;
@@ -17,6 +21,7 @@
     openButtons.forEach(function (btn) { btn.setAttribute('aria-expanded', 'true'); });
     modal.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
+    modal.addEventListener('keydown', handleEscape);
     var firstInput = form.querySelector('input, textarea');
     if (firstInput) firstInput.focus();
   }
@@ -27,6 +32,7 @@
     openButtons.forEach(function (btn) { btn.setAttribute('aria-expanded', 'false'); });
     modal.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
+    modal.removeEventListener('keydown', handleEscape);
     if (lastOpener) lastOpener.focus();
   }
 
@@ -38,10 +44,6 @@
 
   modal.querySelectorAll('[data-contact-close]').forEach(function (el) {
     el.addEventListener('click', closeModal);
-  });
-
-  modal.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') closeModal();
   });
 
   form.addEventListener('submit', function (event) {

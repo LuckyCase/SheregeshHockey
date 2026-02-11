@@ -4,6 +4,10 @@
 (function () {
   'use strict';
 
+  var U = window.SheregeshUtils || {};
+  var getAssetPrefix = U.getAssetPrefix;
+  var getLang = U.getLang;
+
   var lightboxEl = null;
   var captionEl = null;
   var imageEl = null;
@@ -17,27 +21,6 @@
   var currentIndex = 0;
   var currentFilter = 'all';
   var startX = 0;
-
-  function getAssetPrefix() {
-    if (window.SheregeshUtils && window.SheregeshUtils.getAssetPrefix) {
-      return window.SheregeshUtils.getAssetPrefix();
-    }
-    var path = window.location.pathname || '';
-    return (path.indexOf('/en/') !== -1 || path.indexOf('/ru/') !== -1) ? '../' : '';
-  }
-
-  function getLang() {
-    if (window.SheregeshUtils && window.SheregeshUtils.getLang) {
-      return window.SheregeshUtils.getLang();
-    }
-    var path = window.location.pathname || '';
-    if (path.indexOf('/en/') !== -1) return 'en';
-    if (typeof window.__SheregeshLang !== 'undefined') return window.__SheregeshLang;
-    try {
-      if (localStorage.getItem('sheregesh-lang') === 'en') return 'en';
-    } catch (e) {}
-    return 'ru';
-  }
 
   function getVisibleItems() {
     if (currentFilter === 'all') return items;

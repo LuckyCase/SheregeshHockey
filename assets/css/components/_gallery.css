@@ -30,7 +30,7 @@
 .gallery__filter-btn--active {
   border-color: var(--color-accent);
   color: var(--color-accent);
-  background: rgba(212, 168, 67, 0.1);
+  background: var(--overlay-accent-light);
 }
 
 .gallery__grid {
@@ -63,7 +63,7 @@
 .gallery__item-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(11, 20, 32, 0.85) 0%, transparent 50%);
+  background: linear-gradient(to top, var(--overlay-dark) 0%, transparent 50%);
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -93,20 +93,6 @@
   margin-top: var(--space-xs);
 }
 
-/* Landscape items span 2 columns */
-.gallery__item--wide {
-  grid-column: span 2;
-}
-
-.gallery__item--wide img {
-  aspect-ratio: 16 / 9;
-}
-
-/* Tall items span 2 rows */
-.gallery__item--tall img {
-  aspect-ratio: 3 / 4;
-}
-
 @media (min-width: 480px) {
   .gallery__grid {
     grid-template-columns: repeat(3, 1fr);
@@ -128,7 +114,7 @@
 
 /* Light theme overrides */
 .theme-light .gallery__item-overlay {
-  background: linear-gradient(to top, rgba(26, 41, 64, 0.8) 0%, transparent 50%);
+  background: linear-gradient(to top, var(--overlay-dark) 0%, transparent 50%);
 }
 
 .theme-light .gallery__item-overlay .gallery__item-caption {

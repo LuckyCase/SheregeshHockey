@@ -45,7 +45,7 @@
 
 .timeline__decade-btn--active {
   border-color: var(--color-accent);
-  background: rgba(212, 168, 67, 0.08);
+  background: var(--overlay-accent-subtle);
 }
 
 .timeline__decade-year {
@@ -81,7 +81,7 @@
 
 .timeline__decade-btn--active::before {
   background: var(--color-accent);
-  box-shadow: 0 0 12px rgba(212, 168, 67, 0.4);
+  box-shadow: 0 0 12px var(--overlay-accent-medium);
 }
 
 /* Events container */

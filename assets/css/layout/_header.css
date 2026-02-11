@@ -12,7 +12,7 @@
 }
 
 .header--sticky {
-  background-color: rgba(11, 20, 32, 0.95);
+  background-color: var(--overlay-sticky);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   box-shadow: 0 1px 0 var(--color-border);
@@ -144,7 +144,7 @@
 .decade-pill--active {
   border-color: var(--color-accent);
   color: var(--color-accent);
-  background: rgba(212, 168, 67, 0.1);
+  background: var(--overlay-accent-light);
 }
 
 /* Header actions (mode-switch + theme + language + burger) */
@@ -288,7 +288,7 @@
 
 /* Light theme overrides */
 .theme-light .mobile-menu__backdrop {
-  background: rgba(26, 41, 64, 0.3);
+  background: var(--overlay-backdrop);
 }
 
 .theme-light .header--sticky {

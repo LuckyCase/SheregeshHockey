@@ -11,10 +11,6 @@
     if (!src) return;
     img.src = src;
     img.removeAttribute('data-src');
-    if (img.dataset.srcset) {
-      img.srcset = img.dataset.srcset;
-      img.removeAttribute('data-srcset');
-    }
     img.classList.add('lazy-loaded');
   }
 

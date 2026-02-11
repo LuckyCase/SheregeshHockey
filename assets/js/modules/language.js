@@ -4,6 +4,7 @@
 (function () {
   'use strict';
 
+  var U = window.SheregeshUtils || {};
   var STORAGE_KEY = 'sheregesh-lang';
 
   function getLangFromPath() {

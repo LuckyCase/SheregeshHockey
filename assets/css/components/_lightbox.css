@@ -145,21 +145,21 @@
 
 /* Light theme overrides */
 .theme-light .lightbox__nav {
-  background: rgba(26, 41, 64, 0.15);
+  background: var(--overlay-accent-nav);
   color: var(--color-text);
 }
 
 .theme-light .lightbox__nav:hover {
-  background: rgba(26, 41, 64, 0.25);
+  background: var(--overlay-accent-nav-hover);
 }
 
 .theme-light .lightbox__close {
-  background: rgba(26, 41, 64, 0.15);
+  background: var(--overlay-accent-nav);
   color: var(--color-text);
 }
 
 .theme-light .lightbox__close:hover {
-  background: rgba(26, 41, 64, 0.25);
+  background: var(--overlay-accent-nav-hover);
 }
 
 .theme-light .lightbox__caption {

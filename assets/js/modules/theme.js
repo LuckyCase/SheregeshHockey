@@ -6,17 +6,13 @@
 
   var STORAGE_KEY = 'sheregesh-theme';
 
+  var U = window.SheregeshUtils || {};
+  var getLang = U.getLang;
+
   var LABELS = {
     ru: { toDark: 'Переключить на тёмную тему', toLight: 'Переключить на светлую тему' },
     en: { toDark: 'Switch to dark theme', toLight: 'Switch to light theme' }
   };
-
-  function getLang() {
-    var path = window.location.pathname || '';
-    if (path.indexOf('/en/') !== -1) return 'en';
-    if (typeof window.__SheregeshLang !== 'undefined') return window.__SheregeshLang;
-    return 'ru';
-  }
 
   function getLabel(isCurrentlyLight) {
     var lang = getLang();

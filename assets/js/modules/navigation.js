@@ -9,17 +9,13 @@
   var MENU_OPEN_CLASS = 'mobile-menu--open';
   var BACKDROP_VISIBLE_CLASS = 'mobile-menu__backdrop--visible';
 
+  var U = window.SheregeshUtils || {};
+  var getLang = U.getLang;
+
   var LABELS = {
     ru: { open: 'Открыть меню', close: 'Закрыть меню' },
     en: { open: 'Open menu', close: 'Close menu' }
   };
-
-  function getLang() {
-    var path = window.location.pathname || '';
-    if (path.indexOf('/en/') !== -1) return 'en';
-    if (typeof window.__SheregeshLang !== 'undefined') return window.__SheregeshLang;
-    return 'ru';
-  }
 
   var header = document.getElementById('header');
   var burger = document.querySelector('.burger');
@@ -27,21 +23,16 @@
   var backdrop = document.getElementById('mobile-menu-backdrop');
   var mobileLinks = document.querySelectorAll('.mobile-menu__link');
 
-  function initStickyHeader() {
+  var stickyThreshold = 80;
+  var backToTopThreshold = 400;
+
+  function updateStickyHeader(y) {
     if (!header) return;
-    var threshold = 80;
-
-    function onScroll() {
-      var y = window.scrollY || window.pageYOffset;
-      if (y > threshold) {
-        header.classList.add(HEADER_STICKY_CLASS);
-      } else {
-        header.classList.remove(HEADER_STICKY_CLASS);
-      }
+    if (y > stickyThreshold) {
+      header.classList.add(HEADER_STICKY_CLASS);
+    } else {
+      header.classList.remove(HEADER_STICKY_CLASS);
     }
-
-    window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
   }
 
   function openMenu() {
@@ -110,49 +101,61 @@
     });
   }
 
+  var backToTopBtn = null;
+
+  function updateBackToTop(y) {
+    if (!backToTopBtn) return;
+    backToTopBtn.classList.toggle('back-to-top--visible', y > backToTopThreshold);
+  }
+
   function initBackToTop() {
-    var btn = document.getElementById('back-to-top');
-    if (!btn) return;
-    var threshold = 400;
+    backToTopBtn = document.getElementById('back-to-top');
+    if (!backToTopBtn) return;
 
-    window.addEventListener('scroll', function () {
-      var y = window.scrollY || window.pageYOffset;
-      btn.classList.toggle('back-to-top--visible', y > threshold);
-    }, { passive: true });
-
-    btn.addEventListener('click', function () {
+    backToTopBtn.addEventListener('click', function () {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
   }
 
+  var progressBar = null;
+
+  function updateScrollProgress(y) {
+    if (!progressBar) return;
+    var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    var progress = docHeight > 0 ? (y / docHeight) * 100 : 0;
+    progressBar.style.width = progress + '%';
+  }
+
   function initScrollProgress() {
-    var bar = document.getElementById('scroll-progress');
-    if (!bar) return;
+    progressBar = document.getElementById('scroll-progress');
+  }
+
+  function initUnifiedScrollListener() {
     var ticking = false;
 
-    function update() {
-      var scrollTop = window.scrollY || window.pageYOffset;
-      var docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      var progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-      bar.style.width = progress + '%';
-      ticking = false;
+    function handleScroll() {
+      if (ticking) return;
+      ticking = true;
+
+      requestAnimationFrame(function () {
+        var y = window.scrollY || window.pageYOffset;
+        updateStickyHeader(y);
+        updateBackToTop(y);
+        updateScrollProgress(y);
+        ticking = false;
+      });
     }
 
-    window.addEventListener('scroll', function () {
-      if (!ticking) {
-        requestAnimationFrame(update);
-        ticking = true;
-      }
-    }, { passive: true });
-    update();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
   }
 
   function init() {
-    initStickyHeader();
     initMobileMenu();
     initSmoothScroll();
     initBackToTop();
     initScrollProgress();
+    initUnifiedScrollListener();
   }
 
   if (document.readyState === 'loading') {
