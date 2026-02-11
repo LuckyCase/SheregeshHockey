@@ -343,6 +343,19 @@
         "score": "10:0",
         "win": true
       }
+    },
+    {
+      "date": "2026-02-20",
+      "time": "18:00",
+      "opponent": {
+        "ru": "Washington Capitals",
+        "en": "Washington Capitals"
+      },
+      "location": {
+        "ru": "Дома",
+        "en": "Home"
+      },
+      "result": null
     }
   ],
   "roster": [
