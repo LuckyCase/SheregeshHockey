@@ -73,6 +73,16 @@
       "contentEn": "",
       "images": [],
       "pinned": false
+    },
+    {
+      "id": "news-mlik3htj",
+      "date": "2026-02-18",
+      "titleRu": "Новость которую надо закрепить",
+      "titleEn": "Новость которую надо закрепить",
+      "contentRu": "Новость которую надо закрепить",
+      "contentEn": "",
+      "images": [],
+      "pinned": true
     }
   ],
   "announcements": [
