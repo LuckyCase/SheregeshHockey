@@ -24,3 +24,6 @@ node_modules/
 # Build / temp (if added later)
 dist/
 .cache/
+
+# Plans (local planning docs)
+plans/
