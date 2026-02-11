@@ -361,7 +361,9 @@
       return;
     }
     var dataUrl = getDataUrl();
-    fetch(dataUrl, { cache: 'no-cache' })
+    var sep = dataUrl.indexOf('?') !== -1 ? '&' : '?';
+    dataUrl = dataUrl + sep + '_=' + Date.now();
+    fetch(dataUrl, { cache: 'no-store' })
       .then(function (r) {
         if (!r.ok) throw new Error('HTTP ' + r.status);
         var ct = (r.headers.get('Content-Type') || '').toLowerCase();
