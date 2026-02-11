@@ -435,7 +435,10 @@
     <p>Введите пароль для продолжения.</p>
     <div class="form-group">
       <label class="form-label" for="admin-password">Пароль</label>
-      <input type="password" id="admin-password" class="form-input" placeholder="Введите пароль" autocomplete="off">
+      <input type="password" id="admin-password" class="form-input" placeholder="Оставьте пустым при первом входе" autocomplete="off">
+      <small class="form-label form-label--muted" style="margin-top:0.25rem;display:block">
+        По умолчанию пароль не установлен. Для настройки см. PASSWORD-SETUP.md
+      </small>
     </div>
     <button type="button" class="btn btn--primary" id="btn-password">Войти</button>
     <div id="password-msg" class="admin-status"></div>
@@ -1299,12 +1302,7 @@
       var passwordMsg = $('password-msg');
 
       function handlePasswordSubmit() {
-        var pass = passwordInput.value;
-        if (!pass) {
-          passwordMsg.textContent = 'Введите пароль';
-          passwordMsg.className = 'admin-status admin-status--error';
-          return;
-        }
+        var pass = passwordInput.value; // Empty string is valid (default password)
         passwordMsg.textContent = 'Проверка...';
         passwordMsg.className = 'admin-status admin-status--loading';
 
