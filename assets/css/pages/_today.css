@@ -23,9 +23,10 @@
 }
 
 .today-hero__logo {
+  display: block;
   width: clamp(64px, 10vw, 100px);
   height: auto;
-  margin-bottom: var(--space-lg);
+  margin: 0 auto var(--space-lg);
   filter: drop-shadow(0 0 20px rgba(0, 135, 90, 0.5));
 }
 

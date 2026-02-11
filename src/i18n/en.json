@@ -42,6 +42,12 @@
     "ruAriaCurrent": "",
     "enAriaCurrent": " aria-current=\"page\""
   },
+  "todayHref": "today.html",
+  "modeSwitch": {
+    "ariaLabel": "Site mode",
+    "historyLabel": "History",
+    "todayLabel": "Today"
+  },
   "burger": {
     "ariaLabel": "Open menu"
   },
@@ -149,7 +155,7 @@
     "ctaTitle": "Have photos or memories?",
     "ctaText": "Contact us — we'll add them to the site.",
     "ctaButton": "Contact us",
-    "copyright": "© 2025 Sheregesh Hockey. Non-commercial project."
+    "copyright": "© 2026 Sheregesh Hockey. Non-commercial project."
   },
   "contact": {
     "closeAriaLabel": "Close",

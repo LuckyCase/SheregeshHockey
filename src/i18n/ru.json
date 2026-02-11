@@ -42,6 +42,12 @@
     "ruAriaCurrent": " aria-current=\"page\"",
     "enAriaCurrent": ""
   },
+  "todayHref": "ru/today.html",
+  "modeSwitch": {
+    "ariaLabel": "Режим сайта",
+    "historyLabel": "История",
+    "todayLabel": "Наши дни"
+  },
   "burger": {
     "ariaLabel": "Открыть меню"
   },
@@ -149,7 +155,7 @@
     "ctaTitle": "Есть фото или воспоминания?",
     "ctaText": "Напишите нам — мы добавим материалы на сайт.",
     "ctaButton": "Написать нам",
-    "copyright": "© 2025 Хоккей Шерегеша. Некоммерческий проект."
+    "copyright": "© 2026 Хоккей Шерегеша. Некоммерческий проект."
   },
   "contact": {
     "closeAriaLabel": "Закрыть",
