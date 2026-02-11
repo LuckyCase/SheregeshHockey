@@ -6,7 +6,8 @@
   'use strict';
 
   var U = window.SheregeshUtils || {};
-  var prefix = U.getAssetPrefix ? U.getAssetPrefix() : '';
+  var path = (typeof window !== 'undefined' && window.location.pathname) || '';
+  var prefix = (U.getAssetPrefix && U.getAssetPrefix()) || (/\/ru\/|\/en\//.test(path) ? '../' : '') || '';
   var lang = U.getLang ? U.getLang() : 'ru';
   var esc = U.escapeHtml || function (s) { return s || ''; };
 
@@ -318,12 +319,23 @@
     el.innerHTML = html;
   }
 
+  function showLoadError(msg) {
+    var el = document.querySelector('[data-today-news]') || document.querySelector('[data-today-announcements]');
+    if (el) {
+      el.innerHTML = '<p class="today-empty" style="color:var(--color-error,#c53030);padding:1rem">' + esc(msg) + '</p>';
+    }
+    console.error('today.js:', msg);
+  }
+
   /* ==== INIT ==== */
   function init() {
     var dataUrl = prefix + 'assets/js/data/today-data.json';
     // cache: 'no-cache' — всегда проверять актуальность на сервере (избегаем кэша после публикации из админки)
     fetch(dataUrl, { cache: 'no-cache' })
-      .then(function (r) { return r.json(); })
+      .then(function (r) {
+        if (!r.ok) throw new Error('HTTP ' + r.status + ': ' + dataUrl);
+        return r.json();
+      })
       .then(function (data) {
         renderNews(data);
         renderAnnouncements(data);
@@ -339,7 +351,9 @@
         }
       })
       .catch(function (err) {
-        console.error('Failed to load today-data.json:', err);
+        showLoadError(lang === 'ru' 
+          ? 'Не удалось загрузить данные. Проверьте сетевое подключение и обновите страницу.'
+          : 'Failed to load data. Check your connection and refresh the page.');
       });
   }
 
