@@ -179,6 +179,19 @@
       },
       "date": "2026-02-08",
       "category": "fans"
+    },
+    {
+      "src": "assets/images/today/gallery/1770845625349.png",
+      "caption": {
+        "ru": "test",
+        "en": "test"
+      },
+      "alt": {
+        "ru": "test",
+        "en": "test"
+      },
+      "date": "2026-02-11",
+      "category": "game"
     }
   ],
   "schedule": [
