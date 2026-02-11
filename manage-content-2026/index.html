@@ -429,8 +429,20 @@
     </div>
   </header>
 
-  <!-- Auth -->
-  <div id="admin-auth" class="admin-auth">
+  <!-- Password Protection Layer -->
+  <div id="password-gate" class="admin-auth">
+    <h2>Доступ к админ-панели</h2>
+    <p>Введите пароль для продолжения.</p>
+    <div class="form-group">
+      <label class="form-label" for="admin-password">Пароль</label>
+      <input type="password" id="admin-password" class="form-input" placeholder="Введите пароль" autocomplete="off">
+    </div>
+    <button type="button" class="btn btn--primary" id="btn-password">Войти</button>
+    <div id="password-msg" class="admin-status"></div>
+  </div>
+
+  <!-- Auth (shown after password) -->
+  <div id="admin-auth" class="admin-auth" style="display:none">
     <h2>Авторизация</h2>
     <p>Введите GitHub Personal Access Token с правами <code>repo</code> (Contents: Read and write). Токен сохраняется только в localStorage вашего браузера.</p>
     <div class="form-group">
@@ -462,6 +474,7 @@
     <div class="admin-tabs" role="tablist">
       <button type="button" class="admin-tab admin-tab--active" data-tab="news" role="tab">Новости</button>
       <button type="button" class="admin-tab" data-tab="announcements" role="tab">Анонсы</button>
+      <button type="button" class="admin-tab" data-tab="timeline" role="tab">Хронология</button>
       <button type="button" class="admin-tab" data-tab="gallery" role="tab">Фото</button>
       <button type="button" class="admin-tab" data-tab="schedule" role="tab">Расписание</button>
       <button type="button" class="admin-tab" data-tab="roster" role="tab">Составы</button>
@@ -570,6 +583,75 @@
       <div class="admin-list" id="ann-list">
         <div class="admin-list__title">Существующие анонсы</div>
         <div id="ann-list-items"></div>
+      </div>
+    </div>
+
+    <!-- ======== TIMELINE PANEL ======== -->
+    <div class="admin-panel" id="panel-timeline">
+      <h3 style="margin-bottom:1rem">Добавить событие в хронологию</h3>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="timeline-decade">Декада</label>
+          <select id="timeline-decade" class="form-select">
+            <option value="1970s">1970-е</option>
+            <option value="1980s">1980-е</option>
+            <option value="1990s">1990-е</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="timeline-year">Год</label>
+          <input type="text" id="timeline-year" class="form-input" placeholder="1971" pattern="[0-9]{4}">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="timeline-title-ru">Заголовок (RU)</label>
+          <input type="text" id="timeline-title-ru" class="form-input" placeholder="Первый лёд">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="timeline-title-en">Title (EN)</label>
+          <input type="text" id="timeline-title-en" class="form-input" placeholder="First ice">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="timeline-text-ru">Описание (RU)</label>
+        <textarea id="timeline-text-ru" class="form-textarea" placeholder="Первые игры на естественном льду у рудника."></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="timeline-text-en">Description (EN)</label>
+        <textarea id="timeline-text-en" class="form-textarea" placeholder="First games on natural ice near the mine."></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Фото события (опционально)</label>
+        <div class="photo-drop" id="timeline-photo-drop">
+          <div class="photo-drop__icon">+</div>
+          <div>Перетащите файл или нажмите для выбора</div>
+          <input type="file" accept="image/*" id="timeline-photo-input">
+        </div>
+        <div class="photo-previews" id="timeline-photo-previews"></div>
+        <small class="form-label form-label--muted">Если не загружено, будет использован placeholder</small>
+      </div>
+      <div style="display:flex;gap:0.75rem;flex-wrap:wrap">
+        <button type="button" class="btn" id="btn-timeline-preview">Предпросмотр</button>
+        <button type="button" class="btn btn--primary" id="btn-timeline-publish">Опубликовать</button>
+      </div>
+      <div id="timeline-preview" class="admin-preview" style="display:none">
+        <div class="admin-preview__title">Предпросмотр</div>
+        <div id="timeline-preview-content"></div>
+      </div>
+      <div id="timeline-status" class="admin-status"></div>
+      <div class="admin-list" id="timeline-list">
+        <div class="admin-list__title">События хронологии</div>
+        <div style="margin-bottom:1rem">
+          <label class="form-label">Фильтр по декаде:</label>
+          <select id="timeline-filter-decade" class="form-select" style="max-width:200px">
+            <option value="all">Все</option>
+            <option value="1970s">1970-е</option>
+            <option value="1980s">1980-е</option>
+            <option value="1990s">1990-е</option>
+          </select>
+        </div>
+        <div id="timeline-list-items"></div>
       </div>
     </div>
 
@@ -736,18 +818,44 @@
   (function () {
     'use strict';
 
+    /* ---- Password Protection ---- */
+    var PASSWORD_HASH = 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'; // SHA-256 of empty string (CHANGE THIS!)
+    var PASSWORD_STORAGE_KEY = 'sheregesh-admin-pass';
+
+    function sha256(str) {
+      var buffer = new TextEncoder().encode(str);
+      return crypto.subtle.digest('SHA-256', buffer).then(function(hash) {
+        return Array.from(new Uint8Array(hash))
+          .map(function(b) { return b.toString(16).padStart(2, '0'); })
+          .join('');
+      });
+    }
+
+    function checkPassword() {
+      var stored = sessionStorage.getItem(PASSWORD_STORAGE_KEY);
+      return stored === PASSWORD_HASH;
+    }
+
+    function unlockPasswordGate() {
+      document.getElementById('password-gate').style.display = 'none';
+      document.getElementById('admin-auth').style.display = 'block';
+    }
+
     /* ---- Config & State ---- */
     var config = {
       token: '',
       owner: 'luckycase',
       repo: 'SheregeshHockey',
       branch: 'master',
-      dataPath: 'assets/js/data/today-data.json'
+      dataPath: 'assets/js/data/today-data.json',
+      timelinePath: 'assets/js/data/timeline-data.json'
     };
 
     var todayData = null;
     var dataSha = null; // SHA of current today-data.json for updates
-    var photoFiles = { news: [], gallery: [], roster: [] };
+    var timelineData = null;
+    var timelineSha = null; // SHA of current timeline-data.json for updates
+    var photoFiles = { news: [], gallery: [], roster: [], timeline: [] };
 
     /* ---- GitHub API helpers ---- */
     function ghApi(path, opts) {
@@ -806,6 +914,22 @@
       var content = JSON.stringify(todayData, null, 2);
       return writeFile(config.dataPath, content, message || 'Update today-data.json', dataSha).then(function (res) {
         dataSha = res.content.sha;
+      });
+    }
+
+    function loadTimelineData() {
+      return readFile(config.timelinePath).then(function (res) {
+        timelineSha = res.sha;
+        var content = decodeURIComponent(escape(atob(res.content.replace(/\n/g, ''))));
+        timelineData = JSON.parse(content);
+        refreshTimelineList();
+      });
+    }
+
+    function saveTimelineData(message) {
+      var content = JSON.stringify(timelineData, null, 2);
+      return writeFile(config.timelinePath, content, message || 'Update timeline-data.json', timelineSha).then(function (res) {
+        timelineSha = res.content.sha;
       });
     }
 
@@ -983,6 +1107,37 @@
       });
     }
 
+    function refreshTimelineList() {
+      if (!timelineData) return;
+      var el = $('timeline-list-items');
+      var filterDecade = $('timeline-filter-decade').value;
+      el.innerHTML = '';
+
+      Object.keys(timelineData).forEach(function (decade) {
+        if (filterDecade !== 'all' && filterDecade !== decade) return;
+        var events = timelineData[decade] || [];
+        events.forEach(function (event, idx) {
+          var title = event.year + ' — ' + event.titleRu;
+          var meta = decade + ' • ' + (event.ru || '').substring(0, 60) + (event.ru.length > 60 ? '...' : '');
+          el.appendChild(renderListItem(title, meta, function () {
+            if (confirm('Удалить событие «' + event.titleRu + '» из хронологии?')) {
+              timelineData[decade].splice(idx, 1);
+              saveTimelineData('Delete timeline event: ' + event.year + ' ' + event.titleRu).then(function () {
+                setStatus('timeline-status', 'success', 'Событие удалено');
+                refreshTimelineList();
+              }).catch(function (err) {
+                setStatus('timeline-status', 'error', 'Ошибка: ' + err.message);
+              });
+            }
+          }));
+        });
+      });
+
+      if (el.children.length === 0) {
+        el.innerHTML = '<div style="padding:1rem;text-align:center;color:var(--admin-muted)">Событий нет</div>';
+      }
+    }
+
     /* ---- AUTH ---- */
     function tryAuth() {
       config.token = $('gh-token').value.trim();
@@ -1003,7 +1158,7 @@
           $('btn-logout').style.display = '';
           $('admin-auth').style.display = 'none';
           $('admin-content').style.display = '';
-          return loadData();
+          return Promise.all([loadData(), loadTimelineData()]);
         })
         .then(function () {
           clearStatus('auth-msg');
@@ -1015,6 +1170,46 @@
 
     /* ---- INIT ---- */
     function init() {
+      // Check if password already verified this session
+      if (checkPassword()) {
+        unlockPasswordGate();
+      }
+
+      // Password gate handler
+      var passwordInput = $('admin-password');
+      var btnPassword = $('btn-password');
+      var passwordMsg = $('password-msg');
+
+      function handlePasswordSubmit() {
+        var pass = passwordInput.value;
+        if (!pass) {
+          passwordMsg.textContent = 'Введите пароль';
+          passwordMsg.className = 'admin-status admin-status--error';
+          return;
+        }
+        passwordMsg.textContent = 'Проверка...';
+        passwordMsg.className = 'admin-status admin-status--loading';
+
+        sha256(pass).then(function(hash) {
+          if (hash === PASSWORD_HASH) {
+            sessionStorage.setItem(PASSWORD_STORAGE_KEY, hash);
+            passwordMsg.textContent = 'Доступ разрешён';
+            passwordMsg.className = 'admin-status admin-status--success';
+            setTimeout(unlockPasswordGate, 300);
+          } else {
+            passwordMsg.textContent = 'Неверный пароль';
+            passwordMsg.className = 'admin-status admin-status--error';
+            passwordInput.value = '';
+            passwordInput.focus();
+          }
+        });
+      }
+
+      btnPassword.addEventListener('click', handlePasswordSubmit);
+      passwordInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') handlePasswordSubmit();
+      });
+
       // Restore saved config
       try {
         var t = localStorage.getItem('sh-admin-token');
@@ -1052,6 +1247,7 @@
       // Photo drops
       initPhotoDrop('news-photo-drop', 'news-photo-input', 'news-photo-previews', 'news');
       initPhotoDrop('gallery-photo-drop', 'gallery-photo-input', 'gallery-photo-previews', 'gallery');
+      initPhotoDrop('timeline-photo-drop', 'timeline-photo-input', 'timeline-photo-previews', 'timeline');
       initPhotoDrop('roster-photo-drop', 'roster-photo-input', 'roster-photo-previews', 'roster');
 
       // ---- NEWS ----
@@ -1149,6 +1345,76 @@
           setStatus('ann-status', 'error', 'Ошибка: ' + err.message);
         });
       });
+
+      // ---- TIMELINE ----
+      $('btn-timeline-preview').addEventListener('click', function () {
+        var preview = $('timeline-preview');
+        var content = $('timeline-preview-content');
+        preview.style.display = '';
+        content.innerHTML =
+          '<div style="background:var(--admin-bg);border:1px solid var(--admin-border);border-radius:8px;padding:1rem;max-width:400px">' +
+          '<div style="font-size:0.9rem;font-weight:600;color:var(--admin-lime)">' + esc($('timeline-year').value) + '</div>' +
+          '<div style="font-size:1rem;font-weight:700;margin:0.25rem 0">' + esc($('timeline-title-ru').value) + '</div>' +
+          '<div style="font-size:0.85rem;color:var(--admin-muted)">' + esc($('timeline-text-ru').value) + '</div>' +
+          '</div>';
+      });
+
+      $('btn-timeline-publish').addEventListener('click', function () {
+        if (!timelineData) return;
+        var decade = $('timeline-decade').value;
+        var year = $('timeline-year').value.trim();
+        var titleRu = $('timeline-title-ru').value.trim();
+        var titleEn = $('timeline-title-en').value.trim();
+        var textRu = $('timeline-text-ru').value.trim();
+        var textEn = $('timeline-text-en').value.trim();
+
+        if (!year || !titleRu || !textRu) {
+          setStatus('timeline-status', 'error', 'Заполните год, заголовок и описание (RU)');
+          return;
+        }
+
+        setStatus('timeline-status', 'loading', 'Публикация...');
+
+        var photoPromise = photoFiles.timeline.length
+          ? uploadImage(photoFiles.timeline[0], 'timeline')
+          : Promise.resolve('assets/images/placeholders/ice.svg');
+
+        photoPromise.then(function (photoPath) {
+          var entry = {
+            year: year,
+            ru: textRu,
+            en: textEn || textRu,
+            image: photoPath,
+            titleRu: titleRu,
+            titleEn: titleEn || titleRu
+          };
+
+          if (!timelineData[decade]) timelineData[decade] = [];
+          timelineData[decade].push(entry);
+
+          // Sort by year
+          timelineData[decade].sort(function (a, b) {
+            return parseInt(a.year, 10) - parseInt(b.year, 10);
+          });
+
+          return saveTimelineData('Add timeline event: ' + year + ' ' + titleRu);
+        }).then(function () {
+          setStatus('timeline-status', 'success', 'Событие добавлено в хронологию!');
+          photoFiles.timeline = [];
+          $('timeline-photo-previews').innerHTML = '';
+          $('timeline-year').value = '';
+          $('timeline-title-ru').value = '';
+          $('timeline-title-en').value = '';
+          $('timeline-text-ru').value = '';
+          $('timeline-text-en').value = '';
+          refreshTimelineList();
+        }).catch(function (err) {
+          setStatus('timeline-status', 'error', 'Ошибка: ' + err.message);
+        });
+      });
+
+      // Timeline filter change
+      $('timeline-filter-decade').addEventListener('change', refreshTimelineList);
 
       // ---- GALLERY ----
       $('btn-gallery-preview').addEventListener('click', function () {
