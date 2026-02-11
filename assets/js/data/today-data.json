@@ -69,6 +69,18 @@
         "ru": "Школьный каток",
         "en": "School rink"
       }
+    },
+    {
+      "id": "ann-mlik1gxf",
+      "eventDate": "2026-02-12T17:00:00.000Z",
+      "titleRu": "Какток",
+      "titleEn": "Какток",
+      "contentRu": "Какток",
+      "contentEn": "Какток",
+      "location": {
+        "ru": "Какток",
+        "en": "Какток"
+      }
     }
   ],
   "gallery": [
