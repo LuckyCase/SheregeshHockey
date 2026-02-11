@@ -1450,7 +1450,7 @@
         };
         todayData.announcements.push(entry);
         saveData('Add announcement: ' + titleRu).then(function () {
-          setStatus('ann-status', 'success', 'Анонс опубликован!');
+          setStatus('ann-status', 'success', 'Анонс опубликован! На сайте появится через 1–2 мин (обновление GitHub Pages). Обновите страницу.');
           $('ann-title-ru').value = '';
           $('ann-title-en').value = '';
           $('ann-content-ru').value = '';

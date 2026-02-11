@@ -321,7 +321,8 @@
   /* ==== INIT ==== */
   function init() {
     var dataUrl = prefix + 'assets/js/data/today-data.json';
-    fetch(dataUrl)
+    // cache: 'no-cache' — всегда проверять актуальность на сервере (избегаем кэша после публикации из админки)
+    fetch(dataUrl, { cache: 'no-cache' })
       .then(function (r) { return r.json(); })
       .then(function (data) {
         renderNews(data);
