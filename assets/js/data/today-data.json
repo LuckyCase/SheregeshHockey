@@ -81,6 +81,18 @@
         "ru": "Какток",
         "en": "Какток"
       }
+    },
+    {
+      "id": "ann-mlik20rz",
+      "eventDate": "2026-02-14T17:00:00.000Z",
+      "titleRu": "Тест",
+      "titleEn": "Тест",
+      "contentRu": "Тест",
+      "contentEn": "Тест",
+      "location": {
+        "ru": "Тест",
+        "en": "Тест"
+      }
     }
   ],
   "gallery": [
