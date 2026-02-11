@@ -7,7 +7,7 @@
   var STORAGE_KEY = 'sheregesh-theme';
 
   var U = window.SheregeshUtils || {};
-  var getLang = U.getLang;
+  var getLang = U.getLang || function () { return 'ru'; };
 
   var LABELS = {
     ru: { toDark: 'Переключить на тёмную тему', toLight: 'Переключить на светлую тему' },

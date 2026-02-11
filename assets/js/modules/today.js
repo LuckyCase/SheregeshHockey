@@ -6,9 +6,16 @@
   'use strict';
 
   var U = window.SheregeshUtils || {};
-  var path = (typeof window !== 'undefined' && window.location.pathname) || '';
-  var prefix = (U.getAssetPrefix && U.getAssetPrefix()) || (/\/ru\/|\/en\//.test(path) ? '../' : '') || '';
-  var lang = U.getLang ? U.getLang() : 'ru';
+  var getAssetPrefix = U.getAssetPrefix || function () { return (/\/ru\/|\/en\//.test(window.location.pathname || '') ? '../' : ''); };
+  var prefix = getAssetPrefix();
+  var lang = (U.getLang && U.getLang()) || 'ru';
+
+  function getDataUrl() {
+    var script = document.querySelector('script[src*="today"]');
+    var src = (script && script.getAttribute('src')) || '';
+    var dir = src.replace(/\/[^/]*$/, '/');
+    return (dir ? dir + '../' : 'assets/js/') + 'data/today-data.json';
+  }
   var esc = U.escapeHtml || function (s) { return s || ''; };
 
   /* ---- i18n helpers ---- */
@@ -327,41 +334,46 @@
     console.error('today.js:', msg);
   }
 
+  function applyData(data) {
+    if (!data || typeof data !== 'object') return;
+    renderNews(data);
+    renderAnnouncements(data);
+    renderGallery(data);
+    renderSchedule(data);
+    renderRoster(data);
+    if (typeof window.SheregeshAnimations !== 'undefined' && window.SheregeshAnimations.observe) {
+      document.querySelectorAll('[data-animate]:not(.is-visible)').forEach(function (el) {
+        window.SheregeshAnimations.observe(el);
+      });
+    } else {
+      document.querySelectorAll('[data-animate]').forEach(function (el) {
+        el.classList.add('is-visible');
+      });
+    }
+  }
+
   /* ==== INIT ==== */
   function init() {
-    var dataUrl;
-    try {
-      dataUrl = new URL(prefix + 'assets/js/data/today-data.json', window.location.href).href;
-    } catch (e) {
-      var basePath = path.replace(/\/ru\/[^]*$|\/en\/[^]*$/, '') || '';
-      if (basePath && !basePath.endsWith('/')) basePath += '/';
-      dataUrl = window.location.origin + basePath + 'assets/js/data/today-data.json';
+    if (window.location.protocol === 'file:') {
+      showLoadError(lang === 'ru'
+        ? 'Откройте страницу через локальный сервер (http://...), а не как файл (file://).'
+        : 'Open the page via a local server (http://...), not as a file (file://).');
+      return;
     }
-    // cache: 'no-cache' — всегда проверять актуальность на сервере (избегаем кэша после публикации из админки)
+    var dataUrl = getDataUrl();
     fetch(dataUrl, { cache: 'no-cache' })
       .then(function (r) {
-        if (!r.ok) throw new Error('HTTP ' + r.status + ': ' + dataUrl);
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        var ct = (r.headers.get('Content-Type') || '').toLowerCase();
+        if (ct.indexOf('text/html') !== -1) throw new Error('Сервер вернул HTML вместо JSON (404?)');
         return r.json();
       })
       .then(function (data) {
-        renderNews(data);
-        renderAnnouncements(data);
-        renderGallery(data);
-        renderSchedule(data);
-        renderRoster(data);
-
-        // Re-trigger animations observer for dynamically rendered elements
-        if (typeof window.SheregeshAnimations !== 'undefined' && window.SheregeshAnimations.observe) {
-          document.querySelectorAll('[data-animate]:not(.is-visible)').forEach(function (el) {
-            window.SheregeshAnimations.observe(el);
-          });
-        }
+        if (!data || typeof data !== 'object') throw new Error('Неверный формат данных');
+        applyData(data);
       })
       .catch(function (err) {
-        var msg = (err && err.message) ? err.message : String(err);
-        showLoadError((lang === 'ru' 
-          ? 'Не удалось загрузить данные: '
-          : 'Failed to load data: ') + msg);
+        showLoadError((lang === 'ru' ? 'Не удалось загрузить данные: ' : 'Failed to load data: ') + (err && err.message ? err.message : ''));
       });
   }
 
