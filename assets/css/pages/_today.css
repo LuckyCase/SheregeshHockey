@@ -695,22 +695,59 @@
   stroke-width: 2.5;
 }
 
+/* Контейнер для баннера новости */
+.news-modal__banner {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  overflow: hidden;
+  background: var(--color-bg-surface);
+}
+
+@media (min-width: 768px) {
+  .news-modal__banner {
+    height: 450px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .news-modal__banner {
+    height: 500px;
+  }
+}
+
+/* Изображение баннера */
 .news-modal__image {
   width: 100%;
-  max-height: 500px;
-  min-height: 250px;
+  height: 100%;
   object-fit: cover;
   display: block;
+}
+
+/* Градиент снизу для плавного перехода */
+.news-modal__banner::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 150px;
+  background: linear-gradient(to bottom, transparent, var(--color-bg));
+  pointer-events: none;
 }
 
 .news-modal__body {
   padding: var(--space-xl) var(--space-2xl);
   clear: both;
+  position: relative;
+  margin-top: -60px;
+  z-index: 1;
 }
 
 @media (max-width: 768px) {
   .news-modal__body {
     padding: var(--space-lg) var(--space-md);
+    margin-top: -40px;
   }
 }
 
@@ -758,9 +795,9 @@
 }
 
 .news-modal__images {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
   margin-top: var(--space-2xl);
   padding-top: var(--space-xl);
   border-top: 1px solid var(--color-border);
@@ -768,18 +805,25 @@
 
 .news-modal__image-item {
   width: 100%;
-  height: 250px;
+  height: 300px;
   object-fit: cover;
   border-radius: var(--border-radius-md);
   cursor: pointer;
   transition: all var(--transition-base);
-  border: 2px solid transparent;
+  border: 2px solid var(--color-border);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+@media (min-width: 768px) {
+  .news-modal__image-item {
+    height: 350px;
+  }
 }
 
 .news-modal__image-item:hover {
-  transform: scale(1.03);
+  transform: translateY(-4px);
   border-color: var(--color-mustag-green, #00875A);
-  box-shadow: 0 8px 24px rgba(0, 135, 90, 0.3);
+  box-shadow: 0 12px 32px rgba(0, 135, 90, 0.25);
 }
 
 /*Scrollbar styling for modal content */

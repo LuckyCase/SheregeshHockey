@@ -138,8 +138,8 @@
     var body = document.getElementById('news-modal-body');
     if (!modal || !body || !item) return;
 
-    var img = (item.images && item.images.length)
-      ? '<img class="news-modal__image" src="' + prefix + esc(item.images[0]) + '" alt="" loading="lazy">'
+    var banner = (item.images && item.images.length)
+      ? '<div class="news-modal__banner"><img class="news-modal__image" src="' + prefix + esc(item.images[0]) + '" alt="' + esc(loc(item, 'title')) + '" loading="lazy"></div>'
       : '';
     var pinBadge = item.pinned
       ? '<span class="news-modal__pin">' + t.pinnedLabel + '</span>'
@@ -158,7 +158,7 @@
       additionalImages += '</div>';
     }
 
-    body.innerHTML = img +
+    body.innerHTML = banner +
       '<div class="news-modal__body">' +
       pinBadge +
       '<time class="news-modal__date" datetime="' + esc(item.date) + '">' + fmtDate(item.date) + '</time>' +
