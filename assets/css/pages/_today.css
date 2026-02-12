@@ -608,6 +608,7 @@
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
+  display: flex !important; /* Override hidden attribute */
 }
 
 .news-modal__backdrop {
