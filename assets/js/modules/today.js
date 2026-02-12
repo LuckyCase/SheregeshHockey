@@ -132,17 +132,13 @@
 
   /* ==== NEWS MODAL ==== */
   var newsData = null;
+  var modalJustOpened = false;
 
   function openNewsModal(item) {
-    console.log('[NEWS MODAL] Opening modal for item:', item);
+    modalJustOpened = true;
     var modal = document.getElementById('news-modal');
     var body = document.getElementById('news-modal-body');
-    console.log('[NEWS MODAL] modal element:', modal);
-    console.log('[NEWS MODAL] body element:', body);
-    if (!modal || !body || !item) {
-      console.error('[NEWS MODAL] Missing required elements or item');
-      return;
-    }
+    if (!modal || !body || !item) return;
 
     var banner = (item.images && item.images.length)
       ? '<div class="news-modal__banner"><img class="news-modal__image" src="' + prefix + esc(item.images[0]) + '" alt="' + esc(loc(item, 'title')) + '" loading="lazy"></div>'
@@ -173,22 +169,24 @@
       additionalImages +
       '</div>';
 
-    console.log('[NEWS MODAL] Before opening - hidden:', modal.hasAttribute('hidden'), 'aria-hidden:', modal.getAttribute('aria-hidden'));
-    modal.removeAttribute('hidden');
     modal.setAttribute('aria-hidden', 'false');
+    modal.removeAttribute('hidden');
     document.body.style.overflow = 'hidden';
-    console.log('[NEWS MODAL] After opening - hidden:', modal.hasAttribute('hidden'), 'aria-hidden:', modal.getAttribute('aria-hidden'));
-    console.log('[NEWS MODAL] Computed styles:', {
-      display: window.getComputedStyle(modal).display,
-      opacity: window.getComputedStyle(modal).opacity,
-      visibility: window.getComputedStyle(modal).visibility,
-      zIndex: window.getComputedStyle(modal).zIndex
-    });
+
+    setTimeout(function() {
+      modalJustOpened = false;
+    }, 500);
   }
 
   function closeNewsModal() {
     var modal = document.getElementById('news-modal');
     if (!modal) return;
+
+    // Remove focus from any focused element inside modal
+    if (document.activeElement && modal.contains(document.activeElement)) {
+      document.activeElement.blur();
+    }
+
     modal.setAttribute('aria-hidden', 'true');
     modal.setAttribute('hidden', '');
     document.body.style.overflow = '';
@@ -200,11 +198,20 @@
 
     var closeButtons = modal.querySelectorAll('[data-news-close]');
     closeButtons.forEach(function (btn) {
-      btn.addEventListener('click', closeNewsModal);
+      btn.addEventListener('click', function(e) {
+        if (modal.getAttribute('aria-hidden') === 'false' && !modalJustOpened) {
+          e.stopPropagation();
+          e.preventDefault();
+          closeNewsModal();
+        } else {
+          e.stopPropagation();
+          e.preventDefault();
+        }
+      });
     });
 
     document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && modal.getAttribute('aria-hidden') === 'false') {
+      if (e.key === 'Escape' && modal.getAttribute('aria-hidden') === 'false' && !modalJustOpened) {
         closeNewsModal();
       }
     });
@@ -248,7 +255,9 @@
     el.innerHTML = html;
 
     el.querySelectorAll('.today-news-card').forEach(function (card) {
-      card.addEventListener('click', function () {
+      card.addEventListener('click', function (e) {
+        e.stopPropagation();
+        e.preventDefault();
         var idx = parseInt(card.getAttribute('data-news-id'), 10);
         if (!isNaN(idx) && newsData && newsData[idx]) {
           openNewsModal(newsData[idx]);
