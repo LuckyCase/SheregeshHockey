@@ -61,6 +61,18 @@
         "ru": "Школьный каток",
         "en": "School rink"
       }
+    },
+    {
+      "id": "ann-mlk35cti",
+      "eventDate": "2026-02-14T10:00:00.000Z",
+      "titleRu": "КУБОК ГЛАВЫ ШЕРЕГЕША",
+      "titleEn": "SHEREGESH TOWN MAYOR'S CUP",
+      "contentRu": "ЛЕДОВАЯ БИТВА\nКУБОК ГЛАВЫ ШЕРЕГЕША\n\nКоманды из Шерегеша, Каза, Темиртау, Мундыбаша, Сосновки и Таштагола",
+      "contentEn": "ICE BATTLE\nSHEREGESH TOWN MAYOR'S CUP\n\nTeams from Sheregesh, Kaza, Temirtau, Mundybash, Sosnovka, and Tashtagol",
+      "location": {
+        "ru": "ШЕРЕГЕШ, ДЗЕРЖИНСКОГО 25А, ОТКРЫТЫЙ ЛЕДОВЫЙ КОРТ",
+        "en": "SHEREGESH, DZHERZHINSKOGO 25A, OUTDOOR ICE RINK"
+      }
     }
   ],
   "gallery": [
