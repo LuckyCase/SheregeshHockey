@@ -294,3 +294,22 @@
 .theme-light .header--sticky {
   background-color: rgba(240, 245, 250, 0.95);
 }
+
+.theme-light .mobile-menu {
+  background: #FFFFFF;
+  border-left: 1px solid var(--color-border);
+}
+
+.theme-light .burger__line {
+  background: var(--color-text);
+}
+
+/* Mode-today light theme specific */
+.mode-today.theme-light .mobile-menu {
+  background: #FFFFFF;
+  border-left: 2px solid var(--color-mustag-green, #00875A);
+}
+
+.mode-today.theme-light .mobile-menu__backdrop {
+  background: rgba(0, 135, 90, 0.2);
+}

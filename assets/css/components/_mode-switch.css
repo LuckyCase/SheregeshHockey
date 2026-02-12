@@ -98,3 +98,39 @@
     display: none;
   }
 }
+
+/* Light theme overrides */
+.theme-light .mode-switch {
+  background: var(--color-bg-surface);
+  border-color: var(--color-border);
+}
+
+.theme-light .mode-switch__btn {
+  color: var(--color-text-muted);
+}
+
+.theme-light .mode-switch__btn:hover {
+  color: var(--color-text);
+}
+
+.theme-light .mode-switch__btn--active {
+  color: var(--color-bg);
+}
+
+.theme-light .mode-switch__slider {
+  background: var(--color-accent);
+}
+
+/* Mode-today light theme */
+.mode-today.theme-light .mode-switch {
+  background: #E0F2E9;
+  border-color: rgba(0, 135, 90, 0.2);
+}
+
+.mode-today.theme-light .mode-switch--today .mode-switch__slider {
+  background: #00875A;
+}
+
+.mode-today.theme-light .mode-switch--today .mode-switch__btn--active {
+  color: #fff;
+}

@@ -37,3 +37,13 @@
   background-repeat: repeat;
   background-size: 256px 256px;
 }
+
+/* Light theme overrides */
+.theme-light .section--alt {
+  background: var(--color-bg-elevated);
+}
+
+/* Mode-today light theme */
+.mode-today.theme-light .section--alt {
+  background: #F1F8F4;
+}

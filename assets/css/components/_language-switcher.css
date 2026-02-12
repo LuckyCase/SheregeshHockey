@@ -31,3 +31,37 @@
   color: var(--color-text);
   background: rgba(255, 255, 255, 0.05);
 }
+
+/* Light theme overrides */
+.theme-light .lang-switch {
+  border-color: var(--color-border);
+}
+
+.theme-light .lang-switch__btn {
+  color: var(--color-text-muted);
+}
+
+.theme-light .lang-switch__btn--active {
+  background: var(--color-accent);
+  color: var(--color-bg);
+}
+
+.theme-light .lang-switch__btn:not(.lang-switch__btn--active):hover {
+  color: var(--color-text);
+  background: rgba(0, 0, 0, 0.05);
+}
+
+/* Mode-today light theme */
+.mode-today.theme-light .lang-switch {
+  border-color: rgba(0, 135, 90, 0.2);
+}
+
+.mode-today.theme-light .lang-switch__btn--active {
+  background: var(--color-mustag-green);
+  color: #FFFFFF;
+}
+
+.mode-today.theme-light .lang-switch__btn:not(.lang-switch__btn--active):hover {
+  color: var(--color-mustag-green);
+  background: rgba(0, 135, 90, 0.08);
+}

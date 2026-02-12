@@ -72,3 +72,66 @@
   outline: 2px solid var(--color-accent);
   outline-offset: 2px;
 }
+
+/* Light theme overrides */
+.theme-light .btn--primary {
+  background: var(--color-accent);
+  color: #1a2940;
+  border-color: var(--color-accent);
+}
+
+.theme-light .btn--primary:hover {
+  background: var(--color-accent-light);
+  border-color: var(--color-accent-light);
+  color: #1a2940;
+}
+
+.theme-light .btn--outline {
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.theme-light .btn--outline:hover {
+  background: rgba(212, 168, 67, 0.1);
+}
+
+.theme-light .pill {
+  border-color: var(--color-border);
+  color: var(--color-text-muted);
+}
+
+.theme-light .pill:hover,
+.theme-light .pill--active {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  background: rgba(212, 168, 67, 0.1);
+}
+
+/* Mode-today light theme */
+.mode-today.theme-light .btn--primary {
+  background: var(--color-mustag-green);
+  color: #FFFFFF;
+  border-color: var(--color-mustag-green);
+}
+
+.mode-today.theme-light .btn--primary:hover {
+  background: #00A86B;
+  border-color: #00A86B;
+  color: #FFFFFF;
+}
+
+.mode-today.theme-light .btn--outline {
+  color: var(--color-mustag-green);
+  border-color: var(--color-mustag-green);
+}
+
+.mode-today.theme-light .btn--outline:hover {
+  background: rgba(0, 135, 90, 0.08);
+}
+
+.mode-today.theme-light .pill:hover,
+.mode-today.theme-light .pill--active {
+  border-color: var(--color-mustag-green);
+  color: var(--color-mustag-green);
+  background: rgba(0, 135, 90, 0.08);
+}

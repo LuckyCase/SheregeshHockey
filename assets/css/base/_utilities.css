@@ -181,6 +181,25 @@
 
 .theme-light .back-to-top {
   color: #1a2940;
+  background: var(--color-accent);
+}
+
+.theme-light .back-to-top:hover {
+  background: var(--color-accent-light);
+}
+
+/* Mode-today light theme */
+.mode-today.theme-light .scroll-progress {
+  background: var(--color-mustag-green);
+}
+
+.mode-today.theme-light .back-to-top {
+  background: var(--color-mustag-green);
+  color: #FFFFFF;
+}
+
+.mode-today.theme-light .back-to-top:hover {
+  background: #00A86B;
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -87,3 +87,40 @@
     height: 100%;
   }
 }
+
+/* Light theme overrides */
+.theme-light .card {
+  background: #FFFFFF;
+  border-color: var(--color-border);
+}
+
+.theme-light .card:hover {
+  border-color: var(--color-primary-light);
+}
+
+.theme-light .card__image {
+  background: var(--color-bg-surface);
+}
+
+.theme-light .card__footer {
+  border-top-color: var(--color-border);
+}
+
+/* Mode-today light theme */
+.mode-today.theme-light .card {
+  background: #FFFFFF;
+  border-color: rgba(0, 135, 90, 0.15);
+}
+
+.mode-today.theme-light .card:hover {
+  border-color: var(--color-mustag-green);
+  box-shadow: 0 4px 16px rgba(0, 135, 90, 0.12);
+}
+
+.mode-today.theme-light .card__meta {
+  color: var(--color-mustag-green);
+}
+
+.mode-today.theme-light .card--info .card__icon {
+  fill: var(--color-mustag-green);
+}
