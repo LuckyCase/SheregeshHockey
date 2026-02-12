@@ -199,58 +199,6 @@
       },
       "date": "2026-02-08",
       "category": "fans"
-    },
-    {
-      "src": "assets/images/today/gallery/1770846265803.png",
-      "caption": {
-        "ru": "",
-        "en": ""
-      },
-      "alt": {
-        "ru": "",
-        "en": ""
-      },
-      "date": "2026-02-11",
-      "category": "game"
-    },
-    {
-      "src": "assets/images/today/gallery/1770846274704.png",
-      "caption": {
-        "ru": "",
-        "en": ""
-      },
-      "alt": {
-        "ru": "",
-        "en": ""
-      },
-      "date": "2026-02-11",
-      "category": "team"
-    },
-    {
-      "src": "assets/images/today/gallery/1770846283293.jpg",
-      "caption": {
-        "ru": "",
-        "en": ""
-      },
-      "alt": {
-        "ru": "",
-        "en": ""
-      },
-      "date": "2026-02-11",
-      "category": "training"
-    },
-    {
-      "src": "assets/images/today/gallery/1770846291712.jpg",
-      "caption": {
-        "ru": "",
-        "en": ""
-      },
-      "alt": {
-        "ru": "",
-        "en": ""
-      },
-      "date": "2026-02-11",
-      "category": "fans"
     }
   ],
   "schedule": [
