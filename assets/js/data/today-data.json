@@ -33,68 +33,6 @@
       "contentEn": "The ice rink is ready, training has started. Three new players joined the team this season.",
       "images": [],
       "pinned": false
-    },
-    {
-      "id": "news-mlijyx3g",
-      "date": "2026-02-11",
-      "titleRu": "test",
-      "titleEn": "test",
-      "contentRu": "test",
-      "contentEn": "test",
-      "images": [],
-      "pinned": false
-    },
-    {
-      "id": "news-mlik2q42",
-      "date": "2026-02-11",
-      "titleRu": "Большая тестовая новость",
-      "titleEn": "Большая тестовая новость",
-      "contentRu": "Большая тестовая новость",
-      "contentEn": "",
-      "images": [],
-      "pinned": false
-    },
-    {
-      "id": "news-mlik2wqe",
-      "date": "2026-02-12",
-      "titleRu": "Большая тестовая новость",
-      "titleEn": "Большая тестовая новость",
-      "contentRu": "Большая тестовая новость",
-      "contentEn": "",
-      "images": [],
-      "pinned": false
-    },
-    {
-      "id": "news-mlik313i",
-      "date": "2026-02-16",
-      "titleRu": "Большая тестовая новость",
-      "titleEn": "Большая тестовая новость",
-      "contentRu": "Большая тестовая новость",
-      "contentEn": "",
-      "images": [],
-      "pinned": false
-    },
-    {
-      "id": "news-mlik3htj",
-      "date": "2026-02-18",
-      "titleRu": "Новость которую надо закрепить",
-      "titleEn": "Новость которую надо закрепить",
-      "contentRu": "Новость которую надо закрепить",
-      "contentEn": "",
-      "images": [],
-      "pinned": true
-    },
-    {
-      "id": "news-mlik7bro",
-      "date": "2026-02-18",
-      "titleRu": "Победа",
-      "titleEn": "Победа",
-      "contentRu": "Победа",
-      "contentEn": "",
-      "images": [
-        "assets/images/today/news/1770846363513.png"
-      ],
-      "pinned": false
     }
   ],
   "announcements": [
@@ -120,30 +58,6 @@
       "location": {
         "ru": "Школьный каток",
         "en": "School rink"
-      }
-    },
-    {
-      "id": "ann-mlik1gxf",
-      "eventDate": "2026-02-12T17:00:00.000Z",
-      "titleRu": "Какток",
-      "titleEn": "Какток",
-      "contentRu": "Какток",
-      "contentEn": "Какток",
-      "location": {
-        "ru": "Какток",
-        "en": "Какток"
-      }
-    },
-    {
-      "id": "ann-mlik20rz",
-      "eventDate": "2026-02-14T17:00:00.000Z",
-      "titleRu": "Тест",
-      "titleEn": "Тест",
-      "contentRu": "Тест",
-      "contentEn": "Тест",
-      "location": {
-        "ru": "Тест",
-        "en": "Тест"
       }
     }
   ],
@@ -251,32 +165,6 @@
       }
     },
     {
-      "date": "2026-03-01",
-      "time": "18:00",
-      "opponent": {
-        "ru": "Таштагол",
-        "en": "Tashtagol"
-      },
-      "location": {
-        "ru": "Дома",
-        "en": "Home"
-      },
-      "result": null
-    },
-    {
-      "date": "2026-03-15",
-      "time": "16:00",
-      "opponent": {
-        "ru": "Междуреченск",
-        "en": "Mezhdurechensk"
-      },
-      "location": {
-        "ru": "Гости",
-        "en": "Away"
-      },
-      "result": null
-    },
-    {
       "date": "2026-02-11",
       "time": "18:00",
       "opponent": {
@@ -302,6 +190,32 @@
       "location": {
         "ru": "Дома",
         "en": "Home"
+      },
+      "result": null
+    },
+    {
+      "date": "2026-03-01",
+      "time": "18:00",
+      "opponent": {
+        "ru": "Таштагол",
+        "en": "Tashtagol"
+      },
+      "location": {
+        "ru": "Дома",
+        "en": "Home"
+      },
+      "result": null
+    },
+    {
+      "date": "2026-03-15",
+      "time": "16:00",
+      "opponent": {
+        "ru": "Междуреченск",
+        "en": "Mezhdurechensk"
+      },
+      "location": {
+        "ru": "Гости",
+        "en": "Away"
       },
       "result": null
     }
