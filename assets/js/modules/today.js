@@ -22,7 +22,7 @@
   var i18n = {
     ru: {
       pinnedLabel: 'Закреплено',
-      readMore: 'Подробнее',
+      readMore: 'Читать полностью →',
       countdown: 'Осталось',
       days: 'д',
       hours: 'ч',
@@ -49,7 +49,7 @@
     },
     en: {
       pinnedLabel: 'Pinned',
-      readMore: 'Read more',
+      readMore: 'Read full story →',
       countdown: 'Starts in',
       days: 'd',
       hours: 'h',
@@ -216,13 +216,18 @@
       var pinBadge = item.pinned
         ? '<span class="today-news-card__pin">' + t.pinnedLabel + '</span>'
         : '';
-      html += '<article class="today-news-card' + (item.pinned ? ' today-news-card--pinned' : '') + '" data-animate data-news-id="' + idx + '" role="button" tabindex="0">';
+      var contentText = loc(item, 'content');
+      var textHtml = contentText
+        ? '<p class="today-news-card__text">' + esc(contentText) + '</p>'
+        : '';
+      html += '<article class="today-news-card' + (item.pinned ? ' today-news-card--pinned' : '') + '" data-animate data-news-id="' + idx + '" role="button" tabindex="0" aria-label="' + esc(loc(item, 'title')) + '">';
       html += img;
       html += '<div class="today-news-card__body">';
       html += pinBadge;
       html += '<time class="today-news-card__date" datetime="' + esc(item.date) + '">' + fmtDate(item.date) + '</time>';
       html += '<h3 class="today-news-card__title">' + esc(loc(item, 'title')) + '</h3>';
-      html += '<p class="today-news-card__text">' + esc(loc(item, 'content')) + '</p>';
+      html += textHtml;
+      html += '<span class="today-news-card__read-more">' + t.readMore + '</span>';
       html += '</div></article>';
     });
     html += '</div>';
