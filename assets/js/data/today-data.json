@@ -27,18 +27,6 @@
   ],
   "announcements": [
     {
-      "id": "ann-001",
-      "eventDate": "2026-03-01T18:00",
-      "titleRu": "Матч: Мустаг — Таштагол",
-      "titleEn": "Game: Mustag vs Tashtagol",
-      "contentRu": "Домашний матч в рамках районного турнира. Приходите поддержать команду!",
-      "contentEn": "Home game as part of the district tournament. Come support the team!",
-      "location": {
-        "ru": "Ледовый дворец, Шерегеш",
-        "en": "Ice Palace, Sheregesh"
-      }
-    },
-    {
       "id": "ann-002",
       "eventDate": "2026-03-15T14:00",
       "titleRu": "Детский хоккейный турнир",
