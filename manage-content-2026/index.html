@@ -359,6 +359,87 @@
       gap: 0.5rem;
     }
 
+    /* ---- Month groups (collapsible) ---- */
+    .admin-month-group {
+      margin-bottom: 0.25rem;
+    }
+
+    .admin-month-group__header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: var(--admin-surface);
+      border: 1px solid var(--admin-border);
+      border-radius: var(--admin-radius);
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.2s;
+      margin-bottom: 0.5rem;
+    }
+
+    .admin-month-group__header:hover {
+      border-color: var(--admin-green);
+    }
+
+    .admin-month-group__toggle {
+      font-size: 0.7rem;
+      color: var(--admin-muted);
+      transition: transform 0.2s;
+    }
+
+    .admin-month-group--open .admin-month-group__toggle {
+      transform: rotate(90deg);
+    }
+
+    .admin-month-group__label {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--admin-text);
+      flex: 1;
+    }
+
+    .admin-month-group__count {
+      font-size: 0.75rem;
+      color: var(--admin-muted);
+      background: var(--admin-bg);
+      padding: 0.15rem 0.5rem;
+      border-radius: 10px;
+    }
+
+    .admin-month-group__items {
+      display: none;
+      padding-left: 0;
+    }
+
+    .admin-month-group--open .admin-month-group__items {
+      display: block;
+    }
+
+    /* ---- Edit mode ---- */
+    .btn--edit {
+      border-color: var(--admin-blue);
+      color: var(--admin-blue);
+    }
+
+    .btn--edit:hover {
+      background: var(--admin-blue);
+      color: #fff;
+    }
+
+    .admin-editing-banner {
+      background: rgba(88, 166, 255, 0.1);
+      border: 1px solid var(--admin-blue);
+      border-radius: var(--admin-radius);
+      padding: 0.75rem 1rem;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      color: var(--admin-blue);
+    }
+
     /* ---- Status messages ---- */
     .admin-status {
       padding: 0.75rem 1rem;
@@ -930,6 +1011,9 @@
     var galleryArchiveSha = null; // SHA of current gallery-data.json for updates
     var photoFiles = { news: [], gallery: [], roster: [], timeline: [], galleryArchive: [] };
 
+    /* Editing state: index of item being edited (-1 = not editing) */
+    var editingState = { news: -1, announcements: -1, gallery: -1, schedule: -1, roster: -1 };
+
     /* ---- GitHub API helpers ---- */
     function ghApi(path, opts) {
       opts = opts || {};
@@ -1078,6 +1162,199 @@
       return prefix + '-' + Date.now().toString(36);
     }
 
+    /* ---- Month grouping helpers ---- */
+    var MONTH_NAMES_RU = ['Январь','Февраль','Март','Апрель','Май','Июнь',
+      'Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
+
+    function getMonthKey(dateStr) {
+      if (!dateStr) return '0000-00';
+      var d = new Date(dateStr);
+      if (isNaN(d.getTime())) return '0000-00';
+      return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
+    }
+
+    function getMonthLabel(key) {
+      if (key === '0000-00') return 'Без даты';
+      var parts = key.split('-');
+      return MONTH_NAMES_RU[parseInt(parts[1], 10) - 1] + ' ' + parts[0];
+    }
+
+    function renderMonthGroups(container, items, getDate, renderItem) {
+      container.innerHTML = '';
+      if (!items.length) {
+        container.innerHTML = '<div style="padding:1rem;text-align:center;color:var(--admin-muted)">Пусто</div>';
+        return;
+      }
+      var groups = {};
+      var groupOrder = [];
+      items.forEach(function (item, idx) {
+        var key = getMonthKey(getDate(item));
+        if (!groups[key]) { groups[key] = []; groupOrder.push(key); }
+        groups[key].push({ item: item, idx: idx });
+      });
+      groupOrder.sort(function (a, b) { return b.localeCompare(a); });
+      groupOrder.forEach(function (key, gi) {
+        var grp = document.createElement('div');
+        grp.className = 'admin-month-group' + (gi === 0 ? ' admin-month-group--open' : '');
+        var hdr = document.createElement('div');
+        hdr.className = 'admin-month-group__header';
+        hdr.innerHTML = '<span class="admin-month-group__toggle">&#9654;</span>' +
+          '<span class="admin-month-group__label">' + getMonthLabel(key) + '</span>' +
+          '<span class="admin-month-group__count">' + groups[key].length + '</span>';
+        hdr.addEventListener('click', function () { grp.classList.toggle('admin-month-group--open'); });
+        var body = document.createElement('div');
+        body.className = 'admin-month-group__items';
+        groups[key].forEach(function (e) { body.appendChild(renderItem(e.item, e.idx)); });
+        grp.appendChild(hdr);
+        grp.appendChild(body);
+        container.appendChild(grp);
+      });
+    }
+
+    /* ---- Edit helpers ---- */
+    function showEditBanner(panelId, label, onCancel) {
+      removeEditBanner(panelId);
+      var panel = $(panelId);
+      var banner = document.createElement('div');
+      banner.className = 'admin-editing-banner';
+      banner.id = panelId + '-edit-banner';
+      banner.innerHTML = '<span>Редактирование: ' + esc(label) + '</span>';
+      var btn = document.createElement('button');
+      btn.className = 'btn btn--sm';
+      btn.textContent = 'Отмена';
+      btn.addEventListener('click', onCancel);
+      banner.appendChild(btn);
+      var h3 = panel.querySelector('h3');
+      if (h3) h3.after(banner);
+    }
+
+    function removeEditBanner(panelId) {
+      var old = $(panelId + '-edit-banner');
+      if (old) old.remove();
+    }
+
+    function startEdit(section, idx) {
+      if (section === 'news') {
+        var item = todayData.news[idx];
+        editingState.news = idx;
+        $('news-title-ru').value = item.titleRu || '';
+        $('news-title-en').value = item.titleEn || '';
+        $('news-content-ru').value = item.contentRu || '';
+        $('news-content-en').value = item.contentEn || '';
+        $('news-date').value = item.date || '';
+        $('news-pinned').checked = !!item.pinned;
+        $('btn-news-publish').textContent = 'Сохранить';
+        showEditBanner('panel-news', item.titleRu, function () { cancelEdit('news'); });
+        $('panel-news').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+      } else if (section === 'announcements') {
+        var item = todayData.announcements[idx];
+        editingState.announcements = idx;
+        $('ann-title-ru').value = item.titleRu || '';
+        $('ann-title-en').value = item.titleEn || '';
+        $('ann-content-ru').value = item.contentRu || '';
+        $('ann-content-en').value = item.contentEn || '';
+        if (item.eventDate) {
+          var d = new Date(item.eventDate);
+          var local = new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+          $('ann-date').value = local;
+        }
+        $('ann-location-ru').value = item.location ? item.location.ru : '';
+        $('ann-location-en').value = item.location ? item.location.en : '';
+        $('btn-ann-publish').textContent = 'Сохранить';
+        showEditBanner('panel-announcements', item.titleRu, function () { cancelEdit('announcements'); });
+        $('panel-announcements').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+      } else if (section === 'gallery') {
+        var item = todayData.gallery[idx];
+        editingState.gallery = idx;
+        $('gallery-caption-ru').value = item.caption ? item.caption.ru : '';
+        $('gallery-caption-en').value = item.caption ? item.caption.en : '';
+        $('gallery-category').value = item.category || 'game';
+        $('gallery-date').value = item.date || '';
+        $('btn-gallery-publish').textContent = 'Сохранить';
+        showEditBanner('panel-gallery', (item.caption && item.caption.ru) || item.src, function () { cancelEdit('gallery'); });
+        $('panel-gallery').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+      } else if (section === 'schedule') {
+        var item = todayData.schedule[idx];
+        editingState.schedule = idx;
+        $('sched-date').value = item.date || '';
+        $('sched-time').value = item.time || '18:00';
+        $('sched-opponent-ru').value = item.opponent ? item.opponent.ru : '';
+        $('sched-opponent-en').value = item.opponent ? item.opponent.en : '';
+        $('sched-location-ru').value = item.location ? item.location.ru : 'Дома';
+        $('sched-location-en').value = item.location ? item.location.en : 'Home';
+        $('sched-score').value = item.result ? item.result.score : '';
+        $('sched-win').checked = item.result ? item.result.win : false;
+        $('btn-sched-publish').textContent = 'Сохранить';
+        showEditBanner('panel-schedule', item.opponent ? item.opponent.ru : '', function () { cancelEdit('schedule'); });
+        $('panel-schedule').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+      } else if (section === 'roster') {
+        var item = todayData.roster[idx];
+        editingState.roster = idx;
+        $('roster-number').value = item.number || '';
+        $('roster-name-ru').value = item.nameRu || '';
+        $('roster-name-en').value = item.nameEn || '';
+        $('roster-position').value = item.position || 'forward';
+        $('btn-roster-publish').textContent = 'Сохранить';
+        showEditBanner('panel-roster', '#' + item.number + ' ' + item.nameRu, function () { cancelEdit('roster'); });
+        $('panel-roster').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+
+    function cancelEdit(section) {
+      editingState[section] = -1;
+      if (section === 'news') {
+        $('news-title-ru').value = '';
+        $('news-title-en').value = '';
+        $('news-content-ru').value = '';
+        $('news-content-en').value = '';
+        $('news-date').value = new Date().toISOString().split('T')[0];
+        $('news-pinned').checked = false;
+        photoFiles.news = [];
+        $('news-photo-previews').innerHTML = '';
+        $('btn-news-publish').textContent = 'Опубликовать';
+        removeEditBanner('panel-news');
+      } else if (section === 'announcements') {
+        $('ann-title-ru').value = '';
+        $('ann-title-en').value = '';
+        $('ann-content-ru').value = '';
+        $('ann-content-en').value = '';
+        $('ann-date').value = '';
+        $('ann-location-ru').value = '';
+        $('ann-location-en').value = '';
+        $('btn-ann-publish').textContent = 'Опубликовать';
+        removeEditBanner('panel-announcements');
+      } else if (section === 'gallery') {
+        $('gallery-caption-ru').value = '';
+        $('gallery-caption-en').value = '';
+        $('gallery-date').value = new Date().toISOString().split('T')[0];
+        photoFiles.gallery = [];
+        $('gallery-photo-previews').innerHTML = '';
+        $('btn-gallery-publish').textContent = 'Опубликовать';
+        removeEditBanner('panel-gallery');
+      } else if (section === 'schedule') {
+        $('sched-date').value = new Date().toISOString().split('T')[0];
+        $('sched-time').value = '18:00';
+        $('sched-opponent-ru').value = '';
+        $('sched-opponent-en').value = '';
+        $('sched-score').value = '';
+        $('sched-win').checked = false;
+        $('btn-sched-publish').textContent = 'Опубликовать';
+        removeEditBanner('panel-schedule');
+      } else if (section === 'roster') {
+        $('roster-number').value = '';
+        $('roster-name-ru').value = '';
+        $('roster-name-en').value = '';
+        $('btn-roster-publish').textContent = 'Опубликовать';
+        photoFiles.roster = [];
+        $('roster-photo-previews').innerHTML = '';
+        removeEditBanner('panel-roster');
+      }
+    }
+
     /* ---- Photo drop zones ---- */
     function initPhotoDrop(dropId, inputId, previewsId, storeKey) {
       var drop = $(dropId);
@@ -1117,15 +1394,23 @@
     }
 
     /* ---- Render list items ---- */
-    function renderListItem(title, meta, onDelete) {
+    function renderListItem(title, meta, onDelete, onEdit) {
       var div = document.createElement('div');
       div.className = 'admin-list__item';
       div.innerHTML = '<div class="admin-list__item-info"><div class="admin-list__item-title">' + esc(title) + '</div><div class="admin-list__item-meta">' + esc(meta) + '</div></div><div class="admin-list__item-actions"></div>';
+      var actions = div.querySelector('.admin-list__item-actions');
+      if (onEdit) {
+        var editBtn = document.createElement('button');
+        editBtn.className = 'btn btn--edit btn--sm';
+        editBtn.textContent = 'Ред.';
+        editBtn.addEventListener('click', onEdit);
+        actions.appendChild(editBtn);
+      }
       var btn = document.createElement('button');
       btn.className = 'btn btn--danger btn--sm';
       btn.textContent = 'Удалить';
       btn.addEventListener('click', onDelete);
-      div.querySelector('.admin-list__item-actions').appendChild(btn);
+      actions.appendChild(btn);
       return div;
     }
 
@@ -1142,57 +1427,100 @@
 
     function refreshNewsList() {
       var el = $('news-list-items');
-      el.innerHTML = '';
-      (todayData.news || []).forEach(function (item, idx) {
-        el.appendChild(renderListItem(item.titleRu, item.date, function () {
-          todayData.news.splice(idx, 1);
-          saveData('Delete news: ' + item.titleRu).then(function () { refreshNewsList(); });
-        }));
-      });
+      renderMonthGroups(el, todayData.news || [],
+        function (item) { return item.date; },
+        function (item, idx) {
+          return renderListItem(item.titleRu, item.date + (item.pinned ? ' (закреп.)' : ''),
+            function () {
+              if (confirm('Удалить новость «' + item.titleRu + '»?')) {
+                todayData.news.splice(idx, 1);
+                if (editingState.news === idx) cancelEdit('news');
+                else if (editingState.news > idx) editingState.news--;
+                saveData('Delete news: ' + item.titleRu).then(function () { refreshNewsList(); });
+              }
+            },
+            function () { startEdit('news', idx); }
+          );
+        }
+      );
     }
 
     function refreshAnnList() {
       var el = $('ann-list-items');
-      el.innerHTML = '';
-      (todayData.announcements || []).forEach(function (item, idx) {
-        el.appendChild(renderListItem(item.titleRu, item.eventDate, function () {
-          todayData.announcements.splice(idx, 1);
-          saveData('Delete announcement: ' + item.titleRu).then(function () { refreshAnnList(); });
-        }));
-      });
+      renderMonthGroups(el, todayData.announcements || [],
+        function (item) { return item.eventDate; },
+        function (item, idx) {
+          return renderListItem(item.titleRu, item.eventDate ? new Date(item.eventDate).toLocaleString('ru') : '',
+            function () {
+              if (confirm('Удалить анонс «' + item.titleRu + '»?')) {
+                todayData.announcements.splice(idx, 1);
+                if (editingState.announcements === idx) cancelEdit('announcements');
+                else if (editingState.announcements > idx) editingState.announcements--;
+                saveData('Delete announcement: ' + item.titleRu).then(function () { refreshAnnList(); });
+              }
+            },
+            function () { startEdit('announcements', idx); }
+          );
+        }
+      );
     }
 
     function refreshGalleryList() {
       var el = $('gallery-list-items');
-      el.innerHTML = '';
-      (todayData.gallery || []).forEach(function (item, idx) {
-        el.appendChild(renderListItem(item.caption ? item.caption.ru : item.src, item.date || '', function () {
-          todayData.gallery.splice(idx, 1);
-          saveData('Delete gallery photo').then(function () { refreshGalleryList(); });
-        }));
-      });
+      renderMonthGroups(el, todayData.gallery || [],
+        function (item) { return item.date; },
+        function (item, idx) {
+          return renderListItem(item.caption ? item.caption.ru : item.src, item.date || '',
+            function () {
+              if (confirm('Удалить фото?')) {
+                todayData.gallery.splice(idx, 1);
+                if (editingState.gallery === idx) cancelEdit('gallery');
+                else if (editingState.gallery > idx) editingState.gallery--;
+                saveData('Delete gallery photo').then(function () { refreshGalleryList(); });
+              }
+            },
+            function () { startEdit('gallery', idx); }
+          );
+        }
+      );
     }
 
     function refreshSchedList() {
       var el = $('sched-list-items');
-      el.innerHTML = '';
-      (todayData.schedule || []).forEach(function (item, idx) {
-        var meta = item.date + ' ' + (item.time || '') + ' — ' + (item.result ? item.result.score : 'TBD');
-        el.appendChild(renderListItem(item.opponent.ru, meta, function () {
-          todayData.schedule.splice(idx, 1);
-          saveData('Delete schedule entry').then(function () { refreshSchedList(); });
-        }));
-      });
+      renderMonthGroups(el, todayData.schedule || [],
+        function (item) { return item.date; },
+        function (item, idx) {
+          var meta = item.date + ' ' + (item.time || '') + ' — ' + (item.result ? item.result.score : 'TBD');
+          return renderListItem(item.opponent.ru, meta,
+            function () {
+              if (confirm('Удалить матч?')) {
+                todayData.schedule.splice(idx, 1);
+                if (editingState.schedule === idx) cancelEdit('schedule');
+                else if (editingState.schedule > idx) editingState.schedule--;
+                saveData('Delete schedule entry').then(function () { refreshSchedList(); });
+              }
+            },
+            function () { startEdit('schedule', idx); }
+          );
+        }
+      );
     }
 
     function refreshRosterList() {
       var el = $('roster-list-items');
       el.innerHTML = '';
       (todayData.roster || []).forEach(function (item, idx) {
-        el.appendChild(renderListItem('#' + item.number + ' ' + item.nameRu, item.position, function () {
-          todayData.roster.splice(idx, 1);
-          saveData('Delete roster: ' + item.nameRu).then(function () { refreshRosterList(); });
-        }));
+        el.appendChild(renderListItem('#' + item.number + ' ' + item.nameRu, item.position,
+          function () {
+            if (confirm('Удалить игрока «' + item.nameRu + '»?')) {
+              todayData.roster.splice(idx, 1);
+              if (editingState.roster === idx) cancelEdit('roster');
+              else if (editingState.roster > idx) editingState.roster--;
+              saveData('Delete roster: ' + item.nameRu).then(function () { refreshRosterList(); });
+            }
+          },
+          function () { startEdit('roster', idx); }
+        ));
       });
     }
 
@@ -1384,32 +1712,39 @@
         var titleRu = $('news-title-ru').value.trim();
         if (!titleRu) { setStatus('news-status', 'error', 'Введите заголовок'); return; }
 
-        setStatus('news-status', 'loading', 'Публикация...');
+        var isEdit = editingState.news >= 0;
+        setStatus('news-status', 'loading', isEdit ? 'Сохранение...' : 'Публикация...');
 
         var uploadPromises = photoFiles.news.map(function (f) { return uploadImage(f, 'news'); });
 
         Promise.all(uploadPromises).then(function (paths) {
-          var entry = {
-            id: genId('news'),
-            date: $('news-date').value,
-            titleRu: titleRu,
-            titleEn: $('news-title-en').value.trim() || titleRu,
-            contentRu: $('news-content-ru').value.trim(),
-            contentEn: $('news-content-en').value.trim(),
-            images: paths,
-            pinned: $('news-pinned').checked
-          };
-          todayData.news.push(entry);
-          return saveData('Add news: ' + titleRu);
+          if (isEdit) {
+            var existing = todayData.news[editingState.news];
+            existing.date = $('news-date').value;
+            existing.titleRu = titleRu;
+            existing.titleEn = $('news-title-en').value.trim() || titleRu;
+            existing.contentRu = $('news-content-ru').value.trim();
+            existing.contentEn = $('news-content-en').value.trim();
+            existing.pinned = $('news-pinned').checked;
+            if (paths.length) existing.images = (existing.images || []).concat(paths);
+            return saveData('Edit news: ' + titleRu);
+          } else {
+            var entry = {
+              id: genId('news'),
+              date: $('news-date').value,
+              titleRu: titleRu,
+              titleEn: $('news-title-en').value.trim() || titleRu,
+              contentRu: $('news-content-ru').value.trim(),
+              contentEn: $('news-content-en').value.trim(),
+              images: paths,
+              pinned: $('news-pinned').checked
+            };
+            todayData.news.push(entry);
+            return saveData('Add news: ' + titleRu);
+          }
         }).then(function () {
-          setStatus('news-status', 'success', 'Новость опубликована!');
-          photoFiles.news = [];
-          $('news-photo-previews').innerHTML = '';
-          $('news-title-ru').value = '';
-          $('news-title-en').value = '';
-          $('news-content-ru').value = '';
-          $('news-content-en').value = '';
-          $('news-pinned').checked = false;
+          setStatus('news-status', 'success', isEdit ? 'Новость обновлена!' : 'Новость опубликована!');
+          cancelEdit('news');
           refreshNewsList();
         }).catch(function (err) {
           setStatus('news-status', 'error', 'Ошибка: ' + err.message);
@@ -1434,33 +1769,43 @@
         var titleRu = $('ann-title-ru').value.trim();
         if (!titleRu) { setStatus('ann-status', 'error', 'Введите заголовок'); return; }
 
-        setStatus('ann-status', 'loading', 'Публикация...');
+        var isEdit = editingState.announcements >= 0;
+        setStatus('ann-status', 'loading', isEdit ? 'Сохранение...' : 'Публикация...');
 
-        var entry = {
-          id: genId('ann'),
-          eventDate: $('ann-date').value ? new Date($('ann-date').value).toISOString() : new Date().toISOString(),
-          titleRu: titleRu,
-          titleEn: $('ann-title-en').value.trim() || titleRu,
-          contentRu: $('ann-content-ru').value.trim(),
-          contentEn: $('ann-content-en').value.trim(),
-          location: {
-            ru: $('ann-location-ru').value.trim(),
-            en: $('ann-location-en').value.trim()
-          }
-        };
-        todayData.announcements.push(entry);
-        saveData('Add announcement: ' + titleRu).then(function () {
-          setStatus('ann-status', 'success', 'Анонс опубликован! На сайте появится через 1–2 мин (обновление GitHub Pages). Обновите страницу.');
-          $('ann-title-ru').value = '';
-          $('ann-title-en').value = '';
-          $('ann-content-ru').value = '';
-          $('ann-content-en').value = '';
-          $('ann-location-ru').value = '';
-          $('ann-location-en').value = '';
-          refreshAnnList();
-        }).catch(function (err) {
-          setStatus('ann-status', 'error', 'Ошибка: ' + err.message);
-        });
+        if (isEdit) {
+          var existing = todayData.announcements[editingState.announcements];
+          existing.eventDate = $('ann-date').value ? new Date($('ann-date').value).toISOString() : existing.eventDate;
+          existing.titleRu = titleRu;
+          existing.titleEn = $('ann-title-en').value.trim() || titleRu;
+          existing.contentRu = $('ann-content-ru').value.trim();
+          existing.contentEn = $('ann-content-en').value.trim();
+          existing.location = { ru: $('ann-location-ru').value.trim(), en: $('ann-location-en').value.trim() };
+          saveData('Edit announcement: ' + titleRu).then(function () {
+            setStatus('ann-status', 'success', 'Анонс обновлён!');
+            cancelEdit('announcements');
+            refreshAnnList();
+          }).catch(function (err) {
+            setStatus('ann-status', 'error', 'Ошибка: ' + err.message);
+          });
+        } else {
+          var entry = {
+            id: genId('ann'),
+            eventDate: $('ann-date').value ? new Date($('ann-date').value).toISOString() : new Date().toISOString(),
+            titleRu: titleRu,
+            titleEn: $('ann-title-en').value.trim() || titleRu,
+            contentRu: $('ann-content-ru').value.trim(),
+            contentEn: $('ann-content-en').value.trim(),
+            location: { ru: $('ann-location-ru').value.trim(), en: $('ann-location-en').value.trim() }
+          };
+          todayData.announcements.push(entry);
+          saveData('Add announcement: ' + titleRu).then(function () {
+            setStatus('ann-status', 'success', 'Анонс опубликован!');
+            cancelEdit('announcements');
+            refreshAnnList();
+          }).catch(function (err) {
+            setStatus('ann-status', 'error', 'Ошибка: ' + err.message);
+          });
+        }
       });
 
       // ---- TIMELINE ----
@@ -1619,35 +1964,36 @@
 
       $('btn-gallery-publish').addEventListener('click', function () {
         if (!todayData) return;
-        if (!photoFiles.gallery.length) { setStatus('gallery-status', 'error', 'Добавьте хотя бы одно фото'); return; }
+        var isEdit = editingState.gallery >= 0;
+        if (!isEdit && !photoFiles.gallery.length) { setStatus('gallery-status', 'error', 'Добавьте хотя бы одно фото'); return; }
 
-        setStatus('gallery-status', 'loading', 'Загрузка фото...');
+        setStatus('gallery-status', 'loading', isEdit ? 'Сохранение...' : 'Загрузка фото...');
 
         var uploadPromises = photoFiles.gallery.map(function (f) { return uploadImage(f, 'gallery'); });
 
         Promise.all(uploadPromises).then(function (paths) {
-          paths.forEach(function (path) {
-            todayData.gallery.push({
-              src: path,
-              caption: {
-                ru: $('gallery-caption-ru').value.trim(),
-                en: $('gallery-caption-en').value.trim()
-              },
-              alt: {
-                ru: $('gallery-caption-ru').value.trim(),
-                en: $('gallery-caption-en').value.trim()
-              },
-              date: $('gallery-date').value,
-              category: $('gallery-category').value
+          if (isEdit) {
+            var existing = todayData.gallery[editingState.gallery];
+            existing.caption = { ru: $('gallery-caption-ru').value.trim(), en: $('gallery-caption-en').value.trim() };
+            existing.alt = { ru: $('gallery-caption-ru').value.trim(), en: $('gallery-caption-en').value.trim() };
+            existing.date = $('gallery-date').value;
+            existing.category = $('gallery-category').value;
+            return saveData('Edit gallery photo');
+          } else {
+            paths.forEach(function (path) {
+              todayData.gallery.push({
+                src: path,
+                caption: { ru: $('gallery-caption-ru').value.trim(), en: $('gallery-caption-en').value.trim() },
+                alt: { ru: $('gallery-caption-ru').value.trim(), en: $('gallery-caption-en').value.trim() },
+                date: $('gallery-date').value,
+                category: $('gallery-category').value
+              });
             });
-          });
-          return saveData('Add gallery photos');
+            return saveData('Add gallery photos');
+          }
         }).then(function () {
-          setStatus('gallery-status', 'success', 'Фото опубликованы!');
-          photoFiles.gallery = [];
-          $('gallery-photo-previews').innerHTML = '';
-          $('gallery-caption-ru').value = '';
-          $('gallery-caption-en').value = '';
+          setStatus('gallery-status', 'success', isEdit ? 'Фото обновлено!' : 'Фото опубликованы!');
+          cancelEdit('gallery');
           refreshGalleryList();
         }).catch(function (err) {
           setStatus('gallery-status', 'error', 'Ошибка: ' + err.message);
@@ -1661,27 +2007,41 @@
         var opponentRu = $('sched-opponent-ru').value.trim();
         if (!date || !opponentRu) { setStatus('sched-status', 'error', 'Заполните дату и соперника'); return; }
 
-        setStatus('sched-status', 'loading', 'Публикация...');
+        var isEdit = editingState.schedule >= 0;
+        setStatus('sched-status', 'loading', isEdit ? 'Сохранение...' : 'Публикация...');
 
         var score = $('sched-score').value.trim();
-        var entry = {
-          date: date,
-          time: $('sched-time').value,
-          opponent: { ru: opponentRu, en: $('sched-opponent-en').value.trim() || opponentRu },
-          location: { ru: $('sched-location-ru').value, en: $('sched-location-en').value },
-          result: score ? { score: score, win: $('sched-win').checked } : null
-        };
-        todayData.schedule.push(entry);
-        saveData('Add schedule: ' + opponentRu + ' ' + date).then(function () {
-          setStatus('sched-status', 'success', 'Матч добавлен!');
-          $('sched-opponent-ru').value = '';
-          $('sched-opponent-en').value = '';
-          $('sched-score').value = '';
-          $('sched-win').checked = false;
-          refreshSchedList();
-        }).catch(function (err) {
-          setStatus('sched-status', 'error', 'Ошибка: ' + err.message);
-        });
+        if (isEdit) {
+          var existing = todayData.schedule[editingState.schedule];
+          existing.date = date;
+          existing.time = $('sched-time').value;
+          existing.opponent = { ru: opponentRu, en: $('sched-opponent-en').value.trim() || opponentRu };
+          existing.location = { ru: $('sched-location-ru').value, en: $('sched-location-en').value };
+          existing.result = score ? { score: score, win: $('sched-win').checked } : null;
+          saveData('Edit schedule: ' + opponentRu + ' ' + date).then(function () {
+            setStatus('sched-status', 'success', 'Матч обновлён!');
+            cancelEdit('schedule');
+            refreshSchedList();
+          }).catch(function (err) {
+            setStatus('sched-status', 'error', 'Ошибка: ' + err.message);
+          });
+        } else {
+          var entry = {
+            date: date,
+            time: $('sched-time').value,
+            opponent: { ru: opponentRu, en: $('sched-opponent-en').value.trim() || opponentRu },
+            location: { ru: $('sched-location-ru').value, en: $('sched-location-en').value },
+            result: score ? { score: score, win: $('sched-win').checked } : null
+          };
+          todayData.schedule.push(entry);
+          saveData('Add schedule: ' + opponentRu + ' ' + date).then(function () {
+            setStatus('sched-status', 'success', 'Матч добавлен!');
+            cancelEdit('schedule');
+            refreshSchedList();
+          }).catch(function (err) {
+            setStatus('sched-status', 'error', 'Ошибка: ' + err.message);
+          });
+        }
       });
 
       // ---- ROSTER ----
@@ -1691,29 +2051,36 @@
         var number = parseInt($('roster-number').value, 10);
         if (!nameRu || isNaN(number)) { setStatus('roster-status', 'error', 'Заполните номер и имя'); return; }
 
-        setStatus('roster-status', 'loading', 'Публикация...');
+        var isEdit = editingState.roster >= 0;
+        setStatus('roster-status', 'loading', isEdit ? 'Сохранение...' : 'Публикация...');
 
         var photoPromise = photoFiles.roster.length
           ? uploadImage(photoFiles.roster[0], 'roster')
-          : Promise.resolve('assets/images/placeholders/ice.svg');
+          : Promise.resolve(null);
 
         photoPromise.then(function (photoPath) {
-          var entry = {
-            number: number,
-            nameRu: nameRu,
-            nameEn: $('roster-name-en').value.trim() || nameRu,
-            position: $('roster-position').value,
-            photo: photoPath
-          };
-          todayData.roster.push(entry);
-          return saveData('Add roster: #' + number + ' ' + nameRu);
+          if (isEdit) {
+            var existing = todayData.roster[editingState.roster];
+            existing.number = number;
+            existing.nameRu = nameRu;
+            existing.nameEn = $('roster-name-en').value.trim() || nameRu;
+            existing.position = $('roster-position').value;
+            if (photoPath) existing.photo = photoPath;
+            return saveData('Edit roster: #' + number + ' ' + nameRu);
+          } else {
+            var entry = {
+              number: number,
+              nameRu: nameRu,
+              nameEn: $('roster-name-en').value.trim() || nameRu,
+              position: $('roster-position').value,
+              photo: photoPath || 'assets/images/placeholders/ice.svg'
+            };
+            todayData.roster.push(entry);
+            return saveData('Add roster: #' + number + ' ' + nameRu);
+          }
         }).then(function () {
-          setStatus('roster-status', 'success', 'Игрок добавлен!');
-          photoFiles.roster = [];
-          $('roster-photo-previews').innerHTML = '';
-          $('roster-number').value = '';
-          $('roster-name-ru').value = '';
-          $('roster-name-en').value = '';
+          setStatus('roster-status', 'success', isEdit ? 'Игрок обновлён!' : 'Игрок добавлен!');
+          cancelEdit('roster');
           refreshRosterList();
         }).catch(function (err) {
           setStatus('roster-status', 'error', 'Ошибка: ' + err.message);
