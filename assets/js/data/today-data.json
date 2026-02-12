@@ -35,6 +35,18 @@
         "assets/images/today/news/1770929642104.jpg"
       ],
       "pinned": false
+    },
+    {
+      "id": "news-mlk0cx74",
+      "date": "2026-02-12",
+      "titleRu": "Тест",
+      "titleEn": "Тест",
+      "contentRu": "Тест",
+      "contentEn": "Тест",
+      "images": [
+        "assets/images/today/news/1770933964774.png"
+      ],
+      "pinned": false
     }
   ],
   "announcements": [
