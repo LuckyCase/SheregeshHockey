@@ -1,16 +1,16 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
- <!-- Dark blue background (история theme) -->
- <circle cx="16" cy="16" r="16" fill="#1a3a5c"/>
+ <!-- Black background -->
+ <rect fill="#000" width="32" height="32"/>
 
- <!-- Hockey puck (black with highlight) -->
- <ellipse cx="16" cy="18" rx="8" ry="3" fill="#1f1a17"/>
- <ellipse cx="16" cy="17.5" rx="7.5" ry="2.5" fill="#2c2724"/>
+ <!-- Large puck (centered, bigger) -->
+ <ellipse cx="16" cy="16" rx="12" ry="5" fill="#2c2724"/>
+ <ellipse cx="16" cy="15" rx="11" ry="4" fill="#3d3b36"/>
 
- <!-- Crossed sticks (gold accent) -->
- <line x1="8" y1="10" x2="24" y2="10" stroke="#d4a843" stroke-width="2" stroke-linecap="round"/>
- <line x1="10" y1="8" x2="10" y2="12" stroke="#d4a843" stroke-width="1.5" stroke-linecap="round"/>
- <line x1="22" y1="8" x2="22" y2="12" stroke="#d4a843" stroke-width="1.5" stroke-linecap="round"/>
+ <!-- Simple crossed sticks (gold, bold) -->
+ <line x1="4" y1="8" x2="28" y2="8" stroke="#d4a843" stroke-width="3" stroke-linecap="round"/>
+ <line x1="6" y1="4" x2="6" y2="12" stroke="#d4a843" stroke-width="2.5" stroke-linecap="round"/>
+ <line x1="26" y1="4" x2="26" y2="12" stroke="#d4a843" stroke-width="2.5" stroke-linecap="round"/>
 
- <!-- Circle border (gold) -->
- <circle cx="16" cy="16" r="15" fill="none" stroke="#d4a843" stroke-width="1" opacity="0.5"/>
+ <!-- Gold circle border -->
+ <circle cx="16" cy="16" r="14.5" fill="none" stroke="#d4a843" stroke-width="2"/>
 </svg>

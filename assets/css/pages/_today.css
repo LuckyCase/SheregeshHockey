@@ -27,7 +27,8 @@
 
 .today-hero__logo {
   display: block;
-  width: clamp(128px, 20vw, 200px);
+  width: clamp(128px, 20vw, 200px) !important;
+  max-width: 200px;
   height: auto;
   margin: 0 auto var(--space-lg);
   filter: drop-shadow(0 0 20px rgba(0, 135, 90, 0.5));
