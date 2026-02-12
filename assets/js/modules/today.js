@@ -130,6 +130,72 @@
     return obj[lang] || obj.ru || '';
   }
 
+  /* ==== NEWS MODAL ==== */
+  var newsData = null;
+
+  function openNewsModal(item) {
+    var modal = document.getElementById('news-modal');
+    var body = document.getElementById('news-modal-body');
+    if (!modal || !body || !item) return;
+
+    var img = (item.images && item.images.length)
+      ? '<img class="news-modal__image" src="' + prefix + esc(item.images[0]) + '" alt="" loading="lazy">'
+      : '';
+    var pinBadge = item.pinned
+      ? '<span class="news-modal__pin">' + t.pinnedLabel + '</span>'
+      : '';
+    var content = loc(item, 'content');
+    var contentHtml = content
+      ? '<p class="news-modal__content-text">' + esc(content) + '</p>'
+      : '';
+
+    var additionalImages = '';
+    if (item.images && item.images.length > 1) {
+      additionalImages = '<div class="news-modal__images">';
+      for (var i = 1; i < item.images.length; i++) {
+        additionalImages += '<img class="news-modal__image-item" src="' + prefix + esc(item.images[i]) + '" alt="" loading="lazy">';
+      }
+      additionalImages += '</div>';
+    }
+
+    body.innerHTML = img +
+      '<div class="news-modal__body">' +
+      pinBadge +
+      '<time class="news-modal__date" datetime="' + esc(item.date) + '">' + fmtDate(item.date) + '</time>' +
+      '<h2 id="news-modal-title" class="news-modal__title">' + esc(loc(item, 'title')) + '</h2>' +
+      contentHtml +
+      additionalImages +
+      '</div>';
+
+    modal.removeAttribute('hidden');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeNewsModal() {
+    var modal = document.getElementById('news-modal');
+    if (!modal) return;
+    modal.setAttribute('aria-hidden', 'true');
+    modal.setAttribute('hidden', '');
+    document.body.style.overflow = '';
+  }
+
+  function initNewsModal() {
+    var modal = document.getElementById('news-modal');
+    if (!modal) return;
+
+    var closeButtons = modal.querySelectorAll('[data-news-close]');
+    closeButtons.forEach(function (btn) {
+      btn.addEventListener('click', closeNewsModal);
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && modal.getAttribute('aria-hidden') === 'false') {
+        closeNewsModal();
+      }
+    });
+  }
+
   /* ==== RENDER FUNCTIONS ==== */
 
   function renderNews(data) {
@@ -141,15 +207,16 @@
       return new Date(b.date) - new Date(a.date);
     });
     if (!items.length) { el.innerHTML = '<p class="today-empty">' + t.noNews + '</p>'; return; }
+    newsData = items;
     var html = '<div class="today-news__grid">';
-    items.forEach(function (item) {
+    items.forEach(function (item, idx) {
       var img = (item.images && item.images.length)
         ? '<img class="today-news-card__image" src="' + prefix + esc(item.images[0]) + '" alt="" loading="lazy">'
         : '';
       var pinBadge = item.pinned
         ? '<span class="today-news-card__pin">' + t.pinnedLabel + '</span>'
         : '';
-      html += '<article class="today-news-card' + (item.pinned ? ' today-news-card--pinned' : '') + '" data-animate>';
+      html += '<article class="today-news-card' + (item.pinned ? ' today-news-card--pinned' : '') + '" data-animate data-news-id="' + idx + '" role="button" tabindex="0">';
       html += img;
       html += '<div class="today-news-card__body">';
       html += pinBadge;
@@ -160,6 +227,23 @@
     });
     html += '</div>';
     el.innerHTML = html;
+
+    el.querySelectorAll('.today-news-card').forEach(function (card) {
+      card.addEventListener('click', function () {
+        var idx = parseInt(card.getAttribute('data-news-id'), 10);
+        if (!isNaN(idx) && newsData && newsData[idx]) {
+          openNewsModal(newsData[idx]);
+        }
+      });
+      card.addEventListener('keydown', function (e) {
+        if (e.key !== 'Enter' && e.key !== ' ') return;
+        e.preventDefault();
+        var idx = parseInt(card.getAttribute('data-news-id'), 10);
+        if (!isNaN(idx) && newsData && newsData[idx]) {
+          openNewsModal(newsData[idx]);
+        }
+      });
+    });
   }
 
   function renderAnnouncements(data) {
@@ -354,6 +438,7 @@
 
   /* ==== INIT ==== */
   function init() {
+    initNewsModal();
     if (window.location.protocol === 'file:') {
       showLoadError(lang === 'ru'
         ? 'Откройте страницу через локальный сервер (http://...), а не как файл (file://).'
