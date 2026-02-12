@@ -604,6 +604,11 @@
   transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
+/* Override hidden attribute when modal should be shown */
+.news-modal:not([hidden]) {
+  display: flex;
+}
+
 .news-modal[aria-hidden="false"] {
   opacity: 1;
   visibility: visible;

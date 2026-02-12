@@ -134,9 +134,15 @@
   var newsData = null;
 
   function openNewsModal(item) {
+    console.log('[NEWS MODAL] Opening modal for item:', item);
     var modal = document.getElementById('news-modal');
     var body = document.getElementById('news-modal-body');
-    if (!modal || !body || !item) return;
+    console.log('[NEWS MODAL] modal element:', modal);
+    console.log('[NEWS MODAL] body element:', body);
+    if (!modal || !body || !item) {
+      console.error('[NEWS MODAL] Missing required elements or item');
+      return;
+    }
 
     var banner = (item.images && item.images.length)
       ? '<div class="news-modal__banner"><img class="news-modal__image" src="' + prefix + esc(item.images[0]) + '" alt="' + esc(loc(item, 'title')) + '" loading="lazy"></div>'
@@ -167,9 +173,17 @@
       additionalImages +
       '</div>';
 
+    console.log('[NEWS MODAL] Before opening - hidden:', modal.hasAttribute('hidden'), 'aria-hidden:', modal.getAttribute('aria-hidden'));
     modal.removeAttribute('hidden');
     modal.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
+    console.log('[NEWS MODAL] After opening - hidden:', modal.hasAttribute('hidden'), 'aria-hidden:', modal.getAttribute('aria-hidden'));
+    console.log('[NEWS MODAL] Computed styles:', {
+      display: window.getComputedStyle(modal).display,
+      opacity: window.getComputedStyle(modal).opacity,
+      visibility: window.getComputedStyle(modal).visibility,
+      zIndex: window.getComputedStyle(modal).zIndex
+    });
   }
 
   function closeNewsModal() {
