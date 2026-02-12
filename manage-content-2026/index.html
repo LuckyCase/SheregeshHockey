@@ -1142,6 +1142,23 @@
       });
     }
 
+    // Последовательная загрузка изображений (исправление ошибки 409)
+    function uploadImagesSequentially(files, folder, statusElId) {
+      var paths = [];
+      var promise = Promise.resolve();
+      files.forEach(function (file, index) {
+        promise = promise.then(function () {
+          if (statusElId) {
+            setStatus(statusElId, 'loading', 'Загрузка фото ' + (index + 1) + '/' + files.length + '...');
+          }
+          return uploadImage(file, folder).then(function (path) {
+            paths.push(path);
+          });
+        });
+      });
+      return promise.then(function () { return paths; });
+    }
+
     /* ---- UI Helpers ---- */
     function $(id) { return document.getElementById(id); }
 
@@ -1715,9 +1732,7 @@
         var isEdit = editingState.news >= 0;
         setStatus('news-status', 'loading', isEdit ? 'Сохранение...' : 'Публикация...');
 
-        var uploadPromises = photoFiles.news.map(function (f) { return uploadImage(f, 'news'); });
-
-        Promise.all(uploadPromises).then(function (paths) {
+        uploadImagesSequentially(photoFiles.news, 'news', 'news-status').then(function (paths) {
           if (isEdit) {
             var existing = todayData.news[editingState.news];
             existing.date = $('news-date').value;
@@ -1969,9 +1984,7 @@
 
         setStatus('gallery-status', 'loading', isEdit ? 'Сохранение...' : 'Загрузка фото...');
 
-        var uploadPromises = photoFiles.gallery.map(function (f) { return uploadImage(f, 'gallery'); });
-
-        Promise.all(uploadPromises).then(function (paths) {
+        uploadImagesSequentially(photoFiles.gallery, 'gallery', 'gallery-status').then(function (paths) {
           if (isEdit) {
             var existing = todayData.gallery[editingState.gallery];
             existing.caption = { ru: $('gallery-caption-ru').value.trim(), en: $('gallery-caption-en').value.trim() };
