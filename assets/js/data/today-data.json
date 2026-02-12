@@ -1,6 +1,20 @@
 {
   "news": [
     {
+      "id": "news-test-multi",
+      "date": "2026-02-13",
+      "titleRu": "Тестовая новость с тремя фото",
+      "titleEn": "Test news with three photos",
+      "contentRu": "Это тестовая новость для проверки отображения нескольких фотографий в модальном окне. Должны отображаться три изображения.",
+      "contentEn": "This is a test news to check the display of multiple photos in the modal window. Three images should be displayed.",
+      "images": [
+        "assets/images/today/news/1770904041642.jpeg",
+        "assets/images/today/news/1770933776941.png",
+        "assets/images/today/news/1770933776975.png"
+      ],
+      "pinned": false
+    },
+    {
       "id": "news-mljijkvq",
       "date": "2026-02-12",
       "titleRu": "Кубок главы Шерегеша",
