@@ -33,6 +33,18 @@
       "contentEn": "The ice rink is ready, training has started. Three new players joined the team this season.",
       "images": [],
       "pinned": false
+    },
+    {
+      "id": "news-mljijkvq",
+      "date": "2026-02-12",
+      "titleRu": "Кубок главы Шерегеша",
+      "titleEn": "Sheregesh Head Cup",
+      "contentRu": "",
+      "contentEn": "",
+      "images": [
+        "assets/images/today/news/1770904041642.jpeg"
+      ],
+      "pinned": true
     }
   ],
   "announcements": [
