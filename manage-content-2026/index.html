@@ -483,6 +483,50 @@
       min-width: 200px;
     }
 
+    /* ---- Section switcher (History / Today) ---- */
+    .admin-section-switcher {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .admin-section-switcher__track {
+      display: flex;
+      background: var(--admin-surface);
+      border: 1px solid var(--admin-border);
+      border-radius: 999px;
+      padding: 4px;
+      gap: 0;
+    }
+
+    .admin-section-switcher__btn {
+      padding: 0.5rem 1.5rem;
+      border: none;
+      border-radius: 999px;
+      background: none;
+      color: var(--admin-muted);
+      font-family: var(--admin-font);
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      position: relative;
+    }
+
+    .admin-section-switcher__btn:hover {
+      color: var(--admin-text);
+    }
+
+    .admin-section-switcher__btn--active {
+      background: var(--admin-green);
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(0, 135, 90, 0.3);
+    }
+
+    .admin-section-switcher__btn--active:hover {
+      color: #fff;
+    }
+
     /* ---- Responsive ---- */
     @media (max-width: 640px) {
       .form-row { grid-template-columns: 1fr; }
@@ -554,19 +598,31 @@
   <!-- Main content (hidden until auth) -->
   <div id="admin-content" class="admin-main" style="display:none">
 
-    <!-- Tabs -->
-    <div class="admin-tabs" role="tablist">
-      <button type="button" class="admin-tab admin-tab--active" data-tab="news" role="tab">Новости</button>
-      <button type="button" class="admin-tab" data-tab="announcements" role="tab">Анонсы</button>
-      <button type="button" class="admin-tab" data-tab="timeline" role="tab">Хронология</button>
-      <button type="button" class="admin-tab" data-tab="gallery-archive" role="tab">Архив фото</button>
-      <button type="button" class="admin-tab" data-tab="gallery" role="tab">Фото</button>
-      <button type="button" class="admin-tab" data-tab="schedule" role="tab">Расписание</button>
-      <button type="button" class="admin-tab" data-tab="roster" role="tab">Составы</button>
+    <!-- Section switcher (History / Today) -->
+    <div class="admin-section-switcher">
+      <div class="admin-section-switcher__track">
+        <button type="button" class="admin-section-switcher__btn" data-section="history" id="section-btn-history">History</button>
+        <button type="button" class="admin-section-switcher__btn admin-section-switcher__btn--active" data-section="today" id="section-btn-today">Today</button>
+      </div>
+    </div>
+
+    <!-- Tabs: History -->
+    <div class="admin-tabs" role="tablist" id="tabs-history" style="display:none">
+      <button type="button" class="admin-tab admin-tab--active" data-tab="timeline" data-section="history" role="tab">Хронология</button>
+      <button type="button" class="admin-tab" data-tab="gallery-archive" data-section="history" role="tab">Архив фото</button>
+    </div>
+
+    <!-- Tabs: Today -->
+    <div class="admin-tabs" role="tablist" id="tabs-today">
+      <button type="button" class="admin-tab admin-tab--active" data-tab="news" data-section="today" role="tab">Новости</button>
+      <button type="button" class="admin-tab" data-tab="announcements" data-section="today" role="tab">Анонсы</button>
+      <button type="button" class="admin-tab" data-tab="gallery" data-section="today" role="tab">Фото</button>
+      <button type="button" class="admin-tab" data-tab="schedule" data-section="today" role="tab">Расписание</button>
+      <button type="button" class="admin-tab" data-tab="roster" data-section="today" role="tab">Составы</button>
     </div>
 
     <!-- ======== NEWS PANEL ======== -->
-    <div class="admin-panel admin-panel--active" id="panel-news">
+    <div class="admin-panel" id="panel-news">
       <h3 style="margin-bottom:1rem">Добавить новость</h3>
       <div class="form-row">
         <div class="form-group">
@@ -1012,7 +1068,11 @@
     var photoFiles = { news: [], gallery: [], roster: [], timeline: [], galleryArchive: [] };
 
     /* Editing state: index of item being edited (-1 = not editing) */
-    var editingState = { news: -1, announcements: -1, gallery: -1, schedule: -1, roster: -1 };
+    var editingState = { news: -1, announcements: -1, gallery: -1, schedule: -1, roster: -1, timeline: -1, galleryArchive: -1 };
+    /* For timeline editing: { decade, idx } */
+    var editingTimelineRef = null;
+    /* For gallery archive editing: global index */
+    var editingGalleryArchiveIdx = -1;
 
     /* ---- GitHub API helpers ---- */
     function ghApi(path, opts) {
@@ -1321,6 +1381,62 @@
       }
     }
 
+    function startEditTimeline(decade, idx) {
+      var item = timelineData[decade][idx];
+      editingTimelineRef = { decade: decade, idx: idx };
+      editingState.timeline = idx;
+      $('timeline-decade').value = decade;
+      $('timeline-year').value = item.year || '';
+      $('timeline-title-ru').value = item.titleRu || '';
+      $('timeline-title-en').value = item.titleEn || '';
+      $('timeline-text-ru').value = item.ru || '';
+      $('timeline-text-en').value = item.en || '';
+      $('btn-timeline-publish').textContent = 'Сохранить';
+      showEditBanner('panel-timeline', item.year + ' — ' + (item.titleRu || ''), function () { cancelEditTimeline(); });
+      $('panel-timeline').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function cancelEditTimeline() {
+      editingState.timeline = -1;
+      editingTimelineRef = null;
+      $('timeline-year').value = '';
+      $('timeline-title-ru').value = '';
+      $('timeline-title-en').value = '';
+      $('timeline-text-ru').value = '';
+      $('timeline-text-en').value = '';
+      photoFiles.timeline = [];
+      $('timeline-photo-previews').innerHTML = '';
+      $('btn-timeline-publish').textContent = 'Опубликовать';
+      removeEditBanner('panel-timeline');
+    }
+
+    function startEditGalleryArchive(globalIdx) {
+      var item = galleryArchiveData[globalIdx];
+      editingGalleryArchiveIdx = globalIdx;
+      editingState.galleryArchive = globalIdx;
+      $('gallery-archive-caption-ru').value = item.caption ? item.caption.ru : '';
+      $('gallery-archive-caption-en').value = item.caption ? item.caption.en : '';
+      $('gallery-archive-alt-ru').value = item.alt ? item.alt.ru : '';
+      $('gallery-archive-alt-en').value = item.alt ? item.alt.en : '';
+      $('gallery-archive-decade').value = item.decade || '1970s';
+      $('btn-gallery-archive-publish').textContent = 'Сохранить';
+      showEditBanner('panel-gallery-archive', (item.caption && item.caption.ru) || 'Фото', function () { cancelEditGalleryArchive(); });
+      $('panel-gallery-archive').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function cancelEditGalleryArchive() {
+      editingState.galleryArchive = -1;
+      editingGalleryArchiveIdx = -1;
+      $('gallery-archive-caption-ru').value = '';
+      $('gallery-archive-caption-en').value = '';
+      $('gallery-archive-alt-ru').value = '';
+      $('gallery-archive-alt-en').value = '';
+      photoFiles.galleryArchive = [];
+      $('gallery-archive-photo-previews').innerHTML = '';
+      $('btn-gallery-archive-publish').textContent = 'Опубликовать';
+      removeEditBanner('panel-gallery-archive');
+    }
+
     function cancelEdit(section) {
       editingState[section] = -1;
       if (section === 'news') {
@@ -1552,9 +1668,14 @@
         var events = timelineData[decade] || [];
         events.forEach(function (event, idx) {
           var title = event.year + ' — ' + event.titleRu;
-          var meta = decade + ' • ' + (event.ru || '').substring(0, 60) + (event.ru.length > 60 ? '...' : '');
+          var meta = decade + ' • ' + (event.ru || '').substring(0, 60) + ((event.ru || '').length > 60 ? '...' : '');
           el.appendChild(renderListItem(title, meta, function () {
             if (confirm('Удалить событие «' + event.titleRu + '» из хронологии?')) {
+              if (editingTimelineRef && editingTimelineRef.decade === decade && editingTimelineRef.idx === idx) {
+                cancelEditTimeline();
+              } else if (editingTimelineRef && editingTimelineRef.decade === decade && editingTimelineRef.idx > idx) {
+                editingTimelineRef.idx--;
+              }
               timelineData[decade].splice(idx, 1);
               saveTimelineData('Delete timeline event: ' + event.year + ' ' + event.titleRu).then(function () {
                 setStatus('timeline-status', 'success', 'Событие удалено');
@@ -1563,6 +1684,8 @@
                 setStatus('timeline-status', 'error', 'Ошибка: ' + err.message);
               });
             }
+          }, function () {
+            startEditTimeline(decade, idx);
           }));
         });
       });
@@ -1588,6 +1711,12 @@
         var meta = photo.decade + ' • ' + (photo.alt.ru || '');
         el.appendChild(renderListItem(title, meta, function () {
           if (confirm('Удалить фото «' + title + '» из архива?')) {
+            if (editingGalleryArchiveIdx === globalIdx) {
+              cancelEditGalleryArchive();
+            } else if (editingGalleryArchiveIdx > globalIdx) {
+              editingGalleryArchiveIdx--;
+              editingState.galleryArchive--;
+            }
             galleryArchiveData.splice(globalIdx, 1);
             saveGalleryArchiveData('Delete gallery archive photo: ' + title).then(function () {
               setStatus('gallery-archive-status', 'success', 'Фото удалено');
@@ -1596,6 +1725,8 @@
               setStatus('gallery-archive-status', 'error', 'Ошибка: ' + err.message);
             });
           }
+        }, function () {
+          startEditGalleryArchive(globalIdx);
         }));
       });
 
@@ -1695,15 +1826,45 @@
         location.reload();
       });
 
-      // Tabs
+      // Section switcher (History / Today)
+      var currentSection = 'today';
+
+      function switchSection(section) {
+        currentSection = section;
+        // Update switcher buttons
+        document.querySelectorAll('.admin-section-switcher__btn').forEach(function (btn) {
+          btn.classList.toggle('admin-section-switcher__btn--active', btn.getAttribute('data-section') === section);
+        });
+        // Show/hide tab bars
+        $('tabs-history').style.display = section === 'history' ? '' : 'none';
+        $('tabs-today').style.display = section === 'today' ? '' : 'none';
+        // Hide all panels, then activate the first tab of the active section
+        document.querySelectorAll('.admin-panel').forEach(function (p) { p.classList.remove('admin-panel--active'); });
+        var activeTabs = document.querySelectorAll('#tabs-' + section + ' .admin-tab');
+        activeTabs.forEach(function (t) { t.classList.remove('admin-tab--active'); });
+        if (activeTabs.length) {
+          activeTabs[0].classList.add('admin-tab--active');
+          $('panel-' + activeTabs[0].getAttribute('data-tab')).classList.add('admin-panel--active');
+        }
+      }
+
+      $('section-btn-history').addEventListener('click', function () { switchSection('history'); });
+      $('section-btn-today').addEventListener('click', function () { switchSection('today'); });
+
+      // Tabs (within each section)
       document.querySelectorAll('.admin-tab').forEach(function (tab) {
         tab.addEventListener('click', function () {
-          document.querySelectorAll('.admin-tab').forEach(function (t) { t.classList.remove('admin-tab--active'); });
+          var section = tab.getAttribute('data-section');
+          var tabBar = $('tabs-' + section);
+          tabBar.querySelectorAll('.admin-tab').forEach(function (t) { t.classList.remove('admin-tab--active'); });
           document.querySelectorAll('.admin-panel').forEach(function (p) { p.classList.remove('admin-panel--active'); });
           tab.classList.add('admin-tab--active');
           $('panel-' + tab.getAttribute('data-tab')).classList.add('admin-panel--active');
         });
       });
+
+      // Activate default section (Today, News tab)
+      switchSection('today');
 
       // Photo drops
       initPhotoDrop('news-photo-drop', 'news-photo-input', 'news-photo-previews', 'news');
@@ -1850,40 +2011,63 @@
           return;
         }
 
-        setStatus('timeline-status', 'loading', 'Публикация...');
+        var isEdit = editingTimelineRef !== null;
+        setStatus('timeline-status', 'loading', isEdit ? 'Сохранение...' : 'Публикация...');
 
         var photoPromise = photoFiles.timeline.length
           ? uploadImage(photoFiles.timeline[0], 'timeline')
-          : Promise.resolve('assets/images/placeholders/ice.svg');
+          : Promise.resolve(null);
 
         photoPromise.then(function (photoPath) {
-          var entry = {
-            year: year,
-            ru: textRu,
-            en: textEn || textRu,
-            image: photoPath,
-            titleRu: titleRu,
-            titleEn: titleEn || titleRu
-          };
+          if (isEdit) {
+            var oldDecade = editingTimelineRef.decade;
+            var oldIdx = editingTimelineRef.idx;
+            var existing = timelineData[oldDecade][oldIdx];
 
-          if (!timelineData[decade]) timelineData[decade] = [];
-          timelineData[decade].push(entry);
+            // Update fields
+            existing.year = year;
+            existing.ru = textRu;
+            existing.en = textEn || textRu;
+            existing.titleRu = titleRu;
+            existing.titleEn = titleEn || titleRu;
+            if (photoPath) existing.image = photoPath;
 
-          // Sort by year
-          timelineData[decade].sort(function (a, b) {
-            return parseInt(a.year, 10) - parseInt(b.year, 10);
-          });
+            // If decade changed, move item
+            if (decade !== oldDecade) {
+              timelineData[oldDecade].splice(oldIdx, 1);
+              if (!timelineData[decade]) timelineData[decade] = [];
+              timelineData[decade].push(existing);
+            }
 
-          return saveTimelineData('Add timeline event: ' + year + ' ' + titleRu);
+            // Sort by year in target decade
+            timelineData[decade].sort(function (a, b) {
+              return parseInt(a.year, 10) - parseInt(b.year, 10);
+            });
+
+            return saveTimelineData('Edit timeline event: ' + year + ' ' + titleRu);
+          } else {
+            var entry = {
+              year: year,
+              ru: textRu,
+              en: textEn || textRu,
+              image: photoPath || 'assets/images/placeholders/ice.svg',
+              titleRu: titleRu,
+              titleEn: titleEn || titleRu
+            };
+
+            if (!timelineData[decade]) timelineData[decade] = [];
+            timelineData[decade].push(entry);
+
+            // Sort by year
+            timelineData[decade].sort(function (a, b) {
+              return parseInt(a.year, 10) - parseInt(b.year, 10);
+            });
+
+            return saveTimelineData('Add timeline event: ' + year + ' ' + titleRu);
+          }
         }).then(function () {
-          setStatus('timeline-status', 'success', 'Событие добавлено в хронологию!');
-          photoFiles.timeline = [];
-          $('timeline-photo-previews').innerHTML = '';
-          $('timeline-year').value = '';
-          $('timeline-title-ru').value = '';
-          $('timeline-title-en').value = '';
-          $('timeline-text-ru').value = '';
-          $('timeline-text-en').value = '';
+          setStatus('timeline-status', 'success', isEdit ? 'Событие обновлено!' : 'Событие добавлено в хронологию!');
+          cancelEditTimeline();
           refreshTimelineList();
         }).catch(function (err) {
           setStatus('timeline-status', 'error', 'Ошибка: ' + err.message);
@@ -1909,7 +2093,10 @@
 
       $('btn-gallery-archive-publish').addEventListener('click', function () {
         if (!galleryArchiveData) return;
-        if (!photoFiles.galleryArchive.length) {
+
+        var isEdit = editingGalleryArchiveIdx >= 0;
+
+        if (!isEdit && !photoFiles.galleryArchive.length) {
           setStatus('gallery-archive-status', 'error', 'Добавьте фото');
           return;
         }
@@ -1925,32 +2112,39 @@
           return;
         }
 
-        setStatus('gallery-archive-status', 'loading', 'Загрузка фото...');
+        setStatus('gallery-archive-status', 'loading', isEdit ? 'Сохранение...' : 'Загрузка фото...');
 
-        uploadImage(photoFiles.galleryArchive[0], 'gallery-archive').then(function (photoPath) {
-          var entry = {
-            src: photoPath,
-            decade: decade,
-            caption: {
-              ru: captionRu,
-              en: captionEn || captionRu
-            },
-            alt: {
-              ru: altRu || captionRu,
-              en: altEn || captionEn || captionRu
-            }
-          };
+        var photoPromise = photoFiles.galleryArchive.length
+          ? uploadImage(photoFiles.galleryArchive[0], 'gallery-archive')
+          : Promise.resolve(null);
 
-          galleryArchiveData.push(entry);
-          return saveGalleryArchiveData('Add gallery archive photo: ' + captionRu);
+        photoPromise.then(function (photoPath) {
+          if (isEdit) {
+            var existing = galleryArchiveData[editingGalleryArchiveIdx];
+            existing.caption = { ru: captionRu, en: captionEn || captionRu };
+            existing.alt = { ru: altRu || captionRu, en: altEn || captionEn || captionRu };
+            existing.decade = decade;
+            if (photoPath) existing.src = photoPath;
+            return saveGalleryArchiveData('Edit gallery archive photo: ' + captionRu);
+          } else {
+            var entry = {
+              src: photoPath,
+              decade: decade,
+              caption: {
+                ru: captionRu,
+                en: captionEn || captionRu
+              },
+              alt: {
+                ru: altRu || captionRu,
+                en: altEn || captionEn || captionRu
+              }
+            };
+            galleryArchiveData.push(entry);
+            return saveGalleryArchiveData('Add gallery archive photo: ' + captionRu);
+          }
         }).then(function () {
-          setStatus('gallery-archive-status', 'success', 'Фото добавлено в архив!');
-          photoFiles.galleryArchive = [];
-          $('gallery-archive-photo-previews').innerHTML = '';
-          $('gallery-archive-caption-ru').value = '';
-          $('gallery-archive-caption-en').value = '';
-          $('gallery-archive-alt-ru').value = '';
-          $('gallery-archive-alt-en').value = '';
+          setStatus('gallery-archive-status', 'success', isEdit ? 'Фото обновлено!' : 'Фото добавлено в архив!');
+          cancelEditGalleryArchive();
           refreshGalleryArchiveList();
         }).catch(function (err) {
           setStatus('gallery-archive-status', 'error', 'Ошибка: ' + err.message);
