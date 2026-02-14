@@ -108,29 +108,29 @@
 }
 
 /* Mode-today light theme */
-.mode-today.theme-light .btn--primary {
+.theme-light .mode-today .btn--primary {
   background: var(--color-mustag-green);
   color: #FFFFFF;
   border-color: var(--color-mustag-green);
 }
 
-.mode-today.theme-light .btn--primary:hover {
+.theme-light .mode-today .btn--primary:hover {
   background: #00A86B;
   border-color: #00A86B;
   color: #FFFFFF;
 }
 
-.mode-today.theme-light .btn--outline {
+.theme-light .mode-today .btn--outline {
   color: var(--color-mustag-green);
   border-color: var(--color-mustag-green);
 }
 
-.mode-today.theme-light .btn--outline:hover {
+.theme-light .mode-today .btn--outline:hover {
   background: rgba(0, 135, 90, 0.08);
 }
 
-.mode-today.theme-light .pill:hover,
-.mode-today.theme-light .pill--active {
+.theme-light .mode-today .pill:hover,
+.theme-light .mode-today .pill--active {
   border-color: var(--color-mustag-green);
   color: var(--color-mustag-green);
   background: rgba(0, 135, 90, 0.08);

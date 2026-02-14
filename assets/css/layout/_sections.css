@@ -44,6 +44,6 @@
 }
 
 /* Mode-today light theme */
-.mode-today.theme-light .section--alt {
+.theme-light .mode-today .section--alt {
   background: #F1F8F4;
 }

@@ -129,12 +129,12 @@
 }
 
 /* Mode-today light theme */
-.mode-today.theme-light .footer {
+.theme-light .mode-today .footer {
   background: #F1F8F4;
   border-top: 2px solid rgba(0, 135, 90, 0.15);
 }
 
-.mode-today.theme-light .footer__cta {
+.theme-light .mode-today .footer__cta {
   background: #E0F2E9;
   border: 1px solid rgba(0, 135, 90, 0.2);
   border-radius: var(--border-radius-md);

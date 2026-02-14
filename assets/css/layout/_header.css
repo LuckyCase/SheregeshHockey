@@ -305,11 +305,11 @@
 }
 
 /* Mode-today light theme specific */
-.mode-today.theme-light .mobile-menu {
+.theme-light .mode-today .mobile-menu {
   background: #FFFFFF;
   border-left: 2px solid var(--color-mustag-green, #00875A);
 }
 
-.mode-today.theme-light .mobile-menu__backdrop {
+.theme-light .mode-today .mobile-menu__backdrop {
   background: rgba(0, 135, 90, 0.2);
 }

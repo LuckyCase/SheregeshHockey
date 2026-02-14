@@ -107,20 +107,20 @@
 }
 
 /* Mode-today light theme */
-.mode-today.theme-light .card {
+.theme-light .mode-today .card {
   background: #FFFFFF;
   border-color: rgba(0, 135, 90, 0.15);
 }
 
-.mode-today.theme-light .card:hover {
+.theme-light .mode-today .card:hover {
   border-color: var(--color-mustag-green);
   box-shadow: 0 4px 16px rgba(0, 135, 90, 0.12);
 }
 
-.mode-today.theme-light .card__meta {
+.theme-light .mode-today .card__meta {
   color: var(--color-mustag-green);
 }
 
-.mode-today.theme-light .card--info .card__icon {
+.theme-light .mode-today .card--info .card__icon {
   fill: var(--color-mustag-green);
 }

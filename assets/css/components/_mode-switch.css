@@ -122,15 +122,15 @@
 }
 
 /* Mode-today light theme */
-.mode-today.theme-light .mode-switch {
+.theme-light .mode-today .mode-switch {
   background: #E0F2E9;
   border-color: rgba(0, 135, 90, 0.2);
 }
 
-.mode-today.theme-light .mode-switch--today .mode-switch__slider {
+.theme-light .mode-today .mode-switch--today .mode-switch__slider {
   background: #00875A;
 }
 
-.mode-today.theme-light .mode-switch--today .mode-switch__btn--active {
+.theme-light .mode-today .mode-switch--today .mode-switch__btn--active {
   color: #fff;
 }

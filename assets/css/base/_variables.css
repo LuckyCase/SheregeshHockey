@@ -160,7 +160,8 @@
   --color-mustag-orange: #FF6D00;
 }
 
-.mode-today.theme-light {
+.theme-light .mode-today,
+.theme-light.mode-today {
   --color-bg: #FFFFFF;
   --color-bg-elevated: #F1F8F4;
   --color-bg-surface: #E0F2E9;
@@ -182,7 +183,7 @@
     linear-gradient(180deg, #0D1117 0%, #101820 50%, #0D1117 100%);
 }
 
-.mode-today.theme-light .hero__bg {
+.theme-light .mode-today .hero__bg {
   background:
     radial-gradient(ellipse at 50% 30%, rgba(0, 135, 90, 0.12) 0%, transparent 70%),
     radial-gradient(ellipse at 20% 80%, rgba(118, 255, 3, 0.05) 0%, transparent 50%),
@@ -194,19 +195,19 @@
   box-shadow: 0 1px 0 var(--color-border);
 }
 
-.mode-today.theme-light .header--sticky {
+.theme-light .mode-today .header--sticky {
   background-color: rgba(255, 255, 255, 0.98);
   box-shadow: 0 1px 0 rgba(0, 135, 90, 0.1);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 }
 
-.mode-today.theme-light .btn--primary {
+.theme-light .mode-today .btn--primary {
   background: var(--color-mustag-green, #00875A);
   color: #FFFFFF;
 }
 
-.mode-today.theme-light .btn--primary:hover {
+.theme-light .mode-today .btn--primary:hover {
   background: #00A86B;
   color: #FFFFFF;
 }

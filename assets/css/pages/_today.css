@@ -810,68 +810,68 @@
 }
 
 /* ---- Light theme specific overrides ---- */
-.mode-today.theme-light .hero__period {
+.theme-light .mode-today .hero__period {
   color: var(--color-mustag-green, #00875A);
   font-weight: 700;
 }
 
-.mode-today.theme-light .today-hero__logo {
+.theme-light .mode-today .today-hero__logo {
   filter: drop-shadow(0 2px 8px rgba(0, 135, 90, 0.2));
 }
 
-.mode-today.theme-light .today-news-card,
-.mode-today.theme-light .today-roster-card {
+.theme-light .mode-today .today-news-card,
+.theme-light .mode-today .today-roster-card {
   background: #FFFFFF;
   border-color: rgba(0, 135, 90, 0.15);
 }
 
-.mode-today.theme-light .today-news-card:hover,
-.mode-today.theme-light .today-roster-card:hover {
+.theme-light .mode-today .today-news-card:hover,
+.theme-light .mode-today .today-roster-card:hover {
   box-shadow: 0 8px 24px rgba(0, 135, 90, 0.12);
   border-color: var(--color-mustag-green, #00875A);
 }
 
-.mode-today.theme-light .today-ann-card {
+.theme-light .mode-today .today-ann-card {
   background: #FFFFFF;
   border-color: rgba(0, 135, 90, 0.15);
 }
 
-.mode-today.theme-light .today-ann-card::before {
+.theme-light .mode-today .today-ann-card::before {
   background: var(--color-mustag-green, #00875A);
 }
 
-.mode-today.theme-light .today-schedule__table thead {
+.theme-light .mode-today .today-schedule__table thead {
   background: var(--color-bg-surface);
 }
 
-.mode-today.theme-light .today-schedule__row--upcoming {
+.theme-light .mode-today .today-schedule__row--upcoming {
   background: rgba(0, 135, 90, 0.08);
 }
 
-.mode-today.theme-light .today-schedule__table tbody tr:hover {
+.theme-light .mode-today .today-schedule__table tbody tr:hover {
   background: rgba(0, 135, 90, 0.03);
 }
 
-.mode-today.theme-light .today-gallery__caption {
+.theme-light .mode-today .today-gallery__caption {
   background: linear-gradient(transparent, rgba(0, 0, 0, 0.75));
 }
 
-.mode-today.theme-light .today-ann-card__countdown {
+.theme-light .mode-today .today-ann-card__countdown {
   background: rgba(0, 135, 90, 0.08);
   border-color: rgba(0, 135, 90, 0.25);
 }
 
-.mode-today.theme-light .today-ann-card__countdown--past {
+.theme-light .mode-today .today-ann-card__countdown--past {
   background: rgba(0, 135, 90, 0.03);
   border-color: var(--color-border);
 }
 
 /* Light theme: news modal adjustments */
-.mode-today.theme-light .news-modal__backdrop {
+.theme-light .mode-today .news-modal__backdrop {
   background: rgba(255, 255, 255, 0.96);
 }
 
-.mode-today.theme-light .news-modal__content {
+.theme-light .mode-today .news-modal__content {
   background: #FFFFFF;
   border-color: var(--color-mustag-green, #00875A);
   box-shadow:
@@ -879,35 +879,35 @@
     0 0 0 1px rgba(0, 135, 90, 0.1);
 }
 
-.mode-today.theme-light .news-modal__close {
+.theme-light .mode-today .news-modal__close {
   background: #FFFFFF;
   border-color: var(--color-mustag-green, #00875A);
   color: var(--color-mustag-green, #00875A);
 }
 
-.mode-today.theme-light .news-modal__close:hover {
+.theme-light .mode-today .news-modal__close:hover {
   background: var(--color-mustag-green, #00875A);
   color: #FFFFFF;
 }
 
-.mode-today.theme-light .news-modal__banner::after {
+.theme-light .mode-today .news-modal__banner::after {
   background: linear-gradient(to bottom, transparent, #FFFFFF);
 }
 
-.mode-today.theme-light .news-modal__image-item {
+.theme-light .mode-today .news-modal__image-item {
   background: #FFFFFF;
   border-color: rgba(0, 135, 90, 0.15);
 }
 
-.mode-today.theme-light .news-modal__image-item:hover {
+.theme-light .mode-today .news-modal__image-item:hover {
   border-color: var(--color-mustag-green, #00875A);
   box-shadow: 0 12px 32px rgba(0, 135, 90, 0.2);
 }
 
-.mode-today.theme-light .news-modal__content::-webkit-scrollbar-track {
+.theme-light .mode-today .news-modal__content::-webkit-scrollbar-track {
   background: rgba(0, 135, 90, 0.05);
 }
 
-.mode-today.theme-light .news-modal__content::-webkit-scrollbar-thumb {
+.theme-light .mode-today .news-modal__content::-webkit-scrollbar-thumb {
   background: var(--color-mustag-green, #00875A);
 }

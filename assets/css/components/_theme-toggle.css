@@ -58,12 +58,12 @@
 }
 
 /* Mode-today light theme */
-.mode-today.theme-light .theme-toggle {
+.theme-light .mode-today .theme-toggle {
   border-color: rgba(0, 135, 90, 0.2);
   color: var(--color-text-muted);
 }
 
-.mode-today.theme-light .theme-toggle:hover {
+.theme-light .mode-today .theme-toggle:hover {
   color: var(--color-mustag-green);
   background: rgba(0, 135, 90, 0.08);
   border-color: var(--color-mustag-green);
