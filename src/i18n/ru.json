@@ -162,8 +162,10 @@
     "title": "Написать нам",
     "msgSuccess": "Спасибо за ваше сообщение!",
     "msgError": "Не удалось отправить форму. Попробуйте позже.",
+    "msgUploading": "Загружаю фото...",
     "emailLabel": "Email:",
     "messageLabel": "Сообщение:",
+    "photoLabel": "Прикрепить фото (необязательно):",
     "submitButton": "Отправить"
   },
   "lightbox": {

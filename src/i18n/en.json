@@ -162,8 +162,10 @@
     "title": "Contact us",
     "msgSuccess": "Thanks for your submission!",
     "msgError": "Oops! There was a problem submitting your form.",
+    "msgUploading": "Uploading photos...",
     "emailLabel": "Email:",
     "messageLabel": "Message:",
+    "photoLabel": "Attach photos (optional):",
     "submitButton": "Submit"
   },
   "lightbox": {

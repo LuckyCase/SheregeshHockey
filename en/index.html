@@ -378,11 +378,15 @@
     <div class="modal__content">
       <button type="button" class="modal__close" data-contact-close aria-label="Close"></button>
       <h2 id="contact-modal-title" class="contact-form__title">Contact us</h2>
-      <form id="contact-form" class="contact-form" action="https://formspree.io/f/xvzbgpao" method="POST" data-msg-success="Thanks for your submission!" data-msg-error-default="Oops! There was a problem submitting your form.">
+      <form id="contact-form" class="contact-form" action="https://formspree.io/f/xvzbgpao" method="POST" data-msg-success="Thanks for your submission!" data-msg-error-default="Oops! There was a problem submitting your form." data-msg-uploading="Uploading photos...">
         <label class="contact-form__label" for="contact-email">Email:</label>
         <input type="email" id="contact-email" name="email" class="contact-form__input" required autocomplete="email" />
         <label class="contact-form__label" for="contact-message">Message:</label>
         <textarea id="contact-message" name="message" class="contact-form__textarea" rows="4" required></textarea>
+        <label class="contact-form__label" for="contact-photo">Attach photos (optional):</label>
+        <input type="file" id="contact-photo" name="photo" class="contact-form__file" accept="image/png,image/jpeg,image/jpg,image/gif" multiple />
+        <div id="contact-photo-preview" class="contact-form__preview" hidden></div>
+        <input type="hidden" id="contact-photo-urls" name="photo_urls" />
         <button type="submit" class="btn btn--primary contact-form__submit">Submit</button>
         <p id="contact-form-status" class="contact-form__status" aria-live="polite"></p>
       </form>
