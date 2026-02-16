@@ -156,22 +156,6 @@
       }
     },
     {
-      "date": "2026-02-11",
-      "time": "18:00",
-      "opponent": {
-        "ru": "Washington Capitals",
-        "en": "Washington Capitals"
-      },
-      "location": {
-        "ru": "Гости",
-        "en": "Away"
-      },
-      "result": {
-        "score": "10:0",
-        "win": true
-      }
-    },
-    {
       "date": "2026-03-01",
       "time": "18:00",
       "opponent": {
