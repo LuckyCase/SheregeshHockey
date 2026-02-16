@@ -28,8 +28,10 @@
 ### 📰 Новости
 - Управление файлом: `assets/js/data/today-data.json`
 - Поля: заголовок (RU/EN), текст (RU/EN), дата, закрепить
+- 🎥 **Поддержка видео из VK.com** (прямые ссылки)
 - Загрузка фото (до 1200px, JPEG 85%)
 - Предпросмотр перед публикацией
+- Индикатор видео (🎥) в списке новостей
 
 ### 📢 Анонсы
 - Управление файлом: `assets/js/data/today-data.json`
@@ -139,6 +141,12 @@
 - Обновите страницу (F5) и повторите операцию
 
 ## История изменений
+
+### v2.1 (Feb 2026)
+- ✅ 🎥 **Video support from VK.com** (embed in news)
+- ✅ Direct VK video links parsing
+- ✅ Video indicator in news list
+- ✅ Auto-stop video on modal close
 
 ### v2.0 (Feb 2026)
 - ✅ Password protection layer

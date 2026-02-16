@@ -654,6 +654,13 @@
         </div>
       </div>
       <div class="form-group">
+        <label class="form-label" for="news-video-url">🎥 Видео из VK.com (опционально)</label>
+        <input type="text" id="news-video-url" class="form-input" placeholder="https://vk.com/video-227283438_456239037">
+        <small class="form-label form-label--muted" style="margin-top:0.25rem;display:block">
+          Прямая ссылка на видео VK, например: https://vk.com/video-227283438_456239037
+        </small>
+      </div>
+      <div class="form-group">
         <label class="form-label">Фото</label>
         <div class="photo-drop" id="news-photo-drop">
           <div class="photo-drop__icon">+</div>
@@ -661,6 +668,9 @@
           <input type="file" accept="image/*" multiple id="news-photo-input">
         </div>
         <div class="photo-previews" id="news-photo-previews"></div>
+        <small class="form-label form-label--muted" style="margin-top:0.5rem;display:block">
+          Если добавлено видео, первое фото используется как превью. Остальные фото отображаются под видео.
+        </small>
       </div>
       <div style="display:flex;gap:0.75rem;flex-wrap:wrap">
         <button type="button" class="btn" id="btn-news-preview">Предпросмотр</button>
@@ -1320,6 +1330,7 @@
         $('news-content-en').value = item.contentEn || '';
         $('news-date').value = item.date || '';
         $('news-pinned').checked = !!item.pinned;
+        $('news-video-url').value = item.videoUrl || '';
         $('btn-news-publish').textContent = 'Сохранить';
         showEditBanner('panel-news', item.titleRu, function () { cancelEdit('news'); });
         $('panel-news').scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -1446,6 +1457,7 @@
         $('news-content-en').value = '';
         $('news-date').value = new Date().toISOString().split('T')[0];
         $('news-pinned').checked = false;
+        $('news-video-url').value = '';
         photoFiles.news = [];
         $('news-photo-previews').innerHTML = '';
         $('btn-news-publish').textContent = 'Опубликовать';
@@ -1563,7 +1575,9 @@
       renderMonthGroups(el, todayData.news || [],
         function (item) { return item.date; },
         function (item, idx) {
-          return renderListItem(item.titleRu, item.date + (item.pinned ? ' (закреп.)' : ''),
+          var metaText = item.date + (item.pinned ? ' (закреп.)' : '');
+          if (item.videoUrl) metaText += ' 🎥';
+          return renderListItem(item.titleRu, metaText,
             function () {
               if (confirm('Удалить новость «' + item.titleRu + '»?')) {
                 todayData.news.splice(idx, 1);
@@ -1894,6 +1908,7 @@
         setStatus('news-status', 'loading', isEdit ? 'Сохранение...' : 'Публикация...');
 
         uploadImagesSequentially(photoFiles.news, 'news', 'news-status').then(function (paths) {
+          var videoUrl = $('news-video-url').value.trim();
           if (isEdit) {
             var existing = todayData.news[editingState.news];
             existing.date = $('news-date').value;
@@ -1902,6 +1917,11 @@
             existing.contentRu = $('news-content-ru').value.trim();
             existing.contentEn = $('news-content-en').value.trim();
             existing.pinned = $('news-pinned').checked;
+            if (videoUrl) {
+              existing.videoUrl = videoUrl;
+            } else {
+              delete existing.videoUrl;
+            }
             if (paths.length) existing.images = (existing.images || []).concat(paths);
             return saveData('Edit news: ' + titleRu);
           } else {
@@ -1915,6 +1935,9 @@
               images: paths,
               pinned: $('news-pinned').checked
             };
+            if (videoUrl) {
+              entry.videoUrl = videoUrl;
+            }
             todayData.news.push(entry);
             return saveData('Add news: ' + titleRu);
           }

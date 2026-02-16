@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Тест: Остановка видео при закрытии модального окна</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #0d1117;
+      color: #e6edf3;
+    }
+    h1 {
+      color: #00875A;
+    }
+    .btn {
+      padding: 12px 24px;
+      background: #00875A;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      margin: 10px 5px;
+    }
+    .btn:hover {
+      background: #00a068;
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: rgba(0, 0, 0, 0.92);
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+    .modal.active {
+      display: flex;
+      opacity: 1;
+    }
+    .modal-content {
+      position: relative;
+      max-width: 900px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+      background: #161b22;
+      border: 2px solid #00875A;
+      border-radius: 12px;
+      padding: 20px;
+    }
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 40px;
+      height: 40px;
+      background: #00875A;
+      border: none;
+      border-radius: 50%;
+      color: white;
+      font-size: 24px;
+      cursor: pointer;
+      line-height: 1;
+    }
+    .close-btn:hover {
+      background: #76FF03;
+      color: #0d1117;
+    }
+    .video-container {
+      position: relative;
+      width: 100%;
+      padding-bottom: 56.25%;
+      height: 0;
+      overflow: hidden;
+      background: #0d1117;
+      border-radius: 8px;
+      margin: 20px 0;
+    }
+    .video-iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+    .info {
+      padding: 15px;
+      background: rgba(0, 135, 90, 0.1);
+      border-left: 3px solid #00875A;
+      margin: 15px 0;
+      border-radius: 4px;
+    }
+    .status {
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 4px;
+    }
+    .status.success {
+      background: rgba(0, 135, 90, 0.2);
+      border-left: 3px solid #00875A;
+    }
+    .status.error {
+      background: rgba(204, 41, 54, 0.2);
+      border-left: 3px solid #cc2936;
+    }
+    .test-steps {
+      background: #161b22;
+      padding: 20px;
+      border-radius: 8px;
+      margin: 20px 0;
+    }
+    .test-steps ol {
+      margin: 10px 0;
+    }
+    .test-steps li {
+      margin: 8px 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎬 Тест: Остановка видео при закрытии модального окна</h1>
+  
+  <div class="info">
+    <strong>Проблема:</strong> При закрытии модального окна с видео, звук продолжает воспроизводиться в фоне.
+  </div>
+
+  <div class="status success">
+    <strong>✅ Решение:</strong> При закрытии модального окна iframe удаляется из DOM, что автоматически останавливает воспроизведение.
+  </div>
+
+  <div class="test-steps">
+    <h2>Шаги тестирования:</h2>
+    <ol>
+      <li>Нажмите кнопку "Открыть модальное окно с видео"</li>
+      <li>Дождитесь загрузки видео и начните воспроизведение (нажмите Play)</li>
+      <li>Пока видео играет, закройте модальное окно (кнопка X или Escape)</li>
+      <li><strong>Проверьте:</strong> звук должен остановиться сразу после закрытия</li>
+    </ol>
+  </div>
+
+  <button class="btn" onclick="openModal()">🎥 Открыть модальное окно с видео</button>
+
+  <div id="test-modal" class="modal">
+    <div class="modal-content">
+      <button class="close-btn" onclick="closeModal()">&times;</button>
+      <h2 style="color: #76FF03;">Видео из VK.com</h2>
+      
+      <div id="modal-body">
+        <!-- Видео будет вставлено сюда -->
+      </div>
+
+      <div class="info" style="margin-top: 20px;">
+        <strong>Что происходит при закрытии:</strong><br>
+        1. Модальное окно начинает анимацию закрытия (opacity)<br>
+        2. Через 400мс (после завершения анимации) контент очищается<br>
+        3. Удаление iframe из DOM останавливает воспроизведение
+      </div>
+    </div>
+  </div>
+
+  <div class="test-steps" style="margin-top: 40px;">
+    <h2>Технические детали:</h2>
+    <p><strong>Код функции closeModal():</strong></p>
+    <pre style="background: #0d1117; padding: 15px; border-radius: 6px; overflow-x: auto;">
+function closeNewsModal() {
+  var modal = document.getElementById('news-modal');
+  var body = document.getElementById('news-modal-body');
+  if (!modal) return;
+
+  // Удаляем фокус
+  if (document.activeElement && modal.contains(document.activeElement)) {
+    document.activeElement.blur();
+  }
+
+  // Закрываем модальное окно
+  modal.setAttribute('aria-hidden', 'true');
+  modal.setAttribute('hidden', '');
+  document.body.style.overflow = '';
+
+  // Очищаем контент после завершения анимации (400мс)
+  // Это удаляет iframe из DOM и останавливает видео
+  setTimeout(function() {
+    if (body && modal.getAttribute('aria-hidden') === 'true') {
+      body.innerHTML = '';  // 👈 Ключевая строка!
+    }
+  }, 400);
+}</pre>
+  </div>
+
+  <div class="status success" style="margin-top: 20px;">
+    <strong>✅ Проверка прошла успешно?</strong><br>
+    Если звук остановился при закрытии модального окна — всё работает корректно!
+  </div>
+
+  <script>
+    var modal = document.getElementById('test-modal');
+    var modalBody = document.getElementById('modal-body');
+    var closeTimeout = null;
+
+    function openModal() {
+      // Вставляем видео в модальное окно
+      modalBody.innerHTML = 
+        '<div class="video-container">' +
+        '<iframe src="https://vk.com/video_ext.php?oid=-227283438&id=456239037" ' +
+        'class="video-iframe" ' +
+        'allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;" ' +
+        'frameborder="0" ' +
+        'allowfullscreen>' +
+        '</iframe>' +
+        '</div>' +
+        '<p style="color: #76FF03; font-weight: bold; margin-top: 20px;">▶️ Начните воспроизведение, затем закройте окно</p>';
+
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+
+      // Очищаем контент после завершения анимации (400мс)
+      clearTimeout(closeTimeout);
+      closeTimeout = setTimeout(function() {
+        if (!modal.classList.contains('active')) {
+          modalBody.innerHTML = '';
+          console.log('✅ Контент модального окна очищен. Видео остановлено.');
+        }
+      }, 400);
+    }
+
+    // Закрытие по клику на фон
+    modal.addEventListener('click', function(e) {
+      if (e.target === modal) {
+        closeModal();
+      }
+    });
+
+    // Закрытие по Escape
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && modal.classList.contains('active')) {
+        closeModal();
+      }
+    });
+  </script>
+</body>
+</html>

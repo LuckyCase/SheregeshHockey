@@ -18,6 +18,37 @@
   }
   var esc = U.escapeHtml || function (s) { return s || ''; };
 
+  /* ---- VK Video helpers ---- */
+  function parseVkVideoUrl(url) {
+    if (!url) return null;
+    // Support direct VK links: https://vk.com/video-227283438_456239037
+    var match = url.match(/vk\.com\/video(-?\d+)_(\d+)/);
+    if (match) {
+      return { oid: match[1], id: match[2] };
+    }
+    return null;
+  }
+
+  function getVkVideoEmbedUrl(url, autoplay) {
+    var parsed = parseVkVideoUrl(url);
+    if (!parsed) return null;
+    var ap = autoplay ? '&autoplay=1' : '';
+    return 'https://vk.com/video_ext.php?oid=' + parsed.oid + '&id=' + parsed.id + ap;
+  }
+
+  function renderVkVideoEmbed(url, autoplay) {
+    var embedUrl = getVkVideoEmbedUrl(url, autoplay);
+    if (!embedUrl) return '';
+    return '<div class="news-video-container">' +
+      '<iframe src="' + esc(embedUrl) + '" ' +
+      'class="news-video-iframe" ' +
+      'allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;" ' +
+      'frameborder="0" ' +
+      'allowfullscreen>' +
+      '</iframe>' +
+      '</div>';
+  }
+
   /* ---- i18n helpers ---- */
   var i18n = {
     ru: {
@@ -140,9 +171,14 @@
     var body = document.getElementById('news-modal-body');
     if (!modal || !body || !item) return;
 
-    var banner = (item.images && item.images.length)
-      ? '<div class="news-modal__banner"><img class="news-modal__image" src="' + prefix + esc(item.images[0]) + '" alt="' + esc(loc(item, 'title')) + '" loading="lazy"></div>'
-      : '';
+    var banner = '';
+    // Prioritize video over image for banner
+    if (item.videoUrl) {
+      banner = renderVkVideoEmbed(item.videoUrl, false);
+    } else if (item.images && item.images.length) {
+      banner = '<div class="news-modal__banner"><img class="news-modal__image" src="' + prefix + esc(item.images[0]) + '" alt="' + esc(loc(item, 'title')) + '" loading="lazy"></div>';
+    }
+
     var pinBadge = item.pinned
       ? '<span class="news-modal__pin">' + t.pinnedLabel + '</span>'
       : '';
@@ -152,9 +188,10 @@
       : '';
 
     var additionalImages = '';
-    if (item.images && item.images.length > 1) {
+    var startIdx = (item.videoUrl && item.images && item.images.length) ? 0 : 1;
+    if (item.images && item.images.length > startIdx) {
       additionalImages = '<div class="news-modal__images">';
-      for (var i = 1; i < item.images.length; i++) {
+      for (var i = startIdx; i < item.images.length; i++) {
         additionalImages += '<img class="news-modal__image-item" src="' + prefix + esc(item.images[i]) + '" alt="" loading="lazy">';
       }
       additionalImages += '</div>';
@@ -180,6 +217,7 @@
 
   function closeNewsModal() {
     var modal = document.getElementById('news-modal');
+    var body = document.getElementById('news-modal-body');
     if (!modal) return;
 
     // Remove focus from any focused element inside modal
@@ -190,6 +228,15 @@
     modal.setAttribute('aria-hidden', 'true');
     modal.setAttribute('hidden', '');
     document.body.style.overflow = '';
+
+    // Clear modal content after animation completes to stop video playback
+    // This removes the iframe from DOM, which stops the video
+    // Delay matches CSS transition duration (0.4s)
+    setTimeout(function() {
+      if (body && modal.getAttribute('aria-hidden') === 'true') {
+        body.innerHTML = '';
+      }
+    }, 400);
   }
 
   function initNewsModal() {
@@ -231,9 +278,26 @@
     newsData = items;
     var html = '<div class="today-news__grid">';
     items.forEach(function (item, idx) {
-      var img = (item.images && item.images.length)
-        ? '<img class="today-news-card__image" src="' + prefix + esc(item.images[0]) + '" alt="" loading="lazy">'
-        : '';
+      var media = '';
+      // Prioritize video over image if both exist
+      if (item.videoUrl) {
+        // For card preview, show a thumbnail with play icon (use first image if exists)
+        if (item.images && item.images.length) {
+          media = '<div class="today-news-card__video-thumb">' +
+            '<img class="today-news-card__image" src="' + prefix + esc(item.images[0]) + '" alt="" loading="lazy">' +
+            '<div class="today-news-card__play-icon">' +
+            '<svg viewBox="0 0 24 24" width="48" height="48" fill="currentColor"><circle cx="12" cy="12" r="10" opacity="0.8"/><path d="M10 8l6 4-6 4V8z"/></svg>' +
+            '</div>' +
+            '</div>';
+        } else {
+          // No image, show video icon
+          media = '<div class="today-news-card__video-placeholder">' +
+            '<svg viewBox="0 0 24 24" width="64" height="64" fill="currentColor"><path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/></svg>' +
+            '</div>';
+        }
+      } else if (item.images && item.images.length) {
+        media = '<img class="today-news-card__image" src="' + prefix + esc(item.images[0]) + '" alt="" loading="lazy">';
+      }
       var pinBadge = item.pinned
         ? '<span class="today-news-card__pin">' + t.pinnedLabel + '</span>'
         : '';
@@ -242,7 +306,7 @@
         ? '<p class="today-news-card__text">' + esc(contentText) + '</p>'
         : '';
       html += '<article class="today-news-card' + (item.pinned ? ' today-news-card--pinned' : '') + '" data-animate data-news-id="' + idx + '" role="button" tabindex="0" aria-label="' + esc(loc(item, 'title')) + '">';
-      html += img;
+      html += media;
       html += '<div class="today-news-card__body">';
       html += pinBadge;
       html += '<time class="today-news-card__date" datetime="' + esc(item.date) + '">' + fmtDate(item.date) + '</time>';

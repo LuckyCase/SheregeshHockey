@@ -42,6 +42,78 @@
   padding: var(--space-2xl) 0;
 }
 
+/* ---- VIDEO EMBED STYLES ---- */
+/* Responsive video container (16:9 aspect ratio) */
+.news-video-container {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%; /* 16:9 aspect ratio */
+  height: 0;
+  overflow: hidden;
+  background: var(--color-bg-surface);
+  border-radius: var(--border-radius-md);
+}
+
+.news-video-iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* Video thumbnail for news card preview */
+.today-news-card__video-thumb {
+  position: relative;
+  width: 100%;
+  height: 180px;
+  overflow: hidden;
+}
+
+.today-news-card__video-thumb .today-news-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.7);
+  transition: filter var(--transition-base);
+}
+
+.today-news-card:hover .today-news-card__video-thumb .today-news-card__image {
+  filter: brightness(0.5);
+}
+
+.today-news-card__play-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: rgba(255, 255, 255, 0.9);
+  transition: all var(--transition-base);
+  pointer-events: none;
+}
+
+.today-news-card:hover .today-news-card__play-icon {
+  color: var(--color-mustag-lime, #76FF03);
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+/* Video placeholder when no thumbnail image */
+.today-news-card__video-placeholder {
+  width: 100%;
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg-surface);
+  color: var(--color-text-muted);
+  transition: all var(--transition-base);
+}
+
+.today-news-card:hover .today-news-card__video-placeholder {
+  color: var(--color-mustag-green, #00875A);
+}
+
 /* ---- NEWS CARDS ---- */
 .today-news__grid {
   display: grid;
@@ -667,6 +739,23 @@
   height: 400px;
   overflow: hidden;
   background: var(--color-bg-surface);
+}
+
+/* Video in modal banner - full width responsive */
+.news-modal__banner .news-video-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding-bottom: 0;
+  border-radius: 0;
+}
+
+.news-modal__banner .news-video-iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
 @media (min-width: 768px) {
