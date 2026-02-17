@@ -661,6 +661,22 @@
         </small>
       </div>
       <div class="form-group">
+        <label class="form-label">Превью карточки (опционально)</label>
+        <div id="news-preview-current" class="admin-preview-current" style="display:none">
+          <span class="form-label form-label--muted">Текущее превью:</span>
+          <img id="news-preview-current-img" src="" alt="Превью" style="max-width:200px;max-height:120px;object-fit:cover;border-radius:6px;margin-top:0.25rem;display:block">
+        </div>
+        <div class="photo-drop photo-drop--single" id="news-preview-drop">
+          <div class="photo-drop__icon">+</div>
+          <div>Одно изображение для карточки в списке новостей</div>
+          <input type="file" accept="image/*" id="news-preview-input">
+        </div>
+        <div class="photo-previews" id="news-preview-previews"></div>
+        <small class="form-label form-label--muted" style="margin-top:0.5rem;display:block">
+          Если не задано — в карточке используется первое фото из блока «Фото» ниже.
+        </small>
+      </div>
+      <div class="form-group">
         <label class="form-label">Фото</label>
         <div class="photo-drop" id="news-photo-drop">
           <div class="photo-drop__icon">+</div>
@@ -669,7 +685,7 @@
         </div>
         <div class="photo-previews" id="news-photo-previews"></div>
         <small class="form-label form-label--muted" style="margin-top:0.5rem;display:block">
-          Если добавлено видео, первое фото используется как превью. Остальные фото отображаются под видео.
+          Фото отображаются в полной новости (и при видео первое — как превью, если не задано отдельное превью карточки).
         </small>
       </div>
       <div style="display:flex;gap:0.75rem;flex-wrap:wrap">
@@ -1075,7 +1091,7 @@
     var timelineSha = null; // SHA of current timeline-data.json for updates
     var galleryArchiveData = null;
     var galleryArchiveSha = null; // SHA of current gallery-data.json for updates
-    var photoFiles = { news: [], gallery: [], roster: [], timeline: [], galleryArchive: [] };
+    var photoFiles = { news: [], newsPreview: [], gallery: [], roster: [], timeline: [], galleryArchive: [] };
 
     /* Editing state: index of item being edited (-1 = not editing) */
     var editingState = { news: -1, announcements: -1, gallery: -1, schedule: -1, roster: -1, timeline: -1, galleryArchive: -1 };
@@ -1331,6 +1347,17 @@
         $('news-date').value = item.date || '';
         $('news-pinned').checked = !!item.pinned;
         $('news-video-url').value = item.videoUrl || '';
+        photoFiles.newsPreview = [];
+        $('news-preview-previews').innerHTML = '';
+        var cur = $('news-preview-current');
+        var curImg = cur && cur.querySelector('#news-preview-current-img');
+        if (item.previewImage && cur && curImg) {
+          curImg.src = '../' + item.previewImage;
+          cur.style.display = 'block';
+        } else if (cur) {
+          cur.style.display = 'none';
+          if (curImg) curImg.src = '';
+        }
         $('btn-news-publish').textContent = 'Сохранить';
         showEditBanner('panel-news', item.titleRu, function () { cancelEdit('news'); });
         $('panel-news').scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -1459,7 +1486,11 @@
         $('news-pinned').checked = false;
         $('news-video-url').value = '';
         photoFiles.news = [];
+        photoFiles.newsPreview = [];
         $('news-photo-previews').innerHTML = '';
+        $('news-preview-previews').innerHTML = '';
+        var cur = $('news-preview-current');
+        if (cur) { cur.style.display = 'none'; cur.querySelector('img').src = ''; }
         $('btn-news-publish').textContent = 'Опубликовать';
         removeEditBanner('panel-news');
       } else if (section === 'announcements') {
@@ -1535,6 +1566,43 @@
           };
           reader.readAsDataURL(f);
         });
+      }
+    }
+
+    function initSinglePhotoDrop(dropId, inputId, previewsId, storeKey) {
+      var drop = $(dropId);
+      var input = $(inputId);
+      var previews = $(previewsId);
+      if (!drop || !input) return;
+
+      drop.addEventListener('dragover', function (e) { e.preventDefault(); drop.classList.add('dragover'); });
+      drop.addEventListener('dragleave', function () { drop.classList.remove('dragover'); });
+      drop.addEventListener('drop', function (e) {
+        e.preventDefault();
+        drop.classList.remove('dragover');
+        addFile(e.dataTransfer.files[0]);
+      });
+      input.addEventListener('change', function () {
+        if (input.files && input.files[0]) addFile(input.files[0]);
+        input.value = '';
+      });
+
+      function addFile(file) {
+        if (!file || !file.type.startsWith('image/')) return;
+        photoFiles[storeKey] = [file];
+        previews.innerHTML = '';
+        var reader = new FileReader();
+        reader.onload = function (e) {
+          var div = document.createElement('div');
+          div.className = 'photo-preview';
+          div.innerHTML = '<img src="' + e.target.result + '"><button type="button" class="photo-preview__remove" title="Удалить">&times;</button>';
+          div.querySelector('.photo-preview__remove').addEventListener('click', function () {
+            photoFiles[storeKey] = [];
+            div.remove();
+          });
+          previews.appendChild(div);
+        };
+        reader.readAsDataURL(file);
       }
     }
 
@@ -1881,6 +1949,7 @@
       switchSection('today');
 
       // Photo drops
+      initSinglePhotoDrop('news-preview-drop', 'news-preview-input', 'news-preview-previews', 'newsPreview');
       initPhotoDrop('news-photo-drop', 'news-photo-input', 'news-photo-previews', 'news');
       initPhotoDrop('gallery-photo-drop', 'gallery-photo-input', 'gallery-photo-previews', 'gallery');
       initPhotoDrop('timeline-photo-drop', 'timeline-photo-input', 'timeline-photo-previews', 'timeline');
@@ -1907,40 +1976,48 @@
         var isEdit = editingState.news >= 0;
         setStatus('news-status', 'loading', isEdit ? 'Сохранение...' : 'Публикация...');
 
-        uploadImagesSequentially(photoFiles.news, 'news', 'news-status').then(function (paths) {
-          var videoUrl = $('news-video-url').value.trim();
-          if (isEdit) {
-            var existing = todayData.news[editingState.news];
-            existing.date = $('news-date').value;
-            existing.titleRu = titleRu;
-            existing.titleEn = $('news-title-en').value.trim() || titleRu;
-            existing.contentRu = $('news-content-ru').value.trim();
-            existing.contentEn = $('news-content-en').value.trim();
-            existing.pinned = $('news-pinned').checked;
-            if (videoUrl) {
-              existing.videoUrl = videoUrl;
+        var previewPromise = photoFiles.newsPreview.length
+          ? (setStatus('news-status', 'loading', 'Загрузка превью...'), uploadImage(photoFiles.newsPreview[0], 'news').then(function (path) { return path; }))
+          : Promise.resolve(null);
+
+        previewPromise.then(function (previewPath) {
+          return uploadImagesSequentially(photoFiles.news, 'news', 'news-status').then(function (paths) {
+            var videoUrl = $('news-video-url').value.trim();
+            if (isEdit) {
+              var existing = todayData.news[editingState.news];
+              existing.date = $('news-date').value;
+              existing.titleRu = titleRu;
+              existing.titleEn = $('news-title-en').value.trim() || titleRu;
+              existing.contentRu = $('news-content-ru').value.trim();
+              existing.contentEn = $('news-content-en').value.trim();
+              existing.pinned = $('news-pinned').checked;
+              if (videoUrl) {
+                existing.videoUrl = videoUrl;
+              } else {
+                delete existing.videoUrl;
+              }
+              if (previewPath) existing.previewImage = previewPath;
+              if (paths.length) existing.images = (existing.images || []).concat(paths);
+              return saveData('Edit news: ' + titleRu);
             } else {
-              delete existing.videoUrl;
+              var entry = {
+                id: genId('news'),
+                date: $('news-date').value,
+                titleRu: titleRu,
+                titleEn: $('news-title-en').value.trim() || titleRu,
+                contentRu: $('news-content-ru').value.trim(),
+                contentEn: $('news-content-en').value.trim(),
+                images: paths,
+                pinned: $('news-pinned').checked
+              };
+              if (previewPath) entry.previewImage = previewPath;
+              if (videoUrl) {
+                entry.videoUrl = videoUrl;
+              }
+              todayData.news.push(entry);
+              return saveData('Add news: ' + titleRu);
             }
-            if (paths.length) existing.images = (existing.images || []).concat(paths);
-            return saveData('Edit news: ' + titleRu);
-          } else {
-            var entry = {
-              id: genId('news'),
-              date: $('news-date').value,
-              titleRu: titleRu,
-              titleEn: $('news-title-en').value.trim() || titleRu,
-              contentRu: $('news-content-ru').value.trim(),
-              contentEn: $('news-content-en').value.trim(),
-              images: paths,
-              pinned: $('news-pinned').checked
-            };
-            if (videoUrl) {
-              entry.videoUrl = videoUrl;
-            }
-            todayData.news.push(entry);
-            return saveData('Add news: ' + titleRu);
-          }
+          });
         }).then(function () {
           setStatus('news-status', 'success', isEdit ? 'Новость обновлена!' : 'Новость опубликована!');
           cancelEdit('news');

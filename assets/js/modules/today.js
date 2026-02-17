@@ -279,12 +279,13 @@
     var html = '<div class="today-news__grid">';
     items.forEach(function (item, idx) {
       var media = '';
+      var cardImageSrc = item.previewImage || (item.images && item.images[0]);
       // Prioritize video over image if both exist
       if (item.videoUrl) {
-        // For card preview, show a thumbnail with play icon (use first image if exists)
-        if (item.images && item.images.length) {
+        // For card preview, show a thumbnail with play icon (previewImage or first image)
+        if (cardImageSrc) {
           media = '<div class="today-news-card__video-thumb">' +
-            '<img class="today-news-card__image" src="' + prefix + esc(item.images[0]) + '" alt="" loading="lazy">' +
+            '<img class="today-news-card__image" src="' + prefix + esc(cardImageSrc) + '" alt="" loading="lazy">' +
             '<div class="today-news-card__play-icon">' +
             '<svg viewBox="0 0 24 24" width="48" height="48" fill="currentColor"><circle cx="12" cy="12" r="10" opacity="0.8"/><path d="M10 8l6 4-6 4V8z"/></svg>' +
             '</div>' +
@@ -295,8 +296,8 @@
             '<svg viewBox="0 0 24 24" width="64" height="64" fill="currentColor"><path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/></svg>' +
             '</div>';
         }
-      } else if (item.images && item.images.length) {
-        media = '<img class="today-news-card__image" src="' + prefix + esc(item.images[0]) + '" alt="" loading="lazy">';
+      } else if (cardImageSrc) {
+        media = '<img class="today-news-card__image" src="' + prefix + esc(cardImageSrc) + '" alt="" loading="lazy">';
       }
       var pinBadge = item.pinned
         ? '<span class="today-news-card__pin">' + t.pinnedLabel + '</span>'
