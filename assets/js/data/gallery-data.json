@@ -3,18 +3,6 @@
     "src": "assets/images/placeholders/ice.svg",
     "decade": "1980s",
     "caption": {
-      "ru": "Команда «Горняк»",
-      "en": "Team Gornyak"
-    },
-    "alt": {
-      "ru": "Команда Горняк",
-      "en": "Team Gornyak"
-    }
-  },
-  {
-    "src": "assets/images/placeholders/ice.svg",
-    "decade": "1980s",
-    "caption": {
       "ru": "Районный турнир",
       "en": "District tournament"
     },
