@@ -110,6 +110,19 @@
       ],
       "pinned": false,
       "videoUrl": "https://vkvideo.ru/video-227283438_456239073?sh=4"
+    },
+    {
+      "id": "news-mlr6gt92",
+      "date": "2026-02-17",
+      "titleRu": "тест",
+      "titleEn": "тест",
+      "contentRu": "",
+      "contentEn": "",
+      "images": [
+        "assets/images/today/news/1771367486913.JPG"
+      ],
+      "pinned": false,
+      "previewImage": "assets/images/today/news/1771367485631.JPG"
     }
   ],
   "announcements": [
