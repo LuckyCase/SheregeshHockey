@@ -1245,6 +1245,66 @@
       return promise.then(function () { return paths; });
     }
 
+    /* ---- Batch commit (все файлы в одном коммите) ---- */
+    function getHeadSha() {
+      return ghApi('git/ref/heads/' + config.branch).then(function (ref) {
+        return ref.object.sha;
+      });
+    }
+
+    function commitBatch(fileEntries, message) {
+      if (!fileEntries.length) return Promise.resolve();
+      var parentSha;
+      return getHeadSha().then(function (sha) {
+        parentSha = sha;
+        return ghApi('git/commits/' + sha);
+      }).then(function (commit) {
+        var blobPromises = fileEntries.map(function (entry) {
+          return ghApi('git/blobs', {
+            method: 'POST',
+            body: { content: entry.content, encoding: entry.encoding || 'base64' }
+          }).then(function (blob) {
+            return { path: entry.path, mode: '100644', type: 'blob', sha: blob.sha };
+          });
+        });
+        return Promise.all(blobPromises).then(function (treeItems) {
+          return ghApi('git/trees', {
+            method: 'POST',
+            body: { base_tree: commit.tree.sha, tree: treeItems }
+          });
+        });
+      }).then(function (tree) {
+        return ghApi('git/commits', {
+          method: 'POST',
+          body: { message: message, tree: tree.sha, parents: [parentSha] }
+        });
+      }).then(function (newCommit) {
+        return ghApi('git/refs/heads/' + config.branch, {
+          method: 'PATCH',
+          body: { sha: newCommit.sha }
+        });
+      });
+    }
+
+    function prepareImagesSequentially(files, folder, statusElId) {
+      var entries = [];
+      var baseTs = Date.now();
+      var promise = Promise.resolve();
+      files.forEach(function (file, index) {
+        promise = promise.then(function () {
+          if (statusElId) {
+            setStatus(statusElId, 'loading', 'Подготовка фото ' + (index + 1) + '/' + files.length + '...');
+          }
+          return resizeImage(file, 1200).then(function (base64) {
+            var ext = file.name.split('.').pop() || 'jpg';
+            var path = 'assets/images/today/' + folder + '/' + (baseTs + index) + '.' + ext;
+            entries.push({ path: path, content: base64, encoding: 'base64' });
+          });
+        });
+      });
+      return promise.then(function () { return entries; });
+    }
+
     /* ---- UI Helpers ---- */
     function $(id) { return document.getElementById(id); }
 
@@ -1979,50 +2039,67 @@
         if (!titleRu) { setStatus('news-status', 'error', 'Введите заголовок'); return; }
 
         var isEdit = editingState.news >= 0;
-        setStatus('news-status', 'loading', isEdit ? 'Сохранение...' : 'Публикация...');
+        setStatus('news-status', 'loading', 'Подготовка...');
 
-        var previewPromise = photoFiles.newsPreview.length
-          ? (setStatus('news-status', 'loading', 'Загрузка превью...'), uploadImage(photoFiles.newsPreview[0], 'news').then(function (path) { return path; }))
-          : Promise.resolve(null);
+        var previewPrep = photoFiles.newsPreview.length
+          ? prepareImagesSequentially(photoFiles.newsPreview.slice(0, 1), 'news', null)
+          : Promise.resolve([]);
+        var photosPrep = photoFiles.news.length
+          ? prepareImagesSequentially(photoFiles.news, 'news', 'news-status')
+          : Promise.resolve([]);
 
-        previewPromise.then(function (previewPath) {
-          return uploadImagesSequentially(photoFiles.news, 'news', 'news-status').then(function (paths) {
-            var videoUrl = $('news-video-url').value.trim();
-            if (isEdit) {
-              var existing = todayData.news[editingState.news];
-              existing.date = $('news-date').value;
-              existing.titleRu = titleRu;
-              existing.titleEn = $('news-title-en').value.trim() || titleRu;
-              existing.contentRu = $('news-content-ru').value.trim();
-              existing.contentEn = $('news-content-en').value.trim();
-              existing.pinned = $('news-pinned').checked;
-              if (videoUrl) {
-                existing.videoUrl = videoUrl;
-              } else {
-                delete existing.videoUrl;
-              }
-              if (previewPath) existing.previewImage = previewPath;
-              if (paths.length) existing.images = (existing.images || []).concat(paths);
-              return saveData('Edit news: ' + titleRu);
+        Promise.all([previewPrep, photosPrep]).then(function (results) {
+          var previewEntries = results[0];
+          var photoEntries = results[1];
+          var previewPath = previewEntries.length ? previewEntries[0].path : null;
+          var photoPaths = photoEntries.map(function (e) { return e.path; });
+          var videoUrl = $('news-video-url').value.trim();
+
+          if (isEdit) {
+            var existing = todayData.news[editingState.news];
+            existing.date = $('news-date').value;
+            existing.titleRu = titleRu;
+            existing.titleEn = $('news-title-en').value.trim() || titleRu;
+            existing.contentRu = $('news-content-ru').value.trim();
+            existing.contentEn = $('news-content-en').value.trim();
+            existing.pinned = $('news-pinned').checked;
+            if (videoUrl) {
+              existing.videoUrl = videoUrl;
             } else {
-              var entry = {
-                id: genId('news'),
-                date: $('news-date').value,
-                titleRu: titleRu,
-                titleEn: $('news-title-en').value.trim() || titleRu,
-                contentRu: $('news-content-ru').value.trim(),
-                contentEn: $('news-content-en').value.trim(),
-                images: paths,
-                pinned: $('news-pinned').checked
-              };
-              if (previewPath) entry.previewImage = previewPath;
-              if (videoUrl) {
-                entry.videoUrl = videoUrl;
-              }
-              todayData.news.push(entry);
-              return saveData('Add news: ' + titleRu);
+              delete existing.videoUrl;
             }
+            if (previewPath) existing.previewImage = previewPath;
+            if (photoPaths.length) existing.images = (existing.images || []).concat(photoPaths);
+          } else {
+            var entry = {
+              id: genId('news'),
+              date: $('news-date').value,
+              titleRu: titleRu,
+              titleEn: $('news-title-en').value.trim() || titleRu,
+              contentRu: $('news-content-ru').value.trim(),
+              contentEn: $('news-content-en').value.trim(),
+              images: photoPaths,
+              pinned: $('news-pinned').checked
+            };
+            if (previewPath) entry.previewImage = previewPath;
+            if (videoUrl) {
+              entry.videoUrl = videoUrl;
+            }
+            todayData.news.push(entry);
+          }
+
+          var commitMsg = (isEdit ? 'Edit' : 'Add') + ' news: ' + titleRu;
+          if (!previewEntries.length && !photoEntries.length) {
+            return saveData(commitMsg);
+          }
+          var fileEntries = previewEntries.concat(photoEntries);
+          fileEntries.push({
+            path: config.dataPath,
+            content: JSON.stringify(todayData, null, 2),
+            encoding: 'utf-8'
           });
+          setStatus('news-status', 'loading', 'Публикация (' + fileEntries.length + ' файлов, 1 коммит)...');
+          return commitBatch(fileEntries, commitMsg).then(function () { return loadData(); });
         }).then(function () {
           setStatus('news-status', 'success', isEdit ? 'Новость обновлена!' : 'Новость опубликована!');
           cancelEdit('news');
@@ -2117,19 +2194,20 @@
         }
 
         var isEdit = editingTimelineRef !== null;
-        setStatus('timeline-status', 'loading', isEdit ? 'Сохранение...' : 'Публикация...');
+        setStatus('timeline-status', 'loading', 'Подготовка...');
 
-        var photoPromise = photoFiles.timeline.length
-          ? uploadImage(photoFiles.timeline[0], 'timeline')
-          : Promise.resolve(null);
+        var photoPrep = photoFiles.timeline.length
+          ? prepareImagesSequentially(photoFiles.timeline.slice(0, 1), 'timeline', null)
+          : Promise.resolve([]);
 
-        photoPromise.then(function (photoPath) {
+        photoPrep.then(function (photoEntries) {
+          var photoPath = photoEntries.length ? photoEntries[0].path : null;
+
           if (isEdit) {
             var oldDecade = editingTimelineRef.decade;
             var oldIdx = editingTimelineRef.idx;
             var existing = timelineData[oldDecade][oldIdx];
 
-            // Update fields
             existing.year = year;
             existing.ru = textRu;
             existing.en = textEn || textRu;
@@ -2137,19 +2215,15 @@
             existing.titleEn = titleEn || titleRu;
             if (photoPath) existing.image = photoPath;
 
-            // If decade changed, move item
             if (decade !== oldDecade) {
               timelineData[oldDecade].splice(oldIdx, 1);
               if (!timelineData[decade]) timelineData[decade] = [];
               timelineData[decade].push(existing);
             }
 
-            // Sort by year in target decade
             timelineData[decade].sort(function (a, b) {
               return parseInt(a.year, 10) - parseInt(b.year, 10);
             });
-
-            return saveTimelineData('Edit timeline event: ' + year + ' ' + titleRu);
           } else {
             var entry = {
               year: year,
@@ -2163,13 +2237,23 @@
             if (!timelineData[decade]) timelineData[decade] = [];
             timelineData[decade].push(entry);
 
-            // Sort by year
             timelineData[decade].sort(function (a, b) {
               return parseInt(a.year, 10) - parseInt(b.year, 10);
             });
-
-            return saveTimelineData('Add timeline event: ' + year + ' ' + titleRu);
           }
+
+          var commitMsg = (isEdit ? 'Edit' : 'Add') + ' timeline event: ' + year + ' ' + titleRu;
+          if (!photoEntries.length) {
+            return saveTimelineData(commitMsg);
+          }
+          var fileEntries = photoEntries.slice();
+          fileEntries.push({
+            path: config.timelinePath,
+            content: JSON.stringify(timelineData, null, 2),
+            encoding: 'utf-8'
+          });
+          setStatus('timeline-status', 'loading', 'Публикация...');
+          return commitBatch(fileEntries, commitMsg).then(function () { return loadTimelineData(); });
         }).then(function () {
           setStatus('timeline-status', 'success', isEdit ? 'Событие обновлено!' : 'Событие добавлено в хронологию!');
           cancelEditTimeline();
@@ -2217,20 +2301,21 @@
           return;
         }
 
-        setStatus('gallery-archive-status', 'loading', isEdit ? 'Сохранение...' : 'Загрузка фото...');
+        setStatus('gallery-archive-status', 'loading', 'Подготовка...');
 
-        var photoPromise = photoFiles.galleryArchive.length
-          ? uploadImage(photoFiles.galleryArchive[0], 'gallery-archive')
-          : Promise.resolve(null);
+        var photoPrep = photoFiles.galleryArchive.length
+          ? prepareImagesSequentially(photoFiles.galleryArchive.slice(0, 1), 'gallery-archive', null)
+          : Promise.resolve([]);
 
-        photoPromise.then(function (photoPath) {
+        photoPrep.then(function (photoEntries) {
+          var photoPath = photoEntries.length ? photoEntries[0].path : null;
+
           if (isEdit) {
             var existing = galleryArchiveData[editingGalleryArchiveIdx];
             existing.caption = { ru: captionRu, en: captionEn || captionRu };
             existing.alt = { ru: altRu || captionRu, en: altEn || captionEn || captionRu };
             existing.decade = decade;
             if (photoPath) existing.src = photoPath;
-            return saveGalleryArchiveData('Edit gallery archive photo: ' + captionRu);
           } else {
             var entry = {
               src: photoPath,
@@ -2245,8 +2330,20 @@
               }
             };
             galleryArchiveData.push(entry);
-            return saveGalleryArchiveData('Add gallery archive photo: ' + captionRu);
           }
+
+          var commitMsg = (isEdit ? 'Edit' : 'Add') + ' gallery archive photo: ' + captionRu;
+          if (!photoEntries.length) {
+            return saveGalleryArchiveData(commitMsg);
+          }
+          var fileEntries = photoEntries.slice();
+          fileEntries.push({
+            path: config.galleryArchivePath,
+            content: JSON.stringify(galleryArchiveData, null, 2),
+            encoding: 'utf-8'
+          });
+          setStatus('gallery-archive-status', 'loading', 'Публикация...');
+          return commitBatch(fileEntries, commitMsg).then(function () { return loadGalleryArchiveData(); });
         }).then(function () {
           setStatus('gallery-archive-status', 'success', isEdit ? 'Фото обновлено!' : 'Фото добавлено в архив!');
           cancelEditGalleryArchive();
@@ -2281,18 +2378,23 @@
         var isEdit = editingState.gallery >= 0;
         if (!isEdit && !photoFiles.gallery.length) { setStatus('gallery-status', 'error', 'Добавьте хотя бы одно фото'); return; }
 
-        setStatus('gallery-status', 'loading', isEdit ? 'Сохранение...' : 'Загрузка фото...');
+        setStatus('gallery-status', 'loading', 'Подготовка...');
 
-        uploadImagesSequentially(photoFiles.gallery, 'gallery', 'gallery-status').then(function (paths) {
+        var photosPrep = photoFiles.gallery.length
+          ? prepareImagesSequentially(photoFiles.gallery, 'gallery', 'gallery-status')
+          : Promise.resolve([]);
+
+        photosPrep.then(function (photoEntries) {
+          var photoPaths = photoEntries.map(function (e) { return e.path; });
+
           if (isEdit) {
             var existing = todayData.gallery[editingState.gallery];
             existing.caption = { ru: $('gallery-caption-ru').value.trim(), en: $('gallery-caption-en').value.trim() };
             existing.alt = { ru: $('gallery-caption-ru').value.trim(), en: $('gallery-caption-en').value.trim() };
             existing.date = $('gallery-date').value;
             existing.category = $('gallery-category').value;
-            return saveData('Edit gallery photo');
           } else {
-            paths.forEach(function (path) {
+            photoPaths.forEach(function (path) {
               todayData.gallery.push({
                 src: path,
                 caption: { ru: $('gallery-caption-ru').value.trim(), en: $('gallery-caption-en').value.trim() },
@@ -2301,8 +2403,20 @@
                 category: $('gallery-category').value
               });
             });
-            return saveData('Add gallery photos');
           }
+
+          var commitMsg = isEdit ? 'Edit gallery photo' : 'Add gallery photos';
+          if (!photoEntries.length) {
+            return saveData(commitMsg);
+          }
+          var fileEntries = photoEntries.slice();
+          fileEntries.push({
+            path: config.dataPath,
+            content: JSON.stringify(todayData, null, 2),
+            encoding: 'utf-8'
+          });
+          setStatus('gallery-status', 'loading', 'Публикация (' + fileEntries.length + ' файлов, 1 коммит)...');
+          return commitBatch(fileEntries, commitMsg).then(function () { return loadData(); });
         }).then(function () {
           setStatus('gallery-status', 'success', isEdit ? 'Фото обновлено!' : 'Фото опубликованы!');
           cancelEdit('gallery');
@@ -2364,13 +2478,15 @@
         if (!nameRu || isNaN(number)) { setStatus('roster-status', 'error', 'Заполните номер и имя'); return; }
 
         var isEdit = editingState.roster >= 0;
-        setStatus('roster-status', 'loading', isEdit ? 'Сохранение...' : 'Публикация...');
+        setStatus('roster-status', 'loading', 'Подготовка...');
 
-        var photoPromise = photoFiles.roster.length
-          ? uploadImage(photoFiles.roster[0], 'roster')
-          : Promise.resolve(null);
+        var photoPrep = photoFiles.roster.length
+          ? prepareImagesSequentially(photoFiles.roster.slice(0, 1), 'roster', null)
+          : Promise.resolve([]);
 
-        photoPromise.then(function (photoPath) {
+        photoPrep.then(function (photoEntries) {
+          var photoPath = photoEntries.length ? photoEntries[0].path : null;
+
           if (isEdit) {
             var existing = todayData.roster[editingState.roster];
             existing.number = number;
@@ -2378,7 +2494,6 @@
             existing.nameEn = $('roster-name-en').value.trim() || nameRu;
             existing.position = $('roster-position').value;
             if (photoPath) existing.photo = photoPath;
-            return saveData('Edit roster: #' + number + ' ' + nameRu);
           } else {
             var entry = {
               number: number,
@@ -2388,8 +2503,20 @@
               photo: photoPath || 'assets/images/placeholders/ice.svg'
             };
             todayData.roster.push(entry);
-            return saveData('Add roster: #' + number + ' ' + nameRu);
           }
+
+          var commitMsg = (isEdit ? 'Edit' : 'Add') + ' roster: #' + number + ' ' + nameRu;
+          if (!photoEntries.length) {
+            return saveData(commitMsg);
+          }
+          var fileEntries = photoEntries.slice();
+          fileEntries.push({
+            path: config.dataPath,
+            content: JSON.stringify(todayData, null, 2),
+            encoding: 'utf-8'
+          });
+          setStatus('roster-status', 'loading', 'Публикация...');
+          return commitBatch(fileEntries, commitMsg).then(function () { return loadData(); });
         }).then(function () {
           setStatus('roster-status', 'success', isEdit ? 'Игрок обновлён!' : 'Игрок добавлен!');
           cancelEdit('roster');
