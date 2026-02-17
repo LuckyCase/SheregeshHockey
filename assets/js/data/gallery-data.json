@@ -1,18 +1,6 @@
 [
   {
     "src": "assets/images/placeholders/ice.svg",
-    "decade": "1990s",
-    "caption": {
-      "ru": "Ветераны на льду",
-      "en": "Veterans on ice"
-    },
-    "alt": {
-      "ru": "Ветераны на льду",
-      "en": "Veterans on ice"
-    }
-  },
-  {
-    "src": "assets/images/placeholders/ice.svg",
     "decade": "teams",
     "caption": {
       "ru": "Состав команды",
