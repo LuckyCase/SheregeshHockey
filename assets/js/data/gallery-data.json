@@ -1,17 +1,5 @@
 [
   {
-    "src": "assets/images/placeholders/ice.svg",
-    "decade": "teams",
-    "caption": {
-      "ru": "Горняк — чемпион",
-      "en": "Gornyak champion"
-    },
-    "alt": {
-      "ru": "Горняк чемпион района",
-      "en": "Gornyak district champion"
-    }
-  },
-  {
     "src": "assets/images/today/gallery-archive/1771342669450.jpeg",
     "decade": "1970s",
     "caption": {
