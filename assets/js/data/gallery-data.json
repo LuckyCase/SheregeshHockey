@@ -1,18 +1,6 @@
 [
   {
     "src": "assets/images/placeholders/ice.svg",
-    "decade": "1980s",
-    "caption": {
-      "ru": "Районный турнир",
-      "en": "District tournament"
-    },
-    "alt": {
-      "ru": "Районный турнир",
-      "en": "District tournament"
-    }
-  },
-  {
-    "src": "assets/images/placeholders/ice.svg",
     "decade": "1990s",
     "caption": {
       "ru": "Дворовый хоккей",
