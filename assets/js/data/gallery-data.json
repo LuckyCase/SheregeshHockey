@@ -3,18 +3,6 @@
     "src": "assets/images/placeholders/ice.svg",
     "decade": "teams",
     "caption": {
-      "ru": "Состав команды",
-      "en": "Team lineup"
-    },
-    "alt": {
-      "ru": "Состав команды",
-      "en": "Team lineup"
-    }
-  },
-  {
-    "src": "assets/images/placeholders/ice.svg",
-    "decade": "teams",
-    "caption": {
       "ru": "Горняк — чемпион",
       "en": "Gornyak champion"
     },
