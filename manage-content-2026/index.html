@@ -1961,8 +1961,13 @@
         var preview = $('news-preview');
         var content = $('news-preview-content');
         preview.style.display = '';
+        var previewImg = $('news-preview-previews') && $('news-preview-previews').querySelector('.photo-preview img');
+        var fallbackImg = $('news-photo-previews') && $('news-photo-previews').querySelector('.photo-preview img');
+        var imgSrc = (previewImg && previewImg.src) || (fallbackImg && fallbackImg.src) || '';
+        var imgBlock = imgSrc ? '<div style="width:100%;max-height:200px;overflow:hidden;background:var(--admin-bg)"><img src="' + esc(imgSrc) + '" alt="" style="width:100%;height:100%;object-fit:cover;display:block"></div>' : '';
         content.innerHTML =
           '<div style="background:var(--admin-bg);border:1px solid var(--admin-border);border-radius:8px;overflow:hidden;max-width:360px">' +
+          imgBlock +
           '<div style="padding:1rem"><span style="font-size:0.75rem;color:var(--admin-muted)">' + esc($('news-date').value) + '</span>' +
           '<h3 style="font-size:1.1rem;margin:0.25rem 0">' + esc($('news-title-ru').value) + '</h3>' +
           '<p style="font-size:0.85rem;color:var(--admin-muted)">' + esc($('news-content-ru').value) + '</p></div></div>';

@@ -171,13 +171,10 @@
     var body = document.getElementById('news-modal-body');
     if (!modal || !body || !item) return;
 
-    var banner = '';
-    // Prioritize video over image for banner
-    if (item.videoUrl) {
-      banner = renderVkVideoEmbed(item.videoUrl, false);
-    } else if (item.images && item.images.length) {
-      banner = '<div class="news-modal__banner"><img class="news-modal__image" src="' + prefix + esc(item.images[0]) + '" alt="' + esc(loc(item, 'title')) + '" loading="lazy"></div>';
-    }
+    var topImageSrc = item.previewImage || (item.images && item.images[0]);
+    var previewBanner = topImageSrc
+      ? '<div class="news-modal__banner"><img class="news-modal__image" src="' + prefix + esc(topImageSrc) + '" alt="' + esc(loc(item, 'title')) + '" loading="lazy"></div>'
+      : '';
 
     var pinBadge = item.pinned
       ? '<span class="news-modal__pin">' + t.pinnedLabel + '</span>'
@@ -187,24 +184,27 @@
       ? '<p class="news-modal__content-text">' + esc(content) + '</p>'
       : '';
 
+    var videoBlock = item.videoUrl ? renderVkVideoEmbed(item.videoUrl, false) : '';
+
     var additionalImages = '';
-    var startIdx = (item.videoUrl && item.images && item.images.length) ? 0 : 1;
-    if (item.images && item.images.length > startIdx) {
+    var imagesStart = topImageSrc && item.images && item.images[0] === topImageSrc ? 1 : 0;
+    if (item.images && item.images.length > imagesStart) {
       additionalImages = '<div class="news-modal__images">';
-      for (var i = startIdx; i < item.images.length; i++) {
+      for (var i = imagesStart; i < item.images.length; i++) {
         additionalImages += '<img class="news-modal__image-item" src="' + prefix + esc(item.images[i]) + '" alt="" loading="lazy">';
       }
       additionalImages += '</div>';
     }
 
-    body.innerHTML = banner +
+    body.innerHTML = previewBanner +
       '<div class="news-modal__body">' +
       pinBadge +
       '<time class="news-modal__date" datetime="' + esc(item.date) + '">' + fmtDate(item.date) + '</time>' +
       '<h2 id="news-modal-title" class="news-modal__title">' + esc(loc(item, 'title')) + '</h2>' +
       contentHtml +
-      additionalImages +
-      '</div>';
+      '</div>' +
+      videoBlock +
+      additionalImages;
 
     modal.setAttribute('aria-hidden', 'false');
     modal.removeAttribute('hidden');
