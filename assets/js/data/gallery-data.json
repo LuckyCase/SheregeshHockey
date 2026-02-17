@@ -1,18 +1,6 @@
 [
   {
     "src": "assets/images/placeholders/ice.svg",
-    "decade": "1970s",
-    "caption": {
-      "ru": "Первый корт с бортами",
-      "en": "First rink with boards"
-    },
-    "alt": {
-      "ru": "Первый корт с бортами",
-      "en": "First rink with boards"
-    }
-  },
-  {
-    "src": "assets/images/placeholders/ice.svg",
     "decade": "1980s",
     "caption": {
       "ru": "Освещение катка",
