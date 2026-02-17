@@ -3,18 +3,6 @@
     "src": "assets/images/placeholders/ice.svg",
     "decade": "1970s",
     "caption": {
-      "ru": "Каток у рудника",
-      "en": "Rink near the mine"
-    },
-    "alt": {
-      "ru": "Каток у рудника, 1970-е",
-      "en": "Rink near the mine, 1970s"
-    }
-  },
-  {
-    "src": "assets/images/placeholders/ice.svg",
-    "decade": "1970s",
-    "caption": {
       "ru": "Первый корт с бортами",
       "en": "First rink with boards"
     },
