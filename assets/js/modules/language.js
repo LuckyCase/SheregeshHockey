@@ -4,7 +4,6 @@
 (function () {
   'use strict';
 
-  var U = window.SheregeshUtils || {};
   var STORAGE_KEY = 'sheregesh-lang';
 
   function getLangFromPath() {
@@ -103,7 +102,6 @@
     setGlobalLang(lang);
 
     document.querySelectorAll('.lang-switch').forEach(function (group) {
-      var ruBtn = group.querySelector('a[href*="index.html"], a[href="/"], a[href="decade-"], a[href="story.html"]');
       var btns = group.querySelectorAll('.lang-switch__btn');
       btns.forEach(function (btn) {
         btn.classList.remove('lang-switch__btn--active');

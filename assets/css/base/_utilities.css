@@ -44,11 +44,6 @@
   max-width: var(--container-wide);
 }
 
-/* Section spacing */
-.section {
-  padding-block: var(--space-section);
-}
-
 /* Section heading with decorative line */
 .section__header {
   text-align: center;
@@ -180,7 +175,7 @@
 }
 
 .theme-light .back-to-top {
-  color: #1a2940;
+  color: var(--color-text);
   background: var(--color-accent);
 }
 
@@ -195,11 +190,11 @@
 
 .theme-light .mode-today .back-to-top {
   background: var(--color-mustag-green);
-  color: #FFFFFF;
+  color: var(--color-white);
 }
 
 .theme-light .mode-today .back-to-top:hover {
-  background: #00A86B;
+  background: var(--color-primary-light);
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -18,26 +18,62 @@
   }
   var esc = U.escapeHtml || function (s) { return s || ''; };
 
-  /* ---- VK Video helpers ---- */
-  function parseVkVideoUrl(url) {
+  /* ---- Universal Video Embed ---- */
+  /**
+   * Detects video hosting platform from URL and returns an embed URL.
+   * Supported: VK, VKVideo, YouTube, Rutube, Dzen, OK.ru, RuTube, Telegram.
+   * Falls back to the original URL if it looks like a direct embed link.
+   */
+  function getVideoEmbedUrl(url, autoplay) {
     if (!url) return null;
-    // Support direct VK links: https://vk.com/video-227283438_456239037
-    var match = url.match(/vk\.com\/video(-?\d+)_(\d+)/);
-    if (match) {
-      return { oid: match[1], id: match[2] };
+    var ap = autoplay ? 1 : 0;
+    var m;
+
+    // VK: vk.com/video-ID_ID or vkvideo.ru/video-ID_ID
+    m = url.match(/(?:vk\.com|vkvideo\.ru)\/video(-?\d+)_(\d+)/);
+    if (m) {
+      return 'https://vk.com/video_ext.php?oid=' + m[1] + '&id=' + m[2] + (ap ? '&autoplay=1' : '');
     }
+
+    // YouTube: youtube.com/watch?v=ID, youtu.be/ID, youtube.com/embed/ID, youtube.com/shorts/ID
+    m = url.match(/(?:youtube\.com\/(?:watch\?.*v=|embed\/|shorts\/)|youtu\.be\/)([\w-]{11})/);
+    if (m) {
+      return 'https://www.youtube.com/embed/' + m[1] + '?rel=0' + (ap ? '&autoplay=1' : '');
+    }
+
+    // Rutube: rutube.ru/video/ID/ or rutube.ru/play/embed/ID
+    m = url.match(/rutube\.ru\/(?:video|play\/embed)\/([\w]+)/);
+    if (m) {
+      return 'https://rutube.ru/play/embed/' + m[1] + (ap ? '?autoplay=1' : '');
+    }
+
+    // Dzen (Zen): dzen.ru/video/watch/ID
+    m = url.match(/dzen\.ru\/video\/watch\/([\w]+)/);
+    if (m) {
+      return 'https://dzen.ru/embed/' + m[1] + (ap ? '?autoplay=1' : '');
+    }
+
+    // OK.ru: ok.ru/video/ID
+    m = url.match(/ok\.ru\/video\/(\d+)/);
+    if (m) {
+      return 'https://ok.ru/videoembed/' + m[1] + (ap ? '?autoplay=1' : '');
+    }
+
+    // Already an embed/iframe URL — use as-is
+    if (/^https?:\/\/.+/.test(url) && (/embed|player|iframe/i.test(url) || /\.(mp4|webm)(\?|$)/i.test(url))) {
+      return url;
+    }
+
+    // Unknown platform — try using as direct embed (user may paste embed URL)
+    if (/^https?:\/\//.test(url)) {
+      return url;
+    }
+
     return null;
   }
 
-  function getVkVideoEmbedUrl(url, autoplay) {
-    var parsed = parseVkVideoUrl(url);
-    if (!parsed) return null;
-    var ap = autoplay ? '&autoplay=1' : '';
-    return 'https://vk.com/video_ext.php?oid=' + parsed.oid + '&id=' + parsed.id + ap;
-  }
-
-  function renderVkVideoEmbed(url, autoplay) {
-    var embedUrl = getVkVideoEmbedUrl(url, autoplay);
+  function renderVideoEmbed(url, autoplay) {
+    var embedUrl = getVideoEmbedUrl(url, autoplay);
     if (!embedUrl) return '';
     return '<div class="news-video-container">' +
       '<iframe src="' + esc(embedUrl) + '" ' +
@@ -164,6 +200,8 @@
   /* ==== NEWS MODAL ==== */
   var newsData = null;
   var modalJustOpened = false;
+  var modalOpenTimerId = null;
+  var modalCloseTimerId = null;
 
   function openNewsModal(item) {
     modalJustOpened = true;
@@ -184,7 +222,7 @@
       ? '<p class="news-modal__content-text">' + esc(content) + '</p>'
       : '';
 
-    var videoBlock = item.videoUrl ? renderVkVideoEmbed(item.videoUrl, false) : '';
+    var videoBlock = item.videoUrl ? renderVideoEmbed(item.videoUrl, false) : '';
 
     var additionalImages = '';
     var imagesStart = topImageSrc && item.images && item.images[0] === topImageSrc ? 1 : 0;
@@ -210,8 +248,10 @@
     modal.removeAttribute('hidden');
     document.body.style.overflow = 'hidden';
 
-    setTimeout(function() {
+    if (modalOpenTimerId) clearTimeout(modalOpenTimerId);
+    modalOpenTimerId = setTimeout(function() {
       modalJustOpened = false;
+      modalOpenTimerId = null;
     }, 500);
   }
 
@@ -229,13 +269,13 @@
     modal.setAttribute('hidden', '');
     document.body.style.overflow = '';
 
-    // Clear modal content after animation completes to stop video playback
-    // This removes the iframe from DOM, which stops the video
-    // Delay matches CSS transition duration (0.4s)
-    setTimeout(function() {
+    if (modalOpenTimerId) { clearTimeout(modalOpenTimerId); modalOpenTimerId = null; }
+    if (modalCloseTimerId) clearTimeout(modalCloseTimerId);
+    modalCloseTimerId = setTimeout(function() {
       if (body && modal.getAttribute('aria-hidden') === 'true') {
         body.innerHTML = '';
       }
+      modalCloseTimerId = null;
     }, 400);
   }
 
@@ -508,7 +548,7 @@
     if (el) {
       el.innerHTML = '<p class="today-empty" style="color:var(--color-error,#c53030);padding:1rem">' + esc(msg) + '</p>';
     }
-    console.error('today.js:', msg);
+    // error logged silently
   }
 
   function applyData(data) {

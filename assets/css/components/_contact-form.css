@@ -143,3 +143,21 @@
 .footer__cta-btn {
   margin-top: 0;
 }
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .contact-form__title {
+    font-size: var(--text-lg);
+    padding-right: 32px;
+  }
+
+  .contact-form__input,
+  .contact-form__textarea {
+    font-size: var(--text-sm);
+  }
+
+  .contact-form__preview-item {
+    width: 60px;
+    height: 60px;
+  }
+}

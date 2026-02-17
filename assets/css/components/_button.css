@@ -76,14 +76,14 @@
 /* Light theme overrides */
 .theme-light .btn--primary {
   background: var(--color-accent);
-  color: #1a2940;
+  color: var(--color-text);
   border-color: var(--color-accent);
 }
 
 .theme-light .btn--primary:hover {
   background: var(--color-accent-light);
   border-color: var(--color-accent-light);
-  color: #1a2940;
+  color: var(--color-text);
 }
 
 .theme-light .btn--outline {
@@ -110,14 +110,14 @@
 /* Mode-today light theme */
 .theme-light .mode-today .btn--primary {
   background: var(--color-mustag-green);
-  color: #FFFFFF;
+  color: var(--color-white);
   border-color: var(--color-mustag-green);
 }
 
 .theme-light .mode-today .btn--primary:hover {
-  background: #00A86B;
-  border-color: #00A86B;
-  color: #FFFFFF;
+  background: var(--color-primary-light);
+  border-color: var(--color-primary-light);
+  color: var(--color-white);
 }
 
 .theme-light .mode-today .btn--outline {

@@ -55,3 +55,19 @@
 .page-story__body p:last-child {
   margin-bottom: 0;
 }
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .page-story {
+    padding-top: calc(var(--space-3xl) + 50px);
+    padding-bottom: var(--space-2xl);
+  }
+
+  .page-story__title {
+    font-size: var(--text-2xl);
+  }
+
+  .page-story__body {
+    font-size: var(--text-base);
+  }
+}

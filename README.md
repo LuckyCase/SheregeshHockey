@@ -59,7 +59,7 @@ npm run build
 
 ### Вручную (через JSON):
 
-В новости можно встраивать видео из VK.com. Подробная инструкция находится в файле **[VIDEOS.md](VIDEOS.md)**.
+В новости можно встраивать видео из VK.com. Подробная инструкция находится в файле **[VIDEOS.md](docs/VIDEOS.md)**.
 
 #### Быстрый старт:
 
@@ -84,5 +84,5 @@ npm run build
 
 **Документация:**
 - **[VIDEO_ADMIN_GUIDE.md](manage-content-2026/VIDEO_ADMIN_GUIDE.md)** — Полное руководство по добавлению видео через админку
-- **[VIDEOS.md](VIDEOS.md)** — Подробная техническая документация
-- **[VIDEO_QUICKSTART.md](VIDEO_QUICKSTART.md)** — Быстрая справка
+- **[VIDEOS.md](docs/VIDEOS.md)** — Подробная техническая документация
+- **[VIDEO_QUICKSTART.md](docs/VIDEO_QUICKSTART.md)** — Быстрая справка

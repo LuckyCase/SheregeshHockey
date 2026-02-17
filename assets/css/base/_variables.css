@@ -14,6 +14,9 @@
   --color-red: #cc2936;
   --color-red-dark: #a01e28;
 
+  --color-white: #FFFFFF;
+  --color-black: #000000;
+
   /* Neutrals (dark theme): 2025–2026 guidelines — soft black, elevation by tone, WCAG AA */
   --color-bg: #0f172a;
   --color-bg-elevated: #1e293b;
@@ -203,11 +206,11 @@
 }
 
 .theme-light .mode-today .btn--primary {
-  background: var(--color-mustag-green, #00875A);
-  color: #FFFFFF;
+  background: var(--color-mustag-green);
+  color: var(--color-white);
 }
 
 .theme-light .mode-today .btn--primary:hover {
-  background: #00A86B;
-  color: #FFFFFF;
+  background: var(--color-primary-light);
+  color: var(--color-white);
 }

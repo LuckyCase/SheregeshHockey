@@ -136,8 +136,7 @@
           statusEl.classList.add('contact-form__status--error');
         }
       })
-      .catch(function (error) {
-        console.error('Error:', error);
+      .catch(function () {
         submitButton.disabled = false;
         statusEl.textContent = msgError;
         statusEl.classList.add('contact-form__status--error');

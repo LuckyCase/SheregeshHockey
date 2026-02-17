@@ -130,12 +130,12 @@
 
 /* Mode-today light theme */
 .theme-light .mode-today .footer {
-  background: #F1F8F4;
+  background: var(--color-bg-elevated);
   border-top: 2px solid rgba(0, 135, 90, 0.15);
 }
 
 .theme-light .mode-today .footer__cta {
-  background: #E0F2E9;
+  background: var(--color-bg-surface);
   border: 1px solid rgba(0, 135, 90, 0.2);
   border-radius: var(--border-radius-md);
 }

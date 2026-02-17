@@ -58,7 +58,7 @@
 
 .theme-light .mode-today .lang-switch__btn--active {
   background: var(--color-mustag-green);
-  color: #FFFFFF;
+  color: var(--color-white);
 }
 
 .theme-light .mode-today .lang-switch__btn:not(.lang-switch__btn--active):hover {
